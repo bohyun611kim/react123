@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link rel="stylesheet" type="text/css" href="../css/uiStyle.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/jquery/jquery-3.3.1.js"></script>
+    <script src="../js/jquery/jquery-3.3.1.js"></script>
+	<script src="../js/jquery/jquery-ui.js"></script>
+	<script src="../js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="../js/jquery/slick.js"></script>
+</head>
+<body>
+<div id="wrap">
+    <div class="header">
+        <!-- menu PC -->
+        <div id="sub_top">
+            <div class="inner">
+                <div class="s_logo">
+                    <a href="#/">
+                        <img src="../img/logo.png" alt="Logo" />
+                    </a>
+                </div>
+                <div class="gnb">
+                    <select name="language.selector" class="select_lan">
+                        <option value="en">English</option>
+                        <option value="ko">Korean</option>
+                        <option value="ja">Japanese</option>
+                        <option value="id">Indonesian</option>
+                        <option value="zh">Chinese</option>
+                    </select>
+                    <ul class="gnb_btn_box">
+                        <li id="active">
+                            <a href="signup.html"> Sign up </a>
+                        </li>
+                        <li>
+                            <a href="login.html"> Login </a>
+                        </li> 
+                    </ul>
+                    <div class="notice_header">
+                        <img src="../img/ic_notice.png" alt="notice" width="20px"/>
+                    </div>
+                    <div class="sc-bdVaJa dXfIaQ">
+                        <ul class="gnb_menu">
+                            <li class="nav-item">
+                                <a href="exchange.html">Exchange</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="deposit_withdrawal.html">Deposit and withdrawal</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="invest.ko.html">Asset details</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="support.html">Support</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- menu mobile -->
+        <div class="m_top">
+            <div class="inner">
+                <div class="m_logo">
+                    <a href="#/">
+                        <img src="../img/logo_m.png" alt="Logo" />
+                    </a>
+                </div>
+                <div class="m_btn" onclick="openNavMobile()">
+                    <img src="../img/toggle.png" alt="toggle">
+                </div>
+            </div>
+            <aside class="global-sidebar">
+                <div id="m_nav" class="slide-side-enter-done" style="right: -100%;">
+                    <div class="m_nav_inner">
+                        <div class="close">
+                            <img src="../img/modal_close.png" alt="close" onclick="closeNavMobile()" />
+                        </div>
+                        <ul class="m_nav_btnbox">
+                            <li>
+                                <a href="#/user/signin">SIGN IN</a>
+                            </li>
+                            <li>
+                                <a href="#/user/signup">SIGN UP</a>
+                            </li>
+                        </ul>
+                            <select name="language.selector" class="m_select_lan">
+                                <option value="en">English</option>
+                                <option value="ko">Korean</option>
+                                <option value="ja">Japanese</option>
+                                <option value="id">Indonesian</option>
+                                <option value="zh">Chinese</option>
+                            </select>
+                        <ul>
+                            <li class="m_nav_menu">
+                                <a class="m_menu_dep01" href="exchange.html">Exchange</a>
+                            </li>
+                            <li class="m_nav_menu">
+                                <a class="m_menu_dep01" href="deposit_withdrawal.html">Deposit and withdrawal</a>
+                            </li>
+                            <li class="m_nav_menu">
+                                <a class="m_menu_dep01" href="invest.ko.html">Asset details</a>
+                            </li>
+                            <li class="m_nav_menu">
+                                <a class="m_menu_dep01" href="support.html">Support</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+    <main id="content" role="main">
+        <div class="main-visual">
+            <div class="visual-wrap">
+                <div class="list_event">
+                    <div class="content_title">
+                        <h2 class="visual_txt">Fast and Secure exchange<span><img src="../img/event/star.png"/></span></h2>
+                        <!-- <h2 class="visual_txt">빠르고 안전한 거래소<span><img src="../img/event/star.png"/></span></h2> -->
+                        <h1 class="visual_name">Bita500</h1>
+                    </div>
+                </div>
+                <div class="list_notice">
+                    <div class="notice_item">
+                        <p class="tit">Blockchain today</p>
+                        <ul>
+                            <li>[Listing] New crypto-asset OA</li>
+                            <li>[Delisting] MAC, NIC, UIS, HPDC, BTT, BDT</li>
+                            <li>Notice of suspension of XRP (Ripple) withdrawal</li>
+                            <li>[Listing] New crypto-asset DBP</li>
+                            <li>[Listing] New crypto-asset SAFE</li>
+                            <li>[Listing] New crypto-asset DBP</li>
+                            <li>[Listing] New crypto-asset SAFE</li>
+                            <li>[Listing] New crypto-asset SAFE</li>
+                        </ul> 
+                    </div>
+                    <div class="notice_item">
+                        <p class="tit">Notice</p>
+                        <ul>
+                            <li>[Listing] New crypto-asset OA</li>
+                            <li>[Delisting] MAC, NIC, UIS, HPDC, BTT, BDT</li>
+                            <li>Notice of suspension of XRP (Ripple) withdrawal</li>
+                            <li>[Listing] New crypto-asset DBP</li>
+                            <li>[Listing] New crypto-asset SAFE</li>
+                            <li>[Listing] New crypto-asset DBP</li>
+                            <li>[Listing] New crypto-asset SAFE</li>
+                            <li>[Listing] New crypto-asset SAFE</li>
+                        </ul> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="home">
+            <article class="slider_notice_wrap">
+                <ul class="slider_data">
+                    <li>
+                        <img src="../img/gdc.png" alt="gdc" class="icon_coin">
+                        <span>GDC/KRW</span>
+                        <span>11,600</span>
+                        <img src="../img/icon_chart.png" alt="chart" class="icon_chart">
+                    </li>
+                    <li>
+                        <img src="../img/gdc.png" alt="gdc" class="icon_coin">
+                        <span>GDC/KRW</span>
+                        <span>11,600</span>
+                        <img src="../img/icon_chart.png" alt="chart" class="icon_chart">
+                    </li>
+                    <li>
+                        <img src="../img/gdc.png" alt="gdc" class="icon_coin">
+                        <span>GDC/KRW</span>
+                        <span>11,600</span>
+                        <img src="../img/icon_chart.png" alt="chart" class="icon_chart">
+                    </li>
+                    <li>
+                        <img src="../img/gdc.png" alt="gdc" class="icon_coin">
+                        <span>GDC/KRW</span>
+                        <span>11,600</span>
+                        <img src="../img/icon_chart.png" alt="chart" class="icon_chart">
+                    </li>
+                    <li>
+                        <img src="../img/gdc.png" alt="gdc" class="icon_coin">
+                        <span>GDC/KRW</span>
+                        <span>11,600</span>
+                        <img src="../img/icon_chart.png" alt="chart" class="icon_chart">
+                    </li>
+                    <li>
+                        <img src="../img/gdc.png" alt="gdc" class="icon_coin">
+                        <span>GDC/KRW</span>
+                        <span>11,600</span>
+                        <img src="../img/icon_chart.png" alt="chart" class="icon_chart">
+                    </li>
+                    <li>
+                        <img src="../img/gdc.png" alt="gdc" class="icon_coin">
+                        <span>GDC/KRW</span>
+                        <span>11,600</span>
+                        <img src="../img/icon_chart.png" alt="chart" class="icon_chart">
+                    </li>
+                </ul>
+            </article>
+            <article class="slider_notice_banner">
+                <div class="inner">
+                    <ul class="slider_banner">
+                        <li>
+                            <img src="../img/event/banner1_en.png" alt="banner1" class="banner_img">
+                        </li>
+                        <li>
+                            <img src="../img/event/banner2_en.png" alt="banner2" class="banner_img">
+                        </li>
+                        <li>
+                            <img src="../img/event/banner3_en.png" alt="banner3" class="banner_img"> 
+                        </li>
+                        <li>
+                            <img src="../img/event/banner4_en.png" alt="banner4" class="banner_img">
+                        </li>
+                        <li>
+                            <img src="../img/event/banner5_en.png" alt="banner5" class="banner_img">
+                        </li>
+                        <li>
+                            <img src="../img/event/banner6_en.png" alt="banner6" class="banner_img">
+                        </li>
+                        <li>
+                            <img src="../img/event/banner6_en.png" alt="banner6" class="banner_img">
+                        </li>
+                    </ul>
+                </div>
+            </article>
+            <article class="content_data">
+                <div class="inner">
+                    <div class="chart_data">
+                        <!-- <canvas id="myChartLine"></canvas> -->
+                    </div>
+                    <div class="list_data">
+                        <p class="tit">Coin market price</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="alLeft">Asset</th>
+                                    <th class="alLeft">Present value</th>
+                                    <th class="alCenter">Volume</th>
+                                    <th class="alRight">Change rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="alLeft">BTC</td>
+                                    <td class="alLeft">24,302,393 KRW</td>
+                                    <td class="alCenter">-0,56%</td>
+                                    <td class="alRight">-0,56%</td>
+                                </tr>  
+                                <tr>
+                                    <td class="alLeft">BTC</td>
+                                    <td class="alLeft">24,302,393 KRW</td>
+                                    <td class="alCenter">-0,56%</td>
+                                    <td class="alRight">-0,56%</td>
+                                </tr> 
+                                <tr>
+                                    <td class="alLeft">BTC</td>
+                                    <td class="alLeft">24,302,393 KRW</td>
+                                    <td class="alCenter">-0,56%</td>
+                                    <td class="alRight">-0,56%</td>
+                                </tr> 
+                                <tr>
+                                    <td class="alLeft">BTC</td>
+                                    <td class="alLeft">24,302,393 KRW</td>
+                                    <td class="alCenter">-0,56%</td>
+                                    <td class="alRight">-0,56%</td>
+                                </tr>  
+                                <tr>
+                                    <td class="alLeft">BTC</td>
+                                    <td class="alLeft">24,302,393 KRW</td>
+                                    <td class="alCenter">-0,56%</td>
+                                    <td class="alRight">-0,56%</td>
+                                </tr>  
+                                <tr>
+                                    <td class="alLeft">BTC</td>
+                                    <td class="alLeft">24,302,393 KRW</td>
+                                    <td class="alCenter">-0,56%</td>
+                                    <td class="alRight">-0,56%</td>
+                                </tr> 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </article>
+            <article class="content_exchange">
+                <div class="inner alCenter">
+                    <h2 class="tit">Exchange technology</h2>
+                    <ul class="list_exchange">
+                        <li>
+                            <img src="../img/event/img_exchange1.png" alt="exchange1">
+                            <div class="detail_exchange">
+                                <p class="detail_tit">Bita500 거래소의 기술력</p>
+                                <p class="txt">많은 거래소가 하이브리드 방식의 중앙 집중형과 탈중앙 분산 시스템의 성격을 24시간 내내 돌아가는 암호화폐 거래소의 특성상 보안을 100% 완벽하게 보장할 수는 없다.하지만,<br> 8월 초 오픈하는 “Bita500 거래소는 99.9%의 안전성을 확보하기 위해 최선의 노력을 하고 있다.<br>주) 오병이어 “ BITA500 거래소”의 대표가 말하는 지향점</p>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="../img/event/img_exchange2.png" alt="exchange2">
+                            <div class="detail_exchange">
+                                <p class="detail_tit">탈중앙화된 거래소의 장.단점.</p>
+                                <p class="txt">장점: 익명성을 더 잘 보장하고 거래하고자 하는 모든 코인을 거래할 수 있는 혜택이 있다.<br>단점:조작이나 사기에 더 많이 노출되고 프로세스가 느려질 수 있다＂라고 했다.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="../img/event/img_exchange3.png" alt="exchange3">
+                            <div class="detail_exchange">
+                                <p class="detail_tit">BITA 500 거래소는….</p>
+                                <p class="txt">빠른 처리속도로 트레이딩의 만족도를 높였고 안전한 자산 거래를 위해 보안 시설을 위해 내, 외부구성 망에 최선을 다하고 있다.<br>하이브리드 모델로 차별화하고, 본 방식을 지향한다.중앙 집중형 성격과 탈중앙·<br>분산형 성격을 동시에 갖는 모델이다.<br>(즉, 중앙집중형 장점과 탈중앙 분산형 성격의 장점을 잘 보완한 거래소의 기술력을 보유 할 수 있게 본 거래소에 집중 하고 있다)</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </article>
+            <article class="content_security">
+                <div class="inner alCenter">
+                    <h2 class="tit">Security Section</h2>
+                    <ul class="list_security">
+                        <li>Cold wallet</li>
+                        <li>
+                            <img src="../img/event/img_security.png" alt="exchange2">
+                        </li>
+                        <li>철저한 SMS 인증체계</li>
+                    </ul>
+                    <ul class="list_detail">
+                        <li>
+                            <p class="list_tit">월렛보안</p>
+                            <p class="list_txt">콜드월렛에 안전하게 분리보관<br>최고 수준의 보안시스템을 기반으로<br>다양한 디지털 자산 지갑을 안전하게운영</p>
+                        </li>
+                        <li>
+                            <p class="list_tit">계정보안</p>
+                            <p class="list_txt">콜드월렛에 안전하게 분리보관<br>최고 수준의 보안시스템을 기반으로<br>다양한 디지털 자산 지갑을 안전하게운영<br></p>
+                        </li>
+                    </ul>
+                </div>
+            </article>
+        </div>
+    </main> 
+    <footer id="footer">
+        <div class="inner">
+            <div class="footer_top">
+                <div class="footer_logo">
+                    <img src="../img/logo_g.png" alt="logo">
+                </div>
+                <nav class="footer_gnb">
+                    <ul class="footer_gnb_ul">
+                        <li>
+                            <a href="#/policy">About</a>
+                        </li>
+                        <li>
+                            <a href="#/policy">Terms</a>
+                        </li>
+                        <li>
+                            <a href="#/policy?status=2">Privacy</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <address class="footer_body">
+                <p>Address : 603, Daejong-ro, Jung-gu, Daejeon, Republic of Korea</p>
+                <p>Contact: help@bita500.com</p><p>Telegram: https://t.me/BITA500</p>
+                <p>© 2019 BITA500. All rights reserved</p>
+            </address>
+        </div>
+    </footer>
+    <aside class="global-sidebar"></aside>
+</div>
+<script src="../js/common/tab.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    $(".slider_data").slick({
+        dots: false, 
+        infinite: true,
+        slidesToShow: 5, 
+        slidesToScroll: 1, 
+        autoplay: true, 
+        autoplaySpeed: 3500, 
+        cssEase: 'linear', 
+        arrows: false, 
+        responsive: [
+            {
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3,
+                infinite: true,
+                dots: true
+            }
+            },
+            {
+            breakpoint: 600,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 2
+            }
+            },
+            {
+            breakpoint: 480,
+            settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1
+            }
+            }
+            // You can unslick at a given breakpoint now by adding:
+            // settings: "unslick"
+            // instead of a settings object
+        ]
+	}).show();
+    $(".slider_banner").slick({
+        dots: false, 
+        infinite: true,
+        slidesToShow: 6, 
+        slidesToScroll: 1, 
+        autoplay: true, 
+        autoplaySpeed: 4000, 
+        cssEase: 'linear', 
+        arrows: true, 
+        responsive: [
+            {
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3,
+                infinite: true,
+                dots: true
+            }
+            },
+            {
+            breakpoint: 600,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 2
+            }
+            },
+            {
+            breakpoint: 480,
+            settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1
+            }
+            }
+            // You can unslick at a given breakpoint now by adding:
+            // settings: "unslick"
+            // instead of a settings object
+        ]
+	}).show();
+</script>
+  
+</body>
+</html>

@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Deposit & Withdraw</title>
+
+    <link rel="shortcut icon" href="../path/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../css/uiGlobal.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+
+
+    <script src="../js/jquery/jquery-3.3.1.js"></script>
+    <script src="../js/jquery/jquery-ui.js"></script>
+    <script src="../js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="../js/jquery/slick.js"></script>
+
+    <script type="text/javascript">
+        //상단 네비게이션
+        $(document).ready(function() {
+
+            $(".topnav").hover(function() { //마우스를 topnav에 오버시
+                $(this).parent().find(".subnav").slideDown('normal').show(); //subnav가 내려옴.
+                $(this).addClass('on');
+                $(this).parent().hover(function() {}, function() {
+                    $(this).parent().find(".subnav").slideUp('fast'); //subnav에서 마우스 벗어났을 시 원위치  
+                    $(".topnav").removeClass('on');
+                });
+            });
+        });
+    </script>
+
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .slider {
+            width: 1280px;
+            margin: 0px auto;
+
+        }
+
+        .slick-slide {
+            margin: 0px 20px;
+        }
+
+        .slick-slide img {
+            width: 100%;
+        }
+
+        .slick-prev:before,
+        .slick-next:before {
+            color: black;
+        }
+
+
+        .slick-slide {
+            transition: all ease-in-out .3s;
+            opacity: 1;
+        }
+
+        .slick-active {
+            opacity: 1;
+            background-color: #fff
+        }
+
+        .slick-current {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER : Start -->
+    <header>
+        <!--최상단 네비게이션 시작-->
+        <nav>
+            <div class="navi-wrap">
+                <div class="navi-logo">
+                    <h1>
+                        <a href="home.html" target="_parent"><img src="../img/logo.png" alt="logo"></a>
+                    </h1>
+
+                </div>
+                <div class="navi-menu">
+                    <ul class="navi">
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MKT-M001.html','_parent')">Exchange</div>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav active">Wallet</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M001.html','_parent')">Deposit & Withdrawal</li>
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M002.html','_parent')">Transaction</li>
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M003.html','_parent')">Holdings</li>
+                            </ul>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Orders</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--MKT-M002.html','_parent')">Trading Histroy</li>
+                                <li onclick="window.open('GLOBAL-WEB--MKT-M003.html','_parent')">Outstanding Orders</li>
+                            </ul>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Support</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--CST-M001.html','_parent')">Notice</li>
+                                <li onclick="window.open('GLOBAL-WEB--CST-M002.html','_parent')">FAQ</li>
+                                <li onclick="window.open('GLOBAL-WEB--CST-M003.html','_parent')">1:1 Inquiry</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navi-user">
+                    <ul class="navi">
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MBR-M001.html','_parent')">Register</div>
+                            <!--<div class="topnav" onclick="window.open('GLOBAL-WEB--MYP-M001.html','_parent')">My Page</div>-->
+                        </li>
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MBR-M002.html','_parent')">Log In</div>
+                            <!--<div class="topnav">Log Out</div>-->
+                        </li>
+                        <li class="navi_set">
+                            <div class="topnav">English</div>
+                            <ul class="subnav">
+                                <li>English</li>
+                                <li>한국어</li>
+                                <li>ภาษาไทย</li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!--최상단 네비게이션 끝-->
+    </header>
+    <!-- //HEADER : End -->
+
+    <!--컨텐츠 내용 영역 시작-->
+    <section>
+        <!--입출금 전체 내용 시작-->
+        <article class="wallet-wrap">
+
+            <!--지갑관리 좌측 코인 리스트 시작-->
+            <aside>
+                <div class="sch-wallet-coin">
+                    <p class="sch-input">
+                        <input type="text" id="" name="" value="" placeholder="Search">
+                    </p>
+                    <span class="checks-item">
+                        <label>
+                            <input type="checkbox"><em></em>
+                        </label>
+                        Balance
+                    </span>
+                </div>
+
+                <div class="coin-list mCustomScrollbar">
+                    <table>
+                        <!-- 리스트 1개 반복 : Start -->
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/BTC.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>BTC</p>
+                                </td>
+                                <td>
+                                    <p>11.2319290000</p>
+                                    <p>BTC</p>
+                                </td>
+                            </tr>
+                            <!-- //리스트 1개 반복 : End -->
+                            <tr class="active">
+                                <!-- 선택된 tr에 active 클래스 추가 -->
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/ADA.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>ADA</p>
+                                </td>
+                                <td>
+                                    <p>2,219,290,000</p>
+                                    <p>ADA</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/DASH.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>DASH</p>
+                                </td>
+                                <td>
+                                    <p>61,778.3089768</p>
+                                    <p>DASH</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/FCT.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>FCT</p>
+                                </td>
+                                <td>
+                                    <p>19,290,000</p>
+                                    <p>FCT</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/ETC.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>ETC</p>
+                                </td>
+                                <td>
+                                    <p>19,290,000</p>
+                                    <p>ETC</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/ETH.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>ETH</p>
+                                </td>
+                                <td>
+                                    <p>19,290,000</p>
+                                    <p>ETH</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/LTC.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>LTC</p>
+                                </td>
+                                <td>
+                                    <p>19,290,000</p>
+                                    <p>LTC</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/MEDIBIT.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>MEDIBIT</p>
+                                </td>
+                                <td>
+                                    <p>19,290,000</p>
+                                    <p>MEDIBIT</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/SECRET_64.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>SECRET</p>
+                                </td>
+                                <td>
+                                    <p>19,290,000</p>
+                                    <p>BSECRETTC</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/SRCOIN.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>SRCOIN</p>
+                                </td>
+                                <td>
+                                    <p>19,290,000</p>
+                                    <p>SRCOIN</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/LSTR.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>LSTR</p>
+                                </td>
+                                <td>
+                                    <p>19,290,000</p>
+                                    <p>LSTR</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/KIN.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>KIN</p>
+                                </td>
+                                <td>
+                                    <p>19,290,000</p>
+                                    <p>KIN</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/FCT.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>FCT</p>
+                                </td>
+                                <td>
+                                    <p>19,290,000</p>
+                                    <p>FCT</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/ETC.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>ETC</p>
+                                </td>
+                                <td>
+                                    <p>19,290,000</p>
+                                    <p>ETC</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/ETH.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>ETH</p>
+                                </td>
+                                <td>
+                                    <p>19,290,000</p>
+                                    <p>ETH</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/LTC.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>LTC</p>
+                                </td>
+                                <td>
+                                    <p>19,290,000</p>
+                                    <p>LTC</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="coin-symbol">
+                                        <img src="../img/coin-symbol/MEDIBIT.png">
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>MEDIBIT</p>
+                                </td>
+                                <td>
+                                    <p>19,290,000</p>
+                                    <p>MEDIBIT</p>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </aside>
+            <!--지괍관리 좌측 코인 리스트 시작-->
+
+            <!--입출금 탭 영역 시작-->
+            <div class="tab-wrap">
+                <div id="tab-group">
+                    <ul class="tabs-2li">
+                        <li><a href="#tabs-1">Deposit</a></li>
+                        <li><a href="#tabs-2">Withdrawal</a></li>
+                    </ul>
+                    <!-- 입금주소 탭 컨텐츠 : Start -->
+                    <div id="tabs-1">
+                        <h1 class="sub-title"><span>BCH </span>Deposit</h1>
+                        <div class="content-item">
+
+                            <!-- 코인주소가 없는 경우 : Start -->
+                            <div class="none-addr">
+                                <ul class="sub-desc">
+                                    <li>Please deposit BCH to the address below</li>
+                                    <li>BCH If you do not have a deposit address, please click on the create address button to get your unique BCH address.</li>
+                                </ul>
+                                <div class="btn-wrap">
+                                    <button class="big bgblue">Create <span>BCH</span> Deposit Address</button>
+                                </div>
+                            </div>
+                            <!-- //코인주소가 없는 경우 : End -->
+
+                            <!-- 코인주소가 있는 경우 : Start -->
+                            <div class="my-addr">
+                                <div class="my-addr-group">
+                                    <p class="my-addr-title">Deposit <span>LTC </span>Address</p>
+                                    <span class="my-addr-value">
+                                        NAOQKEQSY4QK42JZPYG7JCJW6TKEABHUPM4GUDAO1234578
+                                    </span>
+                                    <button class="small bggray">Copy Address</button>
+                                    <div class="extra-addr-group">
+                                        <span class="extra-title">Destination Tag :</span>
+                                        <span class="extra-addr">277115e34345500</span>
+                                        <span><button class="small">Copy Address</button></span>
+                                        <span class="red">
+                                            <img src="../img/icon-img01.png"> Be sure to enter the tag
+                                        </span>
+                                    </div>
+
+                                </div>
+                                <div class="my-addr-qr">
+                                    <img src="../img/temp-qrimg.png">
+                                </div>
+                            </div>
+                            <!-- 코인주소가 있는 경우 : end -->
+
+                            <!--입출금 중지일 경우-->
+                            <div class="my-addr center mgt20">
+                                <p class="addr-info">현재 입금 중지 상태입니다.</p>
+                                <p class="addr-info">IEO가 진행중일 경우 입출금이 불가합니다.</p>
+                            </div>
+                            <!--입출금 중지일 경우-->
+
+                            <!--입출금 유의사항-->
+                            <ul class="sub-desc">
+                                <li>If you send BTC to this unique BTC address, it will be deposited to your BTC wallet.</li>
+                                <li>The deposit takes 10 to 30 minutes, but may be delayed due to BTC network conditions.</li>
+                                <li>The results of the deposit process can be found on the Account Management - Deposit and Transfer Details screen.</li>
+                                <li>Make sure you check your wallet address prior to deposit.</li>
+                            </ul>
+
+                            <h2 class="mgt20 red"> ※ Notes on deposit and withdrawal</h2>
+                            <ul class="sub-desc">
+                                <li>The withdrawal limit is KRW & coin integration limit based on the authentication level. The coin is based on the current price of the coin at the time of withdrawal.</li>
+                                <li>If it is initial withdrawal from the KRW first deposit, your withdrawal will be limited to 72 business hours following our withdrawal/refund policy.</li>
+                                <li>Even if you withdraw coins without cash deposits, the first withdrawal will be processed after confirmation of the manager</li>
+                                <li>If there is no withdrawal limit, coin withdrawal will be processed automatically for 24 hours</li>
+                                <li>The deposit and withdrawal of cash will be processed through the administrator's confirmation from 09:00 to 18:00 including the holiday</li>
+                                <li>The deposit of cash is processed only when you make a deposit from the bank account you registered. If the account is different from that you registered, the deposit/withdrawal will be denied</li>
+                                <li>Be careful of voice phishing. The fraud damage such as solicitation of loan, loan repayment, coin purchasing agency is increasing rapidly.</li>
+                                <li>If you do not have more than one deposit (KRW, coin included), you can not request withdrawal.</li>
+                                <li>Coin deposit/withdrawal is typically processed within 30 minutes, but may take longer to transfer depending on block-chain network conditions.</li>
+                                <li>The withdrawal address shown in the transaction is different from your deposit address because the coin withdrawal is carried out in the CoinIs hot wallet. If you need to get a refund at the withdrawal address or participate in ICO, Air Drop, etc., please do not use the Exchange address. First, move coin to your personal wallet and then participate. We will not be responsible for the lost coin</li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+                    <!-- //입금주소 탭 컨텐츠 : End -->
+
+                    <!-- 출금신청 탭 컨텐츠 : Start -->
+                    <div id="tabs-2">
+                        <h1 class="sub-title">BCH Withdrawal</h1>
+                        <div class="content-item">
+
+                            <!-- 보안인증하러가기 버튼: Start -->
+                            <div class="btn-wrap">
+                                <button class="big bgblue">Security Setup</button>
+                                <p class="red mgt20">
+                                    <img src="../img/icon-img01.png"> 보안인증을 하셔야 출금이 가능합니다.
+                                </p>
+                            </div>
+                            <!-- //보안인증하러가기 버튼 : End -->
+
+                            <!-- 입력 영역 : Start -->
+                            <table class="tblType01">
+                                <colgroup>
+                                    <col style="width:230px;">
+                                    <col>
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th>Qty Withdrawable</th>
+                                        <td>
+                                            <span>2.0000000000</span><!-- 코인수량 -->
+                                            <span>BTC</span><!-- 코인종류 -->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Withdrawal limit pertransaction</th>
+                                        <td>
+                                            <span>2.0000000000</span>
+                                            <span>BTC</span>
+                                        </td>
+                                    </tr>
+									<tr>
+                                        <th>Today's Limit left</th>
+                                        <td>
+                                            <span>2.0000000000</span>
+                                            <span>BTC</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>LTC Withdrawal address</th>
+                                        <td>
+                                            <span class="tblInput">
+                                                <input type="text" id="" name="" value="">
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Extra Address</th>
+                                        <td>
+                                            <span class="tblInput">
+                                                <input type="text" id="" name="" value="">
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Withdrawal Qty</th>
+                                        <td>
+                                            <span class="tblInput">
+                                                <input type="text" id="" name="" value="">
+                                            </span>
+                                            <button class="small bggray">Max</button>
+											<p>(Min Withdrawal Amount : 0.0)</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Withdrawal Fee</th>
+                                        <td>
+                                            <span>0.41425424</span>
+                                            <span>BTC</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Actual Withdrawal Qty</th>
+                                        <td>
+                                            <span>0.41425424</span>
+                                            <span>BTC</span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>SMS Authentication</th>
+                                        <td>
+                                            <span class="btn-mini fl-left">
+                                                <button class="small bggray">Send SMS</button>
+                                            </span>
+                                            <span class="tblInput">
+                                                <input type="text" id="" name="" value="" placeholder="Enter SMS Authentication Code">
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>OTP Authentication Code</th>
+                                        <td>
+                                            <span class="tblInput">
+                                                <input type="text" id="" name="" value="" placeholder="Enter OTP Authentication Code">
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- //입력 영역 : End -->
+
+                            <!-- 출금 요청 버튼 : Start -->
+                            <div class="btn-wrap">
+                                <button class="big bgblue">Withdrawal</button>
+                            </div>
+                            <!-- //출금 요청 버튼 : End -->
+                        </div>
+                    </div>
+                    <!-- //출금신청 탭 컨텐츠 : End -->
+                </div>
+            </div>
+            <!--입출금 탭 영역 끝-->
+
+        </article>
+        <!--입출금 전체 내용 끝-->
+    </section>
+    <!--컨텐츠 내용 영역 끝-->
+
+    <!-- FOOTER : Start -->
+    <footer>
+        <div class="footer-menu-wrap">
+            <div class="footer-menu">
+                <a href="GLOBAL-WEB--ETC-M002.html">Terms and Conditions </a>
+                <a href="GLOBAL-WEB--ETC-M003.html">Privacy Statements </a>
+                <a href="GLOBAL-WEB--ETC-M001.html">Fees</a>
+            </div>
+        </div>
+
+        <div class="footer-wrap">
+            <p class="footer-logo">
+                <a href="#">WAVE STRAING</a>
+            </p>
+            <div class="footer-group">
+                <ul>
+                    <li>주식회사 <span class="orange-bold">웨이브스트링</span></li>
+                    <li>서울특별시 구로구 디지털로 273, 306호(구로동, 에이스트윈타워 2차)</li>
+                    <li>대표이사 : 정명묵</li>
+                </ul>
+                <ul>
+                    <li>사업자등록번호 : 113-86-84751</li>
+                </ul>
+                <ul>
+                    <li>현금입출금 :<span class="white-bold"> 09:00~18:00 (휴일포함)</span></li>
+                    <li>코인입출금 : <span class="white-bold">24시간 (휴일포함)</span></li>
+                </ul>
+                <p class="copyright-area">Copyright&copy; 2012 wavestring All rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+    <!-- FOOTER : End -->
+
+
+    <script>
+        //상단 전체메뉴 
+        var zoomx = 100;
+        $(document).ready(function() {
+            $(".gnb-menu").hover(
+                function() {
+                    $(".sub-menu-wrap").stop().slideDown(400);
+                },
+                function() {
+                    $(".sub-menu-wrap").stop().slideUp(200);
+                });
+
+            $(".sub-menu-wrap").hover(
+                function() {
+                    $(".sub-menu-wrap").stop().slideDown(400);
+                },
+                function() {
+                    $(".sub-menu-wrap").stop().slideUp(200);
+                });
+        });
+
+        //마켓별 전체보기
+        $(document).ready(function() {
+            $('.btn-folding').click(function() {
+                $('.folding').toggleClass('more');
+            });
+
+        });
+
+        /*북마크*/
+        $('.bookmark').click(function() {
+            $(this).toggleClass('mark-on');
+        });
+
+        /*슬릭스 슬라이더*/
+        $(".regular").slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            autoplay: false,
+            autoplaySpeed: 4000
+        });
+
+        //팝업 열고 닫기   
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+        //jquery 탭
+        $(document).ready(function() {
+            $("#tab-group").tabs();
+
+            $("#datepicker").datepicker({
+                inline: true
+            });
+        });
+    </script>
+</body>
+
+</html>

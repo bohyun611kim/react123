@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.yahobit.mypage.mpg002.dao.YahobitAuthDAO">
+
+	<resultMap type="kr.co.coinis.webserver.yahobit.mypage.mpg002.vo.AuthLevel4VO" id="AuthLevel4VO">
+		<result property="idVerifiYn" 		column="ID_VERIFI_YN" 			jdbcType="NUMERIC"/>
+		<result property="idVerifiResultCd" column="ID_VERIFI_RESULT_CD" 	jdbcType="NUMERIC"/>
+		<result property="idVerifiErrDetCd" column="ID_VERIFI_ERR_DET_CD" 	jdbcType="NUMERIC"/>
+		<result property="memoCont" 		column="MEMO_CONT" 				jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.mypage.mpg002.vo.AuthLevel5VO" id="AuthLevel5VO">
+		<result property="recSeqNo"		column="REC_SEQ_NO" 		jdbcType="NUMERIC"/>
+		<result property="approvalStatCd"	column="APPROVAL_STAT_CD" 	jdbcType="NUMERIC"/>
+		<result property="approvalProcMemo"	column="APPROVAL_PROC_MEMO"	jdbcType="NUMERIC"/>
+	</resultMap>
+
+    <!-- ==================================================================================== -->
+    <!-- 1. Select Statement -->
+    <!-- ==================================================================================== -->
+	<!-- select TB_MEMBER_INFO -->
+	<!-- 사용자 로그인 비밀번호 유효성 검증 -->
+	<select id="checkUserPassword" resultType="java.lang.Integer" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			COUNT(*) AS COUNT 
+		FROM 
+			TB_MEMBER_INFO
+		WHERE 
+				USER_ID			= #{USER_ID, jdbcType=VARCHAR}
+			AND EXCHANGE_ID		= #{EXCHANGE_ID, jdbcType=VARCHAR}
+			AND LOGIN_PASSWD	= SHA2(#{LOGIN_PASSWD, jdbcType=VARCHAR}, 512)
+	]]>
+	</select>
+	
+    <!-- ==================================================================================== -->
+    <!-- 1.1 Procedure Call -->
+    <!-- ==================================================================================== -->
+	<!-- 사용자 OTP 저장 프로시저 -->
+	<update id="call_PR_WAS_SET_OTP_AUTH" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_SET_OTP_AUTH
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_OTP_YN, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_OTP_KEY_VAL, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_KEY1, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_KEY2, mode=IN, jdbcType=VARCHAR}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				) 
+		}
+	</update>
+
+    <!-- ==================================================================================== -->
+    <!-- 3. Update Statement -->
+    <!-- ==================================================================================== -->
+	<!-- update TB_MEMBER_INFO -->
+	<!-- 회원정보 수정 저장 -->
+	<update id="updateMemberInfoAtOtp" parameterType="java.util.Map" >
+	<![CDATA[
+        UPDATE TB_MEMBER_INFO
+        SET
+        	  AUTH_LEVEL			= #{AUTH_LEVEL, jdbcType=NUMERIC}
+        	, AUTH_MEANS_CD			= #{AUTH_MEANS_CD, jdbcType=NUMERIC}
+        	, OTP_YN				= #{OTP_YN, jdbcType=NUMERIC}
+        WHERE
+                USER_ID             = #{USER_ID, jdbcType=VARCHAR}
+            AND EXCHANGE_ID         = #{EXCHANGE_ID, jdbcType=VARCHAR}
+	]]>
+	</update>
+	
+	<!-- 회원 가입일시 조회 -->
+	<select id="selectUserInfo" resultType="string">
+		SELECT REG_DT
+		  FROM TB_MEMBER_INFO
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND USER_ID = #{userId}
+	</select>
+
+	<!-- 회원 인증레벨 조회 -->
+	<select id="selectAuthLevel" resultType="string">
+		SELECT A.AUTH_LEVEL
+		  FROM TB_MEMBER_INFO A
+	INNER JOIN TB_MEMBER_INFO_EXTRA B
+			ON A.EXCHANGE_ID = B.EXCHANGE_ID
+		   AND A.USER_ID = B.USER_ID
+		 WHERE A.EXCHANGE_ID = #{exchangeId}
+		   AND A.USER_ID = #{userId}
+		   AND B.FULL_NAME_HASH_VAL = SHA2(#{userName}, 512)
+		   AND B.BIRTHDAY_HASH_VAL = SHA2(#{birthday}, 512)
+	</select>
+	
+	<!-- 법인 회원 인증 레벨 조회 -->
+	<select id="selectAuthLevelCorp" resultType="string">
+		SELECT A.AUTH_LEVEL
+		  FROM TB_MEMBER_INFO A
+	INNER JOIN TB_MEMBER_INFO_EXTRA B
+			ON A.EXCHANGE_ID = B.EXCHANGE_ID
+		   AND A.USER_ID = B.USER_ID
+	INNER JOIN TB_MEMBER_CORP_INFO C
+       		ON C.CORP_REG_NUM = B.CORP_REG_NUM
+		 WHERE A.EXCHANGE_ID = #{exchangeId}
+		   AND A.USER_ID = #{userId}
+		   AND B.FULL_NAME_HASH_VAL = SHA2(#{userName}, 512)
+		   AND C.CORP_REG_NUM = #{corpNo}
+	</select>
+	
+	<!-- 4레벨 인증 요청 가능 여부를 확인 하기 위한 정보 조회 -->
+	<select id="selectAuthLevel4Info" resultMap="AuthLevel4VO">
+		SELECT B.ID_VERIFI_YN, IFNULL(B.ID_VERIFI_RESULT_CD, '') AS ID_VERIFI_RESULT_CD, B.ID_VERIFI_ERR_DET_CD, B.MEMO_CONT
+		  FROM TB_MEMBER_INFO A,
+			   TB_MEMBER_INFO_EXTRA B
+		 WHERE A.EXCHANGE_ID = #{exchangeId}
+		   AND A.USER_ID = #{userId}
+		   AND A.AUTH_LEVEL = 3
+		   AND A.EXCHANGE_ID = B.EXCHANGE_ID
+		   AND A.USER_ID = B.USER_ID
+	</select>
+	
+	<!-- 보안인증 4레벨 정보 업데이트 -->
+	<update id="updateLevel4Request">
+		UPDATE TB_MEMBER_INFO_EXTRA
+		   SET ID_TYPE_CD = #{idCardType}
+			   , ID_VERIFI_REQ_DT = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+			   , ID_VERIFI_YN = 0
+			   , ID_VERIFI_RESULT_CD = 1
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND USER_ID = #{userId}
+	</update>
+	
+	<!-- 신분증파일정보 저장 -->
+	<update id="procInsertIdAuthInfo" statementType="CALLABLE">
+		{
+			CALL PR_WAS_INSERT_ID_AUTH_INFO(
+				#{exchangeId,	mode=IN, 	jdbcType=VARCHAR},
+				#{userId,		mode=IN, 	jdbcType=VARCHAR},
+				#{fileNm,		mode=IN, 	jdbcType=VARCHAR},
+				#{rtnCd, 		mode=OUT, 	jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 		mode=OUT, 	jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<!-- 사업자인증파일정보 저장 -->
+	<update id="procInsertMemberCorpAuthInfo" statementType="CALLABLE">
+		{
+			CALL PR_WAS_INSERT_MEMBER_CORP_AUTH_INFO(
+				#{corpRegNum,	mode=IN, 	jdbcType=VARCHAR},
+				#{fileNm,		mode=IN, 	jdbcType=VARCHAR},
+				#{rtnCd, 		mode=OUT, 	jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 		mode=OUT, 	jdbcType=VARCHAR}
+			)
+		}
+	</update>
+
+	<!-- 5레벨 인증 요청 가능 여부를 확인 하기 위한 정보 조회 -->	
+	<select id="selectAuthLevel5Info" resultMap="AuthLevel5VO">
+		SELECT B.REC_SEQ_NO, IFNULL(B.APPROVAL_STAT_CD, 0) AS APPROVAL_STAT_CD, B.APPROVAL_PROC_MEMO
+		  FROM TB_MEMBER_INFO A,
+  			   TB_MEMBER_LEVEL5_MGR B
+		 WHERE A.EXCHANGE_ID = #{exchangeId}
+		   AND A.USER_ID = #{userId}
+		   AND A.AUTH_LEVEL = 4
+		   AND A.EXCHANGE_ID = B.EXCHANGE_ID
+		   AND A.USER_ID = B.USER_ID
+	  ORDER BY B.REC_SEQ_NO DESC
+		 LIMIT 1
+	</select>
+
+	<!-- 회원 추가 정보 중 신분증 유형 정보 저장 -->
+	<update id="updateExtraIdTypeCd">
+		UPDATE TB_MEMBER_INFO_EXTRA
+		   SET ID_TYPE_CD = #{idCardType}
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND USER_ID = #{userId}
+	</update>
+	
+	<update id="procMemberLevel5Mgr" statementType="CALLABLE">
+		{
+			CALL PR_WAS_CRUD_MEMBER_LEVEL5_MGR(
+				#{procFlag,			mode=IN, 	jdbcType=VARCHAR},
+				#{exchangeId,		mode=IN, 	jdbcType=VARCHAR},
+				#{userId,			mode=IN, 	jdbcType=VARCHAR},
+				#{recSeqNo,			mode=IN, 	jdbcType=NUMERIC},
+				#{jobCd,			mode=IN, 	jdbcType=NUMERIC},
+				#{purpose,			mode=IN, 	jdbcType=VARCHAR},
+				#{origin,			mode=IN, 	jdbcType=VARCHAR},
+				#{tradeCnt,			mode=IN, 	jdbcType=NUMERIC},
+				#{tradeAmt,			mode=IN, 	jdbcType=NUMERIC},
+				#{fileNm,			mode=IN, 	jdbcType=VARCHAR},
+				#{fileNm2,			mode=IN, 	jdbcType=VARCHAR},
+				#{approvalStatCd,	mode=IN, 	jdbcType=NUMERIC},
+				null,
+				null,
+				#{rtnCd,			mode=OUT, 	jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg,			mode=OUT, 	jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<update id="updateExtraAddress">
+		UPDATE TB_MEMBER_INFO_EXTRA
+		   SET ADDRESS = AES_ENCRYPT(#{addr}, SHA2(SHA2(CONCAT(#{userId}, (SELECT REG_DT
+		   													   				   FROM TB_MEMBER_INFO
+		   													  				  WHERE EXCHANGE_ID = #{exchangeId}
+		   																		AND USER_ID = #{userId})), 512), 512))
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND USER_ID = #{userId}
+	</update>
+</mapper>
+

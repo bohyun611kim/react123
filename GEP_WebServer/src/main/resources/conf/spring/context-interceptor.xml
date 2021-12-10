@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:oxm="http://www.springframework.org/schema/oxm"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- Enables the Spring MVC @Controller programming model -->
+	<mvc:annotation-driven />
+
+	<!-- 로그인 Interceptor -->
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<!-- <mvc:mapping path="/member/**"/> -->
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/" />
+
+			<mvc:exclude-mapping path="/resources/**" />
+			<mvc:exclude-mapping path="/robots.txt" />
+			<mvc:exclude-mapping path="/sitemap.xml" />
+			<mvc:exclude-mapping path="/naver70d82a16768dc9ae99e212a5be89e402.html" />
+
+			<mvc:exclude-mapping path="/coinis/home/**" />
+			<mvc:exclude-mapping path="/coinis/exchange/**" />
+			<mvc:exclude-mapping path="/coinis/login/**" />
+			<mvc:exclude-mapping path="/coinis/register/**" />
+			<mvc:exclude-mapping path="/coinis/notice/**" />
+			<mvc:exclude-mapping path="/coinis/faq/**" />
+
+			<mvc:exclude-mapping path="/alibit/home/**" />
+			<mvc:exclude-mapping path="/alibit/exchange/**" />
+			<mvc:exclude-mapping path="/alibit/anal/**" />
+			<mvc:exclude-mapping path="/alibit/login/**" />
+			<mvc:exclude-mapping path="/alibit/logout" />
+			<mvc:exclude-mapping path="/alibit/pwSearch/**" />
+			<mvc:exclude-mapping path="/alibit/register/**" />
+			<mvc:exclude-mapping path="/alibit/joining/**" />
+			<mvc:exclude-mapping path="/alibit/about/**" />
+			<mvc:exclude-mapping path="/alibit/support/**" />
+			<mvc:exclude-mapping path="/alibit/reEmailSend" />
+			<mvc:exclude-mapping path="/alibit/emailAuth" />
+
+			<mvc:exclude-mapping path="/site/home/**" />
+			<mvc:exclude-mapping path="/site/exchange/**" />
+			<mvc:exclude-mapping path="/site/anal/**" />
+			<mvc:exclude-mapping path="/site/login/**" />
+			<mvc:exclude-mapping path="/site/logout" />
+			<mvc:exclude-mapping path="/site/pwSearch/**" />
+			<mvc:exclude-mapping path="/site/register/**" />
+			<mvc:exclude-mapping path="/site/joining/**" />
+			<mvc:exclude-mapping path="/site/about/**" />
+			<mvc:exclude-mapping path="/site/support/**" />
+			<mvc:exclude-mapping path="/site/reEmailSend" />
+			<mvc:exclude-mapping path="/site/emailAuth" />
+			<mvc:exclude-mapping path="/site/api/**" />
+			<mvc:exclude-mapping path="/site/auth/**" />
+
+			<mvc:exclude-mapping path="/common/getWordBook" />
+			<mvc:exclude-mapping path="/common/error.do" />
+
+			<bean class="kr.co.coinis.webserver.framework.core.interceptor.LoginCommonInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+</beans>

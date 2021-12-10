@@ -1,0 +1,51 @@
+{
+    "list": {
+        "signout": {
+            "icon": "power-off",
+            "title.en": "SIGN OUT",
+            "title.ko": "로그아웃",
+            "title.ja": "ログアウト",
+            "title.id": "KELUAR",
+            "title.zh": "登出",
+            "image": "/static/media/btn_logout.png",
+            "alt": "Sign Out",
+            "auth": true
+        },
+        "profile": {
+            "icon": "user-cog",
+            "title.en": "MY PAGE",
+            "title.ko": "나의정보",
+            "title.ja": "私の情報",
+            "title.id": "INFO SAYA",
+            "title.zh": "我的信息",
+            "path": "/account/information",
+            "image": "/static/media/btn_mypage.png",
+            "alt": "My Page",
+            "auth": true
+        },
+        "signin": {
+            "icon": "sign-in-alt",
+            "title.en": "SIGN IN",
+            "title.ko": "로그인",
+            "title.ja": "ログイン",
+            "title.id": "MASUK",
+            "title.zh": "登入",
+            "path": "/user/signin",
+            "image": "/static/media/btn_login.png",
+            "alt": "Sign In",
+            "auth": false
+        },
+        "signup": {
+            "icon": "user-plus",
+            "title.en": "SIGN UP",
+            "title.ko": "회원가입",
+            "title.ja": "会員加入",
+            "title.id": "DAFTAR",
+            "title.zh": "注册",
+            "path": "/user/signup",
+            "image": "/static/media/btn_register.png",
+            "alt": "Sign Up",
+            "auth": false
+        }
+    }
+}

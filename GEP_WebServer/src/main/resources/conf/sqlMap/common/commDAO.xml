@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.common.dao.CommDAO">
+	
+	<resultMap type="kr.co.coinis.webserver.common.vo.ServerInfoVO" id="ServerInfoVO">
+		<result property="svrNo" 		column="SVR_NO" 		jdbcType="NUMERIC"/>
+		<result property="svrId" 		column="SVR_ID" 		jdbcType="VARCHAR"/>
+		<result property="svrTypeCd" 	column="SVR_TYPE_CD" 	jdbcType="NUMERIC"/>
+		<result property="svrDescr" 	column="SVR_DESCR" 		jdbcType="VARCHAR"/>
+		<result property="ipAddr" 		column="IP_ADDR" 		jdbcType="VARCHAR"/>
+		<result property="useYn" 		column="USE_YN" 		jdbcType="NUMERIC"/>
+		<result property="useStartDt" 	column="USE_START_DT"	jdbcType="VARCHAR"/>
+		<result property="useEndDt" 	column="USE_END_DT" 	jdbcType="VARCHAR"/>
+		<result property="parallelHashFactor" 	column="PARALLEL_HASH_FACTOR" jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.common.vo.TemplateVO" id="TemplateVO">
+		<result property="title" 		column="TITLE" 			jdbcType="VARCHAR"/>
+		<result property="msgCont" 		column="MSG_CONT" 		jdbcType="VARCHAR"/>
+		<result property="exchangeNm" 	column="EXCHANGE_NM" 	jdbcType="VARCHAR"/>
+		<result property="exchangeUrl"	column="EXCHANGE_URL"	jdbcType="VARCHAR"/>
+		<result property="key" 			column="KEY_VALUE" 		jdbcType="VARCHAR"/>
+		<result property="sndDt"		column="SND_DT" 		jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.common.vo.CodeVO" id="CodeVO">
+		<result property="codeValNm"	column="CODE_VAL_NM"	jdbcType="VARCHAR"/>
+		<result property="codeNumVal"	column="CODE_NUM_VAL"	jdbcType="NUMERIC"/>
+		<result property="codeStrVal"	column="CODE_STR_VAL"	jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.common.vo.ItemCodeVO" id="ItemCodeVO">
+		<result property="itemCode" 	column="ITEM_CODE" 				jdbcType="VARCHAR"/>
+		<result property="qtyCalcPnt"	column="QTY_CALC_DECIMAL_PNT"	jdbcType="NUMERIC"/>
+		<result property="amtCalcPnt" 	column="AMT_CALC_DECIMAL_PNT"	jdbcType="NUMERIC"/>
+		<result property="ordPriceUnit"	column="ORD_PRICE_UNIT" 		jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<!-- 현재 서버 정보 조회 -->
+	<select id="selectServerInfo" resultMap="ServerInfoVO">
+		SELECT SVR_NO, SVR_ID, SVR_TYPE_CD, SVR_DESCR
+			   , IP_ADDR, PARALLEL_HASH_FACTOR, USE_YN
+			   , USE_START_DT, USE_END_DT
+		  FROM TB_SVR_INFO 
+		 WHERE SVR_NO = #{severNo}
+	</select>
+	
+	<!-- 현재 서버의 환경 정보 조회 -->
+	<select id="selectServerEnvInfo" resultType="hashmap">
+		SELECT ENV_VAR_NM, ENV_VAR_VAL
+		  FROM TB_SVR_ENV_VAR_INFO
+		 WHERE SVR_NO = #{severNo}
+	</select>
+	
+	<select id="selectIfTransactionId" resultType="string">
+		SELECT IF_TRANSACTION_ID
+		  FROM TB_ORDER_LIST
+		 WHERE WAS_SVR_NO = #{severNo}
+	  ORDER BY IF_TRANSACTION_ID DESC
+		 LIMIT 1
+	</select>
+	
+	<!-- 전송일시 조회를 위한 쿼리구문 -->
+	<select id="selectSndDt" resultType="string">
+		SELECT REPLACE(NOW(6) + 0, '.', '')
+	</select>
+	
+	<!-- 회원가입 메일 전송을 위한 template 조회 -->
+	<select id="selectRegisterTemplate" resultMap="TemplateVO">
+		SELECT A.TITLE, A.MSG_CONT
+			   , B.EXCHANGE_NM, B.EXCHANGE_URL
+			   , REPLACE(NOW(6) + 0, '.', '') SND_DT
+		  FROM TB_MSG_TEMPLETE A
+			   , TB_EXCHANGE_INFO B
+			   , TB_MEMBER_INFO C
+		 WHERE A.MSG_ID = #{msgType}
+		   AND B.EXCHANGE_ID = #{exchangeId}
+		   AND C.EXCHANGE_ID = #{exchangeId}
+		   AND C.USER_ID = #{userId}
+	</select>
+	
+	<!-- TB_MSG_TEMPLATE 테이블에서 MSG_ID에 해당하는 MSG_CONT를 얻어온다. -->
+	<select id="selectTemplateMsgContent" resultType="java.util.Map">
+		SELECT 
+			*
+		  FROM TB_MSG_TEMPLETE
+		 WHERE MSG_ID = #{msgType}
+		   AND LANG_CD = #{langCd}
+		 LIMIT 1
+	</select>
+	
+	<!-- 인증 코드 생성 -->
+	<update id="procAuthCode" statementType="CALLABLE">
+		{
+			CALL PR_WAS_INSERT_AUTH_CODE(
+				#{exchangeId, 		mode=IN, jdbcType=VARCHAR},
+				#{userId, 			mode=IN, jdbcType=VARCHAR},
+				#{authPurposeCd, 	mode=IN, jdbcType=NUMERIC},
+				#{authMeansCd, 		mode=IN, jdbcType=NUMERIC},
+				#{authMeansKeyVal, 	mode=IN, jdbcType=VARCHAR},
+				#{expireSec, 		mode=IN, jdbcType=NUMERIC},
+				#{tranKeyVal,		mode=IN, jdbcType=NUMERIC},
+				#{encryptAuthCd, 	mode=OUT, jdbcType=VARCHAR},
+				#{authCd, 			mode=OUT, jdbcType=VARCHAR},
+				#{rtnCd, 			mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg,			mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<!-- 이메일 재전송을 위한 기존 인증 코드 삭제 -->
+	<delete id="deleteEmailAuthCode">
+		DELETE FROM TB_MEMBER_AUTH_MGR
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND USER_ID = #{userId}
+		   AND AUTH_PURPOSE_CD = 1
+		   AND AUTH_MEANS_CD = 3
+	</delete>
+	
+	<!-- 주문 요청을 위한 자고 확인 -->
+	<update id="procCheckOrder" statementType="CALLABLE" parameterType="java.util.Map">
+		{
+			CALL PR_COM_CHECK_BALANCE(
+				#{exchangeId, 		mode=IN,  jdbcType=VARCHAR},
+				#{mktId, 			mode=IN,  jdbcType=VARCHAR},
+				#{userId, 			mode=IN,  jdbcType=VARCHAR},
+				#{itemCode, 		mode=IN,  jdbcType=VARCHAR},
+				#{ordPrice, 		mode=IN,  jdbcType=VARCHAR},
+				#{ordPriceTypeCd, 	mode=IN,  jdbcType=VARCHAR},
+				#{ordQty, 			mode=IN,  jdbcType=VARCHAR},
+				#{ordTypeCd,		mode=IN,  jdbcType=VARCHAR},
+				#{sellBuyRecogCd, 	mode=IN,  jdbcType=VARCHAR},
+				#{rtnCd, 			mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 			mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<!-- 전송 큐 조회 -->
+	<select id="selectOrderQueueNm" resultType="java.util.Map">
+		SELECT QUEUE_NM, REPLACE(NOW(6) + 0, '.', '') AS ORDER_DT
+		  FROM TB_DAT_SND_RCV_INFO
+		 WHERE SVR_NO = #{svrNo}
+		   AND MSG_CODE = 101
+		   AND SND_RCV_TYPE_CD = 2
+		   AND KEY_HASH_RSLT_VAL = MOD(#{ascCd}, (SELECT COUNT(*)
+		                                	   FROM TB_DAT_SND_RCV_INFO
+		                                	  WHERE SVR_NO = #{svrNo}
+		                                	    AND MSG_CODE = 101
+		                                	    AND SND_RCV_TYPE_CD = 2
+		                                	    AND USE_YN = 1))
+		   AND USE_YN = 1;
+	</select>
+	
+	<!-- 기본 마켓 그룹 아이디 조회 -->
+	<select id="selectDefaultMktGrpId" resultType="string">
+		SELECT B.MKT_GRP_ID
+		  FROM TB_EXCHANGE_INFO A
+	INNER JOIN TB_EXCHANGE_MKT_INFO B
+			ON A.EXCHANGE_ID = B.EXCHANGE_ID
+		   AND A.BC_COIN_NO = B.BASIC_ASSET_COIN_NO
+		 WHERE A.EXCHANGE_ID = #{exchangeId}
+		   AND A.EXCHANGE_STAT_CD = 1
+		   AND B.MKT_STAT_CD = 1
+	</select>
+	
+	<!-- 기본 마켓 그룹 아이디  리스트 조회 -->
+	<select id="selectMktGrpList" resultType="string">
+		SELECT B.MKT_GRP_ID
+		  FROM TB_EXCHANGE_INFO A
+	INNER JOIN TB_EXCHANGE_MKT_INFO B
+			ON A.EXCHANGE_ID = B.EXCHANGE_ID
+		 WHERE A.EXCHANGE_ID = #{exchangeId}
+		   AND A.EXCHANGE_STAT_CD = 1
+		   AND B.MKT_STAT_CD = 1
+	</select>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="procChangePassword" statementType="CALLABLE">
+		{
+			CALL PR_WAS_CHANGE_PASSWORD(
+				#{exchangeId,	mode=IN, 	jdbcType=VARCHAR},
+				#{userId, 		mode=IN, 	jdbcType=VARCHAR},
+				#{newPw,		mode=IN, 	jdbcType=VARCHAR},
+				#{rtnCd, 		mode=OUT, 	jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 		mode=OUT, 	jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<!-- 로그인 실패 횟수 초기화 -->
+	<update id="procSetFailCnt" statementType="CALLABLE">
+		{
+			CALL PR_WAS_SET_FAIL_CNT(
+				#{procFlag,		mode=IN, 	jdbcType=VARCHAR},
+				#{exchangeId,	mode=IN, 	jdbcType=VARCHAR},
+				#{userId, 		mode=IN, 	jdbcType=VARCHAR},
+				#{rtnCd, 		mode=OUT, 	jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 		mode=OUT, 	jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<!-- 유저 이력 저장 -->
+	<update id="procInsertUserRequestHist" statementType="CALLABLE">
+		{
+			CALL PR_WAS_INSERT_USER_REQUEST_HIST(
+				#{exchangeId,	mode=IN, 	jdbcType=VARCHAR},
+				#{userId, 		mode=IN, 	jdbcType=VARCHAR},
+				#{reqOperCd, 	mode=IN, 	jdbcType=NUMERIC},
+				#{resultCd, 	mode=IN, 	jdbcType=NUMERIC},
+				#{logContents, 	mode=IN, 	jdbcType=VARCHAR},
+				#{publicIp, 	mode=IN, 	jdbcType=VARCHAR},
+				#{privateIp, 	mode=IN, 	jdbcType=VARCHAR},
+				#{os, 			mode=IN, 	jdbcType=VARCHAR},
+				#{browser, 		mode=IN, 	jdbcType=VARCHAR},
+				#{rtnCd, 		mode=OUT, 	jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 		mode=OUT, 	jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<!-- 워드북 조회 -->
+	<select id="selectWordBook" resultType="hashmap">
+		SELECT WORD_ID AS id, WORD_TXT AS txt
+		  FROM TB_WORD_BOOK
+		 WHERE USE_YN = 1
+	</select>
+	
+	<!-- select TB_CODE_INFO -->
+	<!-- 코드 정보를 가져온다. -->
+    <select id="selectCodeInfo" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT 
+            *
+        FROM TB_CODE_INFO
+        WHERE 1 = 1
+			AND CODE_ID					= #{CODE_ID, jdbcType=VARCHAR}
+			AND LANG_CD                 = #{LANG_CD, jdbcType=VARCHAR}
+			AND USE_YN					= 1
+		ORDER BY SORT_ORDER_NO ASC
+	</select>
+
+	<!-- 코드 정보 조회 -->
+	<select id="selectCodeInfoList" resultMap="CodeVO">
+		SELECT CODE_VAL_NM, CODE_NUM_VAL, CODE_STR_VAL
+		  FROM TB_CODE_INFO
+		 WHERE CODE_ID = #{codeId}
+		   AND LANG_CD = #{langCd}
+	  ORDER BY SORT_ORDER_NO ASC
+	</select>
+
+	<!-- 종목 마스터 정보 캐싱(가격, 코인 자릿수, 호가 단위) -->
+	<select id="selectItemCodeMaster" resultMap="ItemCodeVO">
+		SELECT ITEM_CODE, QTY_CALC_DECIMAL_PNT, AMT_CALC_DECIMAL_PNT, ORD_PRICE_UNIT
+		  FROM TB_ITEM_CODE_MAST
+	</select>
+	
+</mapper>
+

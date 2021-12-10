@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bita500.com/sitemap.xml

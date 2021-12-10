@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>LOG IN</title>
+    <link rel="icon" href="../path/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="../css/uiStyle.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/jquery/jquery-3.3.1.js"></script>
+    <script src="../js/jquery/jquery-ui.js"></script>
+    <script src="../js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="../js/jquery/slick.js"></script>
+    <script type="text/javascript">
+    </script>
+</head>
+
+<body>
+    <div id="wrap">
+        <div class="header">
+            <!-- menu PC -->
+            <div id="sub_top">
+                <div class="inner">
+                    <div class="s_logo">
+                        <a href="#/">
+                            <!-- lost image -->
+                            <img src="../img/logo.png" alt="Logo" />
+                        </a>
+                    </div>
+                    <div class="gnb">
+                        <ul class="gnb_btn_box">
+                            <li>
+                                <a href="signup.html"> Sign up </a>
+                            </li>
+                            <li id="active">
+                                <a href="login.html"> Login </a>
+                            </li> 
+                        </ul>
+                        <select name="language.selector" class="select_lan">
+                            <option value="en">English</option>
+                            <option value="ko">Korean</option>
+                            <option value="ja">Japanese</option>
+                            <option value="id">Indonesian</option>
+                            <option value="zh">Chinese</option>
+                        </select>
+                        <div class="notice_header">
+                            <img src="../img/ic_notice.png" alt="notice" width="20px"/>
+                        </div>
+                        <div class="sc-bdVaJa dXfIaQ">
+                            <ul class="gnb_menu">
+                                <li class="nav-item">
+                                    <a href="exchange.html">Exchange</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="deposit_withdrawal.html">Deposit and withdrawal</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="invest.html">Investment details</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="mypage.html">My page</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="support.html">Support</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- menu mobile -->
+            <div class="m_top">
+                <div class="inner">
+                    <div class="m_logo">
+                        <a href="#/">
+                            <img src="../img/logo_m.png" alt="Logo" />
+                        </a>
+                    </div>
+                    <div class="m_btn" onclick="openNavMobile()">
+                        <img src="../img/toggle.png" alt="toggle">
+                    </div>
+                </div>
+                <aside class="global-sidebar">
+                    <div id="m_nav" class="slide-side-enter-done" style="right: -100%;">
+                        <div class="m_nav_inner">
+                            <div class="close">
+                                <img src="../img/modal_close.png" alt="close" onclick="closeNavMobile()" />
+                            </div>
+                            <ul class="m_nav_btnbox">
+                                <li>
+                                    <a href="#/user/signin">SIGN IN</a>
+                                </li>
+                                <li>
+                                    <a href="#/user/signup">SIGN UP</a>
+                                </li>
+                             </ul>
+                                <select name="language.selector" class="m_select_lan">
+                                    <option value="en">English</option>
+                                    <option value="ko">Korean</option>
+                                    <option value="ja">Japanese</option>
+                                    <option value="id">Indonesian</option>
+                                    <option value="zh">Chinese</option>
+                                </select>
+                            <ul>
+                                <li class="m_nav_menu">
+                                    <a class="m_menu_dep01" href="#/exchange">Exchange</a>
+                                </li>
+                                <li class="m_nav_menu">
+                                    <a class="m_menu_dep01" href="#/wallet/balances">Deposit and withdrawa</a>
+                                </li>
+                                <li class="m_nav_menu">
+                                    <a class="m_menu_dep01" href="#/order/openorders">Investment details</a>
+                                </li>
+                                <li class="m_nav_menu">
+                                    <a class="m_menu_dep01" href="#/account/myassets">My page</a>
+                                </li>
+                                <li class="m_nav_menu">
+                                    <a class="m_menu_dep01" href="#/support/notice">Support</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    <!--컨텐츠 내용 영역 시작-->
+        <main id="content-log" role="main" class="main">
+            <div class="joinWrap">
+                <div class="login_form">
+                <h1>Login</h1>
+                    <form name="login">
+                        <div>
+                            <input type="text" name="id" id="id" required="" placeholder="이메일">
+                        </div>
+                        <div>
+                            <input type="password" name="pw" id="pw" required="" placeholder="비밀번호">
+                        </div>
+                        <button class="join">Login</button>
+                    </form>
+                    <div class="gotoRegist">
+                        <p><a href="signup.html" target="_blank">Sign Up</a> | <a href="YAHOBIT-WEB--MBR-M003.html" target="_blank">비밀번호 재설정</a></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    <!--컨텐츠 내용 영역 끝-->
+        <footer id="footer">
+            <div class="inner">
+                <div class="footer_top">
+                    <div class="footer_logo">
+                        <img src="../img/logo_g.png" alt="logo">
+                    </div>
+                    <nav class="footer_gnb">
+                        <ul class="footer_gnb_ul">
+                            <li>
+                                <a href="#/policy">About</a>
+                            </li>
+                            <li>
+                                <a href="#/policy">Terms</a>
+                            </li>
+                            <li>
+                                <a href="#/policy?status=2">Privacy</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <address class="footer_body">
+                    <p>Address : 603, Daejong-ro, Jung-gu, Daejeon, Republic of Korea</p>
+                    <p>Contact: help@holdport.com</p><p>Telegram: https://t.me/HOLDPORT</p>
+                    <p>© 2019 HOLDPORT. All rights reserved</p>
+                </address>
+            </div>
+        </footer>
+    </div>
+    <!--OTP 초기화 가이드 팝업 시작-->
+    <div class="popup-wrap"> 
+        <div class="popup otp_info"> <!--alert : 가로400 big :가로 680-->
+            <!-- 팝업내용 : Start -->
+            <div class="alert-header">
+                <p class="alert-title">OTP 초기화 가이드</p><!-- 팝업 타이틀 -->
+                <a class="top-close">
+                    <img src="../img/btn-alert-close.png" alt="닫기버튼">
+                </a><!-- 팝업 닫기 버튼 -->
+            </div>
+            <div class="alert-content">
+                <p>OTP 초기화는 본인인증을 거친 후에 처리 되며, 관리자 확인 후 처리되므로 시간이 소유될 수 있습니다.</p>
+                <p>OTP 초기화를 위해 아래 본인인증 서류 접수가 필요합니다.</p>
+                <p>아래 방법을 참고하시어 인증서류를 정확히 접수하시면 빠른 처리가 가능합니다.</p>
+                <p>※ 접수 메일주소 : <a href="mailto:cs@ali-bit.com" class="blue">cs@ali-bit.com</a></p>
+                <p>※ 접수 양식(아래 내용을 정확히 기재하여 첨부파일과 함께 메일 접수하시기 바랍니다.)</p>
+                <ul class="decimal">
+                    <li>이메일 제목 : OTP 초기화 요청</li>
+                    <li class="mgt10">이메일 기재 내용
+                        <p>1) 이름 :</p>
+                        <p>2) 가입 이메일(로그인 ID) :</p>
+                        <p>3) 본인인증 한 휴대폰 번호 :</p>
+                    </li>
+                    <li class="mgt10">첨부파일
+                        <p>1) 요청사항 메모부착 신분증 사진 (아래 사진 참조)</p>
+                        <p>2) 메모부착 신분증을 들고 찍은 정면 사진 (아래 사진 참조)</p>
+                        <p>※ 신분증은 주민등록증, 운전면허증, 여권 3가지 유효기간내의 신분증만 해당됩니다.</p>
+                        <p>※ 신분증 사진 촬영시 포스트잇 등으로 개인정보를 가리고 사진촬영하세요 .<br>(아래 사진 참조, 포토샵 등 이미지 편집프로그램으로 수정금지)</p>
+                        <p class="mgt10">※ 메모 기입 필수 내용</p>
+                        <ul class="decimal" style="margin-top: 0">
+                            <li>야호비트 OTP 초기화 요청</li>
+                            <li>가입 이메일(로그인 ID)</li>
+                            <li>접수 날짜</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <p class="bolder blue">첨부 파일 안내</p>
+                <ul>
+                    <li>※ 아래 그림과 같이 메모와 함께 사진촬영하여 첨부파일을 첨부하세요.</li>
+                    <li>※ 요청 제출일 이전 촬영한 사진은 인정되지 않습니다.</li>
+                    <li>※ 첨부파일은 jpg/png 이미지 파일만 첨부가 가능합니다.</li>
+                </ul>
+                <p class="bold mgt10">1. 요청사항 메모 부착한 신분증 사진</p>
+                <p><img src="../img/yaho/img_otp_info1.jpg" alt="img"></p>
+                <p>※ 개인정보 보호를 위해 주민등록번호 뒷 7자리(①), 주소(②)는 반드시 가려서 사진 촬영하세요.(포토샵 수정된 파일은 접수 불가)</p>
+                
+                <p class="bold mgt10">2. 메모 부착한 신분증을 들고 촬영한 본인 사진</p>
+                <p><img src="../img/yaho/img_otp_info2.jpg" alt="img"></p>
+                <p>※ 1번에서 준비한 메모붙인 신분증 내용과 본인 얼굴이 모두 선명하게 나와야 합니다.</p>
+                 <p class="mgt20">
+                    자동차운전면허증 ①-면허번호, ②-주민등록번호 뒷 7자리, ③ - 주소 가려주세요<br>
+                    <img src="../img/yaho/img_otp_info3.jpg" alt="img"> 
+                    <img src="../img/yaho/img_otp_info33.jpg" alt="img"> 
+                </p>
+                <p class="mgt20">
+                    여권 ①-여권번호, ②-기계 판독 영역 가려주세요<br>
+                    <img src="../img/yaho/img_otp_info4.jpg" alt="img"> 
+                    <img src="../img/yaho/img_otp_info44.jpg" alt="img"> 
+                </p>
+                
+            </div>
+            <!-- //팝업내용 : End -->
+            <div class="btn-wrap mgt20">
+                <button class="blue big">확인 </button>
+            </div>
+        </div>
+			
+    </div>
+    <!--OTP 초기화 가이드 팝업 끝-->
+    
+    <!--휴대폰 초기화 가이드 팝업 시작-->
+    <div class="popup-wrap"> 
+        
+        <div class="popup otp_info"> <!--alert : 가로400 big :가로 680-->
+            <!-- 팝업내용 : Start -->
+            <div class="alert-header">
+                <p class="alert-title">휴대폰 초기화 가이드</p><!-- 팝업 타이틀 -->
+                <a class="top-close">
+                    <img src="../img/btn-alert-close.png" alt="닫기버튼">
+                </a><!-- 팝업 닫기 버튼 -->
+            </div>
+            <div class="alert-content">
+                <p>SMS 초기화는 본인인증을 거친 후에 처리 되며, 관리자 확인 후 처리되므로 시간이 소요될 수 있습니다.</p>
+                <p>SMS 초기화를 위해 아래 본인인증 서류 접수가 필요합니다.</p>
+                <p>아래 방법을 참고하시어 정확히 인증서류를 접수하시면 빠른 처리가 가능합니다.</p>
+                <p>※ 접수 메일주소 : <a href="mailto:cs@ali-bit.com" class="blue">cs@ali-bit.com</a></p>
+                <p>※ 접수 양식(아래 내용을 정확히 기재하여 첨부파일과 함께 메일 접수하시기 바랍니다.)</p>
+                <ul class="decimal">
+                    <li>이메일 제목 : OTP 초기화 요청</li>
+                    <li class="mgt10">이메일 기재 내용
+                        <p>1) 이름 :</p>
+                        <p>2) 가입 이메일(로그인 ID) :</p>
+                        <p>3) 본인인증 한 휴대폰 번호 :</p>
+                    </li>
+                    <li class="mgt10">첨부파일
+                        <p>1) 통신사 가입증명서</p>
+                        <p>2) 메모부착 신분증 사진 (아래 사진 참조)</p>
+                        <p>3) 메모부착 신문증을 들고 찍은 정면 사진 (아래 사진 참조)</p>
+                        <p>※ 신분증은 주민등록증, 운전면허증, 여권 3가지 유효기간내의 신분증만 해당됩니다.</p>
+                        <p>※ 신분증 사진 촬영시 주민등록번호 뒷 7자리 등은 포스트잇 등으로 가리고 사진활영하세요 .<br>(아래 사진 참조, 포토샵 등 이미지 편집프로그램으로 수정금지)</p>
+                        <p class="mgt10">※ 메모 기입 필수 내용</p>
+                        <ul class="decimal" style="margin-top: 0">
+                            <li>야호비트 SMS 초기화 요청</li>
+                            <li>가입 이메일(로그인 ID)</li>
+                            <li>접수 날짜</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <p class="bolder blue">첨부 파일 안내</p>
+                <ul>
+                    <li>※ 아래 그림과 같이 메모와 함께 사진촬영하여 첨부파일을 첨부하세요.</li>
+                    <li>※ 요청 제출일 이전 촬영한 사진은 인정되지 않습니다.</li>
+                    <li>※ 첨부파일은 jpg/png 이미지 파일만 첨부가 가능합니다.</li>
+                </ul>
+                <p class="bold mgt10">1. 통신사 가입증명서 첨부</p>
+                <p> - 통신사 직인이 찍혀있는 가입사실확인 증명서를 스캔하거나 촬영하여 첨부<br>(SKT:이용계약 등록사항 증명서 / KT:원부증명서 / U+:가입사실확인서)</p>
+                <p class="bold mgt10">2. 요청사항 메모 부착한 신분증 사진</p>
+                <p><img src="../img/yaho/img_sms_info1.jpg" alt="img"></p>
+                <p>※ 개인정보 보호를 위해 주민등록번호 뒷 7자리(①), 주소(②)는 반드시 가려서 사진 촬영하세요.(포토샵 수정된 파일은 접수 불가)</p>
+                
+                <p class="bold mgt10">3. 메모 부착한 신분증을 들고 촬영한 본인 사진</p>
+                <p><img src="../img/yaho/img_sms_info2.jpg" alt="img"></p>
+                <p>※ 2번에서 준비한 메모붙인 신분증 내용과 본인 얼굴이 모두 선명하게 나와야 합니다.</p>
+                 <p class="mgt20">
+                    자동차운전면허증 ①-면허번호, ②-주민등록번호 뒷 7자리, ③ - 주소 가려주세요<br>
+                    <img src="../img/yaho/img_sms_info3.jpg" alt="img"> 
+                    <img src="../img/yaho/img_sms_info33.jpg" alt="img"> 
+                </p>
+                <p class="mgt20">
+                    여권 ①-여권번호, ②-기계 판독 영역 가려주세요<br>
+                    <img src="../img/yaho/img_sms_info4.jpg" alt="img"> 
+                    <img src="../img/yaho/img_sms_info44.jpg" alt="img"> 
+                </p>
+                
+            </div>
+            <!-- //팝업내용 : End -->
+            <div class="btn-wrap mgt20">
+                <button class="blue big">확인 </button>
+            </div>
+        </div>
+			
+    </div>
+    <!--휴대폰 초기화 가이드 팝업 끝-->
+    <script>
+        //마켓별 전체보기
+        $(document).ready(function() {
+            $('.btn-folding').click(function() {
+                $('.folding').toggleClass('more');
+            });
+            $('.btn-folding1').click(function() {
+                $('.folding1').toggleClass('more');
+            });
+            $('.btn-folding2').click(function() {
+                $('.folding2').toggleClass('more');
+            });
+        });
+
+        /*북마크*/
+        $('.bookmark').click(function() {
+            $(this).toggleClass('mark-on');
+        });
+
+        /*슬릭스 슬라이더*/
+        $(".regular").slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            autoplay: false,
+            autoplaySpeed: 4000
+        });
+
+        //팝업 열고 닫기   
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+
+        //레이어팝업닫기
+
+        $(document).ready(function() {
+            $('.top-close').click(function() {
+                $('.security-pop').hide();
+            });
+            $('.top-close').click(function() {
+                $('.popup-wrap').hide();
+            });
+        });
+    </script>
+</body>
+
+</html>

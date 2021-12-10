@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.coinis.wallet.wlt002.dao.TransactionDAO">
+	
+	<!-- select TB_DEPOSIT_WITHDRAW_MGR -->
+	<!-- 회원의 입출금 기록 리스트 갯수를 가져온다. -->
+	<select id="selectDepositWithdrawListCount" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT 
+            Count(*) AS size
+        FROM TB_DEPOSIT_WITHDRAW_MGR  DWM
+        LEFT OUTER JOIN TB_DW_TRANSACTION_HIST DWTH
+        ON 
+            DWTH.TRANSACTION_IDX        = DWM.TRANSACTION_IDX
+        WHERE
+                DWM.USER_ID             = #{USER_ID, jdbcType=VARCHAR}
+            AND DWM.EXCHANGE_ID         = #{EXCHANGE_ID, jdbcType=VARCHAR}
+        <if test="COIN_NO != 9999">
+            AND DWM.COIN_NO             = #{COIN_NO, jdbcType=NUMERIC}
+		</if>
+        <if test="DW_REQ_TYPE_CD == 1">
+            AND ( DWM.DW_REQ_TYPE_CD = 1 OR DWM.DW_REQ_TYPE_CD = 3)
+		</if>
+        <if test="DW_REQ_TYPE_CD == 2">
+            AND ( DWM.DW_REQ_TYPE_CD = 2 OR DWM.DW_REQ_TYPE_CD = 4)
+		</if>
+        <if test="START_DT != null">
+			AND DWM.REQ_DT 	&gt;= CONCAT(#{START_DT, jdbcType=VARCHAR}, '000000000000')
+		</if>
+        <if test="END_DT != null">
+			AND DWM.REQ_DT 	&lt;= CONCAT(#{END_DT, jdbcType=VARCHAR}, '235959999999')
+		</if>
+		<trim prefix="AND (" prefixOverrides="OR" suffix=")">
+	        <if test="REQUEST != null">
+				( DWM.REQ_STAT_PROC_CD = 1 OR DWM.REQ_STAT_PROC_CD = 2 OR DWM.REQ_STAT_PROC_CD = 5 )
+			</if>
+	        <if test="WAIT != null">
+				OR ( DWM.REQ_STAT_PROC_CD = 3 OR (DWM.REQ_STAT_PROC_CD = 4 AND DWM.DW_PROC_STAT_CD &lt;&gt; 1) )
+			</if>
+	        <if test="FINISH != null">
+				OR ( DWM.REQ_STAT_PROC_CD = 4 AND DWM.DW_PROC_STAT_CD = 1 )
+			</if>
+		</trim>
+        ORDER BY DWM.REQ_DT ASC
+	</select> 
+	<!-- select TB_DEPOSIT_WITHDRAW_MGR -->
+	<!-- 회원의 입출금 기록 리스트를 가져온다. -->
+	<select id="selectDepositWithdrawList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT 
+            *
+        FROM TB_DEPOSIT_WITHDRAW_MGR  DWM
+        LEFT OUTER JOIN TB_DW_TRANSACTION_HIST DWTH
+        ON 
+            DWTH.TRANSACTION_IDX        = DWM.TRANSACTION_IDX
+        WHERE
+                DWM.USER_ID             = #{USER_ID, jdbcType=VARCHAR}
+            AND DWM.EXCHANGE_ID         = #{EXCHANGE_ID, jdbcType=VARCHAR}
+        <if test="COIN_NO != 9999">
+            AND DWM.COIN_NO             = #{COIN_NO, jdbcType=NUMERIC}
+		</if>
+        <if test="DW_REQ_TYPE_CD == 1">
+            AND ( DWM.DW_REQ_TYPE_CD = 1 OR DWM.DW_REQ_TYPE_CD = 3)
+		</if>
+        <if test="DW_REQ_TYPE_CD == 2">
+            AND ( DWM.DW_REQ_TYPE_CD = 2 OR DWM.DW_REQ_TYPE_CD = 4)
+		</if>
+        <if test="START_DT != null">
+			AND DWM.REQ_DT 	&gt;= CONCAT(#{START_DT, jdbcType=VARCHAR}, '000000000000')
+		</if>
+        <if test="END_DT != null">
+			AND DWM.REQ_DT 	&lt;= CONCAT(#{END_DT, jdbcType=VARCHAR}, '235959999999')
+		</if>
+		<trim prefix="AND (" prefixOverrides="OR" suffix=")">
+	        <if test="REQUEST != null">
+				( DWM.REQ_STAT_PROC_CD = 1 OR DWM.REQ_STAT_PROC_CD = 2 OR DWM.REQ_STAT_PROC_CD = 5 )
+			</if>
+	        <if test="WAIT != null">
+				OR ( DWM.REQ_STAT_PROC_CD = 3 OR (DWM.REQ_STAT_PROC_CD = 4 AND DWM.DW_PROC_STAT_CD &lt;&gt; 1) )
+			</if>
+	        <if test="FINISH != null">
+				OR ( DWM.REQ_STAT_PROC_CD = 4 AND DWM.DW_PROC_STAT_CD = 1 )
+			</if>
+		</trim>
+
+        ORDER BY DWM.REQ_DT DESC
+        LIMIT #{PAGE_INDEX, jdbcType=NUMERIC}, #{PAGE_CONT_NUM, jdbcType=NUMERIC}
+	</select> 
+	
+</mapper>
+

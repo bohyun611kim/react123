@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.yahobit.support.spt001.dao.YahobitNoticeDAO">
+	
+    <resultMap id="NoticeMap" type="kr.co.coinis.webserver.yahobit.support.spt001.vo.NoticeVO">
+        <result property="REC_SEQ_NO"							column="REC_SEQ_NO"							jdbcType="NUMERIC" />
+        <result property="TITLE"								column="TITLE"								jdbcType="VARCHAR" />
+        <result property="URGENT_YN"							column="URGENT_YN"							jdbcType="NUMERIC" />
+        <result property="TOP_DISP_YN"							column="TOP_DISP_YN"						jdbcType="NUMERIC" />
+        <result property="TARGET_ALL_YN"						column="TARGET_ALL_YN"						jdbcType="NUMERIC" />
+        <result property="EXCHANGE_ID"							column="EXCHANGE_ID"						jdbcType="VARCHAR" />
+        <result property="CONTENTS"								column="CONTENTS"							jdbcType="VARCHAR" />
+        <result property="DISP_START_DT"						column="DISP_START_DT"						jdbcType="VARCHAR" />
+        <result property="REG_DT"								column="REG_DT"								jdbcType="VARCHAR" />
+        <result property="REG_USER_ID"							column="REG_USER_ID"						jdbcType="VARCHAR" />
+        <result property="UPDT_DT"								column="UPDT_DT"							jdbcType="VARCHAR" />
+        <result property="UPDT_USER_ID"							column="UPDT_USER_ID"						jdbcType="VARCHAR" />
+	</resultMap>
+
+    <resultMap id="ItemCodeMastMap" type="kr.co.coinis.webserver.yahobit.support.spt001.vo.ItemCodeMastVO">
+        <result property="ITEM_CODE"							column="ITEM_CODE"							jdbcType="VARCHAR" />
+        <result property="ITEM_NM"								column="ITEM_NM"							jdbcType="VARCHAR" />
+        <result property="ITEM_ENG_NM"							column="ITEM_ENG_NM"						jdbcType="VARCHAR" />
+        <result property="ITEM_DOMESTIC_NM"						column="ITEM_DOMESTIC_NM"					jdbcType="VARCHAR" />
+        <result property="ITEM_KOR_NM"							column="ITEM_KOR_NM"						jdbcType="VARCHAR" />
+        <result property="BASIC_ASSET_COIN_NO"					column="BASIC_ASSET_COIN_NO"				jdbcType="NUMERIC" />
+        <result property="COIN_NO"								column="COIN_NO"							jdbcType="NUMERIC" />
+        <result property="QTY_CALC_DECIMAL_PNT"					column="QTY_CALC_DECIMAL_PNT"				jdbcType="NUMERIC" />
+        <result property="AMT_CALC_DECIMAL_PNT"					column="AMT_CALC_DECIMAL_PNT"				jdbcType="NUMERIC" />
+        <result property="ORD_PRICE_UNIT"						column="ORD_PRICE_UNIT"						jdbcType="NUMERIC" />
+        <result property="PRICE_DSP_DECIMAL_PNT"				column="PRICE_DSP_DECIMAL_PNT"				jdbcType="NUMERIC" />
+        <result property="QTY_DSP_DECIMAL_PNT"					column="QTY_DSP_DECIMAL_PNT"				jdbcType="NUMERIC" />
+        <result property="VOL_DSP_DECIMAL_PNT"					column="VOL_DSP_DECIMAL_PNT"				jdbcType="NUMERIC" />
+        <result property="AMT_DECIMAL_PNT"						column="AMT_DECIMAL_PNT"					jdbcType="NUMERIC" />
+        <result property="MIN_ORD_AMT"							column="MIN_ORD_AMT"						jdbcType="NUMERIC" />
+        <result property="SORT_ORDER_NO"						column="SORT_ORDER_NO"						jdbcType="NUMERIC" />
+        <result property="REG_DT"								column="REG_DT"								jdbcType="VARCHAR" />
+        <result property="REG_USER_ID"							column="REG_USER_ID"						jdbcType="VARCHAR" />
+        <result property="UPDT_DT"								column="UPDT_DT"							jdbcType="VARCHAR" />
+        <result property="UPDT_USER_ID"							column="UPDT_USER_ID"						jdbcType="VARCHAR" />
+	</resultMap>
+
+    <resultMap id="ExchangeMktInfoMap" type="kr.co.coinis.webserver.yahobit.support.spt001.vo.ExchangeMktInfoVO">
+        <result property="EXCHANGE_ID"							column="EXCHANGE_ID"						jdbcType="VARCHAR" />
+        <result property="MKT_ID"								column= "MKT_ID"							jdbcType="VARCHAR" />
+        <result property="MKT_NM"								column= "MKT_NM"							jdbcType="VARCHAR" />
+        <result property="BASIC_ASSET_COIN_NO"					column= "BASIC_ASSET_COIN_NO"				jdbcType="NUMERIC" />
+        <result property="BUY_FEE_VAL"							column= "BUY_FEE_VAL"						jdbcType="NUMERIC" />
+        <result property="SELL_FEE_VAL"							column= "SELL_FEE_VAL"						jdbcType="NUMERIC" />
+        <result property="MKT_DISP_ORDER"						column= "MKT_DISP_ORDER"					jdbcType="NUMERIC" />
+        <result property="MKT_OPEN_DAY"							column= "MKT_OPEN_DAY"						jdbcType="VARCHAR" />
+        <result property="MKT_STAT_CD"							column= "MKT_STAT_CD"						jdbcType="NUMERIC" />
+        <result property="STAT_CHG_DT"							column= "STAT_CHG_DT"						jdbcType="VARCHAR" />
+        <result property="MKT_GRP_ID"							column= "MKT_GRP_ID"						jdbcType="VARCHAR" />
+        <result property="REG_DT"								column= "REG_DT"							jdbcType="VARCHAR" />
+        <result property="REG_USER_ID"							column= "REG_USER_ID"						jdbcType="VARCHAR" />
+        <result property="UPDT_DT"								column= "UPDT_DT"							jdbcType="VARCHAR" />
+        <result property="UPDT_USER_ID"							column= "UPDT_USER_ID"						jdbcType="VARCHAR" />
+	</resultMap>
+
+    <resultMap id="CoinMgtRefInfoMap" type="kr.co.coinis.webserver.yahobit.support.spt001.vo.CoinMgtRefInfoVO">
+		<result property="COIN_NO"								column="COIN_NO"							jdbcType="NUMERIC" />
+		<result property="COIN_SYMBOLIC_NM"                     column="COIN_SYMBOLIC_NM"                   jdbcType="VARCHAR" />
+		<result property="WTDRW_DECIMAL_PNT"                    column="WTDRW_DECIMAL_PNT"                  jdbcType="NUMERIC" />
+		<result property="CONFIRMATIONS"                        column="CONFIRMATIONS"                      jdbcType="NUMERIC" />
+		<result property="CONFIRM_DELAY_TM"                     column="CONFIRM_DELAY_TM"                   jdbcType="NUMERIC" />
+		<result property="DEPOSIT_PAGE_SHOW_YN"                 column="DEPOSIT_PAGE_SHOW_YN"               jdbcType="NUMERIC" />
+		<result property="WTDRW_PAGE_SHOW_YN"                   column="WTDRW_PAGE_SHOW_YN"                 jdbcType="NUMERIC" />
+		<result property="AUTO_DEPOSIT_YN"                      column="AUTO_DEPOSIT_YN"                    jdbcType="NUMERIC" />
+		<result property="AUTO_WTDRW_YN"						column="AUTO_WTDRW_YN"						jdbcType="NUMERIC" />
+		<result property="SYSTEM_AUTO_WITHDRAW_YN"              column="SYSTEM_AUTO_WITHDRAW_YN"            jdbcType="NUMERIC" />
+		<result property="WTDRW_FEE"                            column="WTDRW_FEE"                          jdbcType="NUMERIC" />
+		<result property="MIN_WTDRW_QTY"                        column="MIN_WTDRW_QTY"                      jdbcType="NUMERIC" />
+		<result property="MIN_DEPOSIT_QTY"                      column="MIN_DEPOSIT_QTY"                    jdbcType="NUMERIC" />
+		<result property="MAX_ONCE_WTHRW_QTY"                   column="MAX_ONCE_WTHRW_QTY"                 jdbcType="NUMERIC" />
+		<result property="COIN_ADDR_CNT"                        column="COIN_ADDR_CNT"                      jdbcType="NUMERIC" />
+		<result property="COIN_DEPOSIT_ADDR_CNT"                column="COIN_DEPOSIT_ADDR_CNT"              jdbcType="NUMERIC" />
+		<result property="COIN_WTDRW_ADDR_CNT"                  column="COIN_WTDRW_ADDR_CNT"                jdbcType="NUMERIC" />
+		<result property="ADDR_ETC1_NM"                         column="ADDR_ETC1_NM"                       jdbcType="VARCHAR" />
+		<result property="ADDR_ETC2_NM"                         column="ADDR_ETC2_NM"                       jdbcType="VARCHAR" />
+		<result property="TRADE_STAT_CD"                        column="TRADE_STAT_CD"                      jdbcType="NUMERIC" />
+		<result property="COIN_ADDR_CHECK_YN"                   column="COIN_ADDR_CHECK_YN"                 jdbcType="NUMERIC" />
+		<result property="COIN_ADDR_LEN"                        column="COIN_ADDR_LEN"                      jdbcType="NUMERIC" />
+		<result property="COIN_ADDR_CHECK_STR"                  column="COIN_ADDR_CHECK_STR"                jdbcType="VARCHAR" />
+		<result property="REG_DT"                               column="REG_DT"                             jdbcType="VARCHAR" />
+		<result property="REG_USER_ID"                          column="REG_USER_ID"                        jdbcType="VARCHAR" />
+		<result property="UPDT_DT"                              column="UPDT_DT"                            jdbcType="VARCHAR" />
+		<result property="UPDT_USER_ID"                         column="UPDT_USER_ID"                       jdbcType="VARCHAR" />
+	</resultMap>
+
+    <resultMap id="EventMap" type="kr.co.coinis.webserver.yahobit.support.spt001.vo.EventVO">
+		<result property="EXCHANGE_ID"							column="EXCHANGE_ID"						jdbcType="VARCHAR"/>
+		<result property="REC_SEQ_NO"                       	column="REC_SEQ_NO"                     	jdbcType="NUMERIC"/>
+		<result property="TITLE"                            	column="TITLE"                          	jdbcType="VARCHAR"/>
+		<result property="USE_YN"                           	column="USE_YN"                         	jdbcType="NUMERIC"/>
+		<result property="EVENT_START_DT"                   	column="EVENT_START_DT"                 	jdbcType="VARCHAR"/>
+		<result property="EVENT_END_DT"                     	column="EVENT_END_DT"                   	jdbcType="VARCHAR"/>
+		<result property="DISPLAY_START_DT"                 	column="DISPLAY_START_DT"               	jdbcType="VARCHAR"/>
+		<result property="DISPLAY_END_DT"                   	column="DISPLAY_END_DT"                 	jdbcType="VARCHAR"/>
+		<result property="EVENT_URL"                        	column="EVENT_URL"                      	jdbcType="VARCHAR"/>
+		<result property="BANNER_URL"                       	column="BANNER_URL"                     	jdbcType="VARCHAR"/>
+		<result property="HOME_DISPAY_YN"                   	column="HOME_DISPAY_YN"                 	jdbcType="NUMERIC"/>
+		<result property="EVENT_PAGE_CONTENTS"              	column="EVENT_PAGE_CONTENTS"            	jdbcType="VARCHAR"/>
+		<result property="REG_DT"                           	column="REG_DT"                         	jdbcType="VARCHAR"/>
+		<result property="REG_USER_ID"                      	column="REG_USER_ID"                    	jdbcType="VARCHAR"/>
+		<result property="UPDT_DT"                          	column="UPDT_DT"                        	jdbcType="VARCHAR"/>
+		<result property="UPDT_USER_ID"                     	column="UPDT_USER_ID"                   	jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap id="WithdrawLimitVO" type="kr.co.coinis.webserver.yahobit.support.spt001.vo.WithdrawLimitVO">
+		<result property="authLevel" 		column="AUTH_LEVEL" 			jdbcType="NUMERIC"/>
+		<result property="dailyLimitQty" 	column="DAILY_LIMIT_QTY" 		jdbcType="NUMERIC"/>
+		<result property="pnt" 				column="PNT" 					jdbcType="NUMERIC"/>
+		<result property="maxOnceWthrwQty" 	column="MAX_ONCE_WTHRW_QTY" 	jdbcType="NUMERIC"/>
+	</resultMap>
+
+    <!-- ==================================================================================== -->
+    <!-- 1. Select Statement -->
+    <!-- ==================================================================================== -->
+
+	<!-- select TB_NOTICE -->
+	<!-- Notice List  -->
+	<select id="retrieveNoticeList" parameterType="java.util.Map" resultMap="NoticeMap">
+		SELECT 
+			*
+		FROM
+			TB_NOTICE
+		WHERE
+			    EXCHANGE_ID			= #{EXCHANGE_ID, jdbcType=VARCHAR}
+        <if test="SEARCH_QRY != null">
+			AND ( TITLE LIKE CONCAT('%', #{SEARCH_QRY, jdbcType=VARCHAR}, '%') OR CONTENTS LIKE CONCAT('%', #{SEARCH_QRY, jdbcType=VARCHAR}, '%') )
+		</if>
+            AND DISP_START_DT		&lt; date_format(current_timestamp(), '%Y%m%d%H%i%s')
+        ORDER BY TOP_DISP_YN DESC, URGENT_YN DESC, REG_DT DESC
+        LIMIT #{PAGE_INDEX, jdbcType=NUMERIC}, #{PAGE_CONT_NUM, jdbcType=NUMERIC}
+	</select> 
+
+	<!-- select TB_NOTICE -->
+	<!-- Notice List  -->
+	<select id="retrieveNoticeListCount" parameterType="java.util.Map" resultMap="NoticeMap">
+		SELECT 
+			*
+		FROM
+			TB_NOTICE
+		WHERE
+			    EXCHANGE_ID			= #{EXCHANGE_ID, jdbcType=VARCHAR}
+        <if test="SEARCH_QRY != null">
+			AND ( TITLE LIKE CONCAT('%', #{SEARCH_QRY, jdbcType=VARCHAR}, '%') OR CONTENTS LIKE CONCAT('%', #{SEARCH_QRY, jdbcType=VARCHAR}, '%') )
+		</if>
+            AND DISP_START_DT		&lt; date_format(current_timestamp(), '%Y%m%d%H%i%s')
+	</select> 
+
+	<!-- select TB_EVENT -->
+	<!-- 이벤트 List  -->
+	<select id="retrieveEventList" parameterType="java.util.Map" resultMap="EventMap">
+	<![CDATA[
+		SELECT 
+			*
+		FROM
+			TB_EVENT
+		WHERE
+			    EXCHANGE_ID			= #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND DISPLAY_START_DT	< date_format(current_timestamp(), '%Y%m%d%H%i%s')
+            AND DISPLAY_END_DT		> date_format(current_timestamp(), '%Y%m%d%H%i%s')
+			AND USE_YN				= 1
+        ORDER BY REG_DT DESC
+        LIMIT #{PAGE_INDEX, jdbcType=NUMERIC}, #{PAGE_CONT_NUM, jdbcType=NUMERIC}
+	]]>
+	</select> 
+
+	<!-- select TB_EVENT -->
+	<!-- 이벤트 List Count -->
+	<select id="retrieveEventListCount" parameterType="java.util.Map" resultMap="EventMap">
+	<![CDATA[
+		SELECT 
+			*
+		FROM
+			TB_EVENT
+		WHERE
+			    EXCHANGE_ID			= #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND DISPLAY_START_DT	< date_format(current_timestamp(), '%Y%m%d%H%i%s')
+            AND DISPLAY_END_DT		> date_format(current_timestamp(), '%Y%m%d%H%i%s')
+			AND USE_YN				= 1
+	]]>
+	</select> 
+
+	<!-- select TB_ITEM_CODE_MAST -->
+	<!-- Item Code Master Table select List -->
+	<select id="retrieveItemCodeMasterByBasicCoinNo" parameterType="java.util.Map" resultMap="ItemCodeMastMap">
+	<![CDATA[
+		SELECT 
+			* 
+		FROM 
+			TB_ITEM_CODE_MAST
+		WHERE 
+			ITEM_CODE IN
+				(
+					SELECT 
+						MICI.ITEM_CODE 
+					FROM 
+						TB_EXCHANGE_MKT_INFO EMI
+					LEFT OUTER JOIN TB_MKT_ITEM_CODE_INFO MICI
+					ON 
+							EMI.EXCHANGE_ID = MICI.EXCHANGE_ID
+						AND EMI.MKT_ID = MICI.MKT_ID
+						AND MICI.TRADE_STAT_CD = 1
+					WHERE 
+						EMI.BASIC_ASSET_COIN_NO = #{BASIC_ASSET_COIN_NO, jdbcType=NUMERIC}
+						AND EMI.EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}
+				)
+		ORDER BY COIN_NO ASC
+		LIMIT #{PAGE_INDEX, jdbcType=NUMERIC}, #{PAGE_CONT_NUM, jdbcType=NUMERIC}
+	]]>
+	</select> 
+
+	<select id="retrieveCoinCodeMasterCount" parameterType="java.util.Map" resultMap="ItemCodeMastMap">
+	<![CDATA[
+		SELECT 
+			* 
+		FROM 
+			TB_ITEM_CODE_MAST
+		WHERE 
+			ITEM_CODE IN
+				(
+					SELECT 
+						MICI.ITEM_CODE 
+					FROM 
+						TB_EXCHANGE_MKT_INFO EMI
+					LEFT OUTER JOIN TB_MKT_ITEM_CODE_INFO MICI
+					ON 
+							EMI.EXCHANGE_ID = MICI.EXCHANGE_ID
+						AND EMI.MKT_ID = MICI.MKT_ID
+						AND MICI.TRADE_STAT_CD = 1
+					WHERE 
+						EMI.BASIC_ASSET_COIN_NO = #{BASIC_ASSET_COIN_NO, jdbcType=NUMERIC}
+						AND EMI.EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}
+				)
+	]]>
+	</select> 
+
+	<!-- select TB_EXCHANGE_MKT_INFO -->
+	<!-- Exchange Market Info Table select List -->
+	<select id="retrieveExchangeMarketInfoExchangeId" parameterType="java.util.Map" resultMap="ExchangeMktInfoMap">
+	<![CDATA[
+		SELECT 
+			*
+		FROM
+			TB_EXCHANGE_MKT_INFO
+		WHERE
+				EXCHANGE_ID				= #{EXCHANGE_ID, jdbcType=NUMERIC}
+			AND MKT_STAT_CD 			= 1
+        ORDER BY BASIC_ASSET_COIN_NO ASC
+	]]>
+	</select> 
+
+	<!-- select TB_COIN_MGT_REF_INFO -->
+	<!-- 코인관리기준정보 테이블에서 출금수수료, 최소출금수량, 최소입금수량 select List -->
+	<!-- *** BASIC_ASSET_COIN_NO = 10, 430 으로 Hardcoding 되어있음... -->
+	<select id="retrieveCoinMgtRefInfoList" parameterType="java.util.Map" resultMap="CoinMgtRefInfoMap">
+	<![CDATA[
+		SELECT 
+			*
+		FROM
+			TB_COIN_MGT_REF_INFO
+		WHERE
+			DEPOSIT_PAGE_SHOW_YN	= 1
+			AND WTDRW_PAGE_SHOW_YN	= 1
+			AND COIN_NO IN 
+				(
+					SELECT 
+						DISTINCT COIN_NO 
+					FROM TB_ITEM_CODE_MAST
+					WHERE ITEM_CODE IN
+						(
+							SELECT 
+								MICI.ITEM_CODE 
+							FROM TB_EXCHANGE_MKT_INFO EMI
+							LEFT OUTER JOIN TB_MKT_ITEM_CODE_INFO MICI
+							ON 
+								EMI.EXCHANGE_ID = MICI.EXCHANGE_ID
+								AND EMI.MKT_ID = MICI.MKT_ID
+								AND MICI.TRADE_STAT_CD = 1
+							WHERE 1 = 1
+								AND ( EMI.BASIC_ASSET_COIN_NO = 430 OR EMI.BASIC_ASSET_COIN_NO = 10 )
+								AND EMI.EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}
+						)
+				)
+			OR COIN_NO = 10
+        ORDER BY COIN_NO ASC
+        LIMIT #{PAGE_INDEX, jdbcType=NUMERIC}, #{PAGE_CONT_NUM, jdbcType=NUMERIC}
+	]]>
+	</select>
+	
+	<select id="selectCoinWithdrawLimit" resultMap="WithdrawLimitVO">
+		SELECT AUTH_LEVEL, DAILY_LIMIT_QTY
+			, IFNULL(B.WTDRW_DECIMAL_PNT, 0) AS PNT
+	        , (SELECT MAX_ONCE_WTHRW_QTY FROM TB_COIN_MGT_REF_INFO WHERE COIN_NO = A.COIN_NO) AS MAX_ONCE_WTHRW_QTY
+		FROM TB_COIN_WITHDRAW_LIMIT A
+		LEFT JOIN TB_COIN_MGT_REF_INFO B
+			ON A.COIN_NO = B.COIN_NO
+		WHERE A.EXCHANGE_ID = #{exchangeId}
+			AND A.COIN_NO = (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO WHERE EXCHANGE_ID = #{exchangeId})
+	</select>
+
+</mapper>
+

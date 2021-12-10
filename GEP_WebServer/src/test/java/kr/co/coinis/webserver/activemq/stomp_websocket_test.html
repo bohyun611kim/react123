@@ -1,0 +1,77 @@
+<html>
+<header>
+	<title>ETC log viewer</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+	<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+	<style>
+		body {
+		  overflow-x: hidden;
+		  overflow-y: visible;
+		}
+	</style>
+</header>
+<body>
+	<div>SMS Dummy WebSocket Client</div>
+	<div id="content" style="font-size:12px ; background-color: white"></div>
+	<div id="status"></div>
+</body>
+
+<script>
+
+$(function () {
+	"use strict";
+
+	var content = $('#content');
+	var status = $('#status');
+
+	// if user is running mozilla then use it's built-in WebSocket
+	window.WebSocket = window.WebSocket || window.MozWebSocket;
+	// browser doesn't support WebSocket...
+	if (!window.WebSocket) {
+		content.html($('<p>', { text:'Sorry, but your browser doesn\'t support WebSocket.'} ));
+		return;
+	}
+	// open connection
+	var connection = new WebSocket('ws://192.168.110.150:1337');
+	connection.onopen = function () {
+		console.log('WebSocket Connected...');
+	};
+	connection.onerror = function (error) {
+		// just in there were some problems with connection...
+		content.html($('<p>', {
+			text: 'Sorry, but there\'s some problem with your connection or the server is down.'
+		}));
+	};
+	// most important part - incoming messages
+	connection.onmessage = function (message) {
+		try {
+			var msg_type = JSON.parse(JSON.stringify(JSON.parse(message.data).type));
+			var sms_msg = JSON.parse(JSON.stringify(JSON.parse(message.data).data));
+			console.log('## Get Message --> ' + sms_msg);
+
+			content.html(content.html() + '<br>=================================================================<br>' + sms_msg.replace(/\n/gi,'<br>'));
+			document.body.scrollTop = document.body.scrollHeight;
+		} catch (e) {
+			console.log('Invalid message: ', message);
+			return;
+		}
+	};
+
+	$( window ).unload(function() {
+		console.log('@@@@@browser unload..@@@@@@');
+		connection.onclose = function () {}; // disable onclose handler first
+		connection.close()
+		return "Handler for .unload() called.";
+	});
+
+	setInterval(function() {
+		if (connection.readyState !== 1) {
+			status.text('서버와 접속이 끊겼습니다!');
+		}
+	}, 3000);
+});
+
+</script>
+
+</html>

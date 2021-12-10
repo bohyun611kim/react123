@@ -1,0 +1,847 @@
+/* Slider */
+
+    .slider {
+        width: 50%;
+        margin: 60px 0;
+        margin-bottom: 0
+    }
+
+	.crs .slider {
+        width: 100%;
+        margin: 0;
+        margin-bottom: 0
+    }
+
+
+    .slick-slide img {
+      /* width: 100%; */
+    }
+
+.crs .slick-slide img {
+      width: 330px;
+    }
+
+    .slick-prev:before,
+    .slick-next:before {
+      color: black;
+    }
+
+
+    .slick-slide {
+      transition: all ease-in-out .9s;
+      opacity: .2;
+    }
+    
+    .slick-active {
+      opacity: 1 !important;
+        /*background-color: #fff*/
+        
+    }
+
+    .slick-current {
+      opacity: 1;
+    }
+        
+.slick-slider
+{
+    position: relative;
+
+    display: block;
+    box-sizing: border-box;
+
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+
+    -webkit-touch-callout: none;
+    -khtml-user-select: none;
+    -ms-touch-action: pan-y;
+        touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.slick-list
+{
+    position: relative;
+    display: block;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.merit7 .slick-list
+{
+    position: relative;
+    display: block;
+    overflow: hidden;
+    margin: 0;
+    padding: 10px 0 0 0 ;
+    width: 1000px;
+    margin-left: 100px
+        
+}
+
+.slick-list:focus
+{
+    outline: none;
+}
+.slick-list.dragging
+{
+    cursor: pointer;
+    cursor: hand;
+}
+
+.slick-slider .slick-track,
+.slick-slider .slick-list
+{
+    -webkit-transform: translate3d(0, 0, 0);
+       -moz-transform: translate3d(0, 0, 0);
+        -ms-transform: translate3d(0, 0, 0);
+         -o-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+}
+
+.slick-track
+{
+    position: relative;
+    top: 0;
+    left: 0;
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.slick-track:before,
+.slick-track:after
+{
+    display: table;
+
+    content: '';
+}
+.slick-track:after
+{
+    clear: both;
+}
+.slick-loading .slick-track
+{
+    visibility: hidden;
+}
+
+.slick-slide
+{
+    display: none;
+    float: left;
+
+    height: 100%;
+    min-height: 1px;
+}
+[dir='rtl'] .slick-slide
+{
+    float: right;
+}
+.slick-slide img
+{
+    display: inline-block;
+}
+.slick-slide.slick-loading img
+{
+    display: none;
+}
+.slick-slide.dragging img
+{
+    pointer-events: none;
+}
+.slick-initialized .slick-slide
+{
+    display: block;
+}
+.slick-loading .slick-slide
+{
+    visibility: hidden;
+}
+.slick-vertical .slick-slide
+{
+    display: block;
+
+    height: auto;
+
+    border: 1px solid transparent;
+}
+.slick-arrow.slick-hidden {
+    display: none;
+}
+
+
+/* Arrows */
+.slick-prev,
+.slick-next
+{
+    font-size: 0;
+    line-height: 0;
+    position: absolute;
+    top: 30%;
+    display: block;
+    border: solid #000000;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    margin-left: 0px;
+    margin-left: 0px;
+    margin-right: 15px;
+    background:  transparent;
+    height: 50px;
+    width: 50px;
+    opacity: 0.3;
+    cursor: pointer;
+}
+
+.crs .slick-prev,
+.crs .slick-next
+{
+    font-size: 0;
+    line-height: 0;
+    position: absolute;
+    top: 42%;
+    display: block;
+    border: solid #ffffff;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    margin-left: 15px;
+    margin-right: 15px;
+    background:  transparent;
+    height: 33px;
+    width: 33px;
+    opacity: 0.3;
+    cursor: pointer;
+}
+
+
+.slick-prev:hover,
+.slick-prev:focus,
+.slick-next:hover,
+.slick-next:focus
+{
+    color: transparent;
+    outline: none;
+    background: transparent;
+    opacity: 1;
+}
+.slick-prev:hover:before,
+.slick-prev:focus:before,
+.slick-next:hover:before,
+.slick-next:focus:before
+{
+    opacity: 1;
+}
+.slick-prev.slick-disabled:before,
+.slick-next.slick-disabled:before
+{
+    opacity: .25;
+}
+
+.slick-prev:before,
+.slick-next:before
+{
+    font-family: 'slick';
+    font-size: 20px;
+    line-height: 1;
+
+    opacity: .75;
+    color: white;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.slick-prev
+{
+    left: 1%;
+    z-index: 101;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+[dir='rtl'] .slick-prev
+{
+    right: 0px;
+    left: auto;
+    z-index: 101px
+}
+.slick-prev:before
+{
+    /*content: '←';*/
+}
+[dir='rtl'] .slick-prev:before
+{
+    /*content: '→';*/
+}
+
+.slick-next
+{
+    right: 1%;
+    z-index: 101;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+[dir='rtl'] .slick-next
+{
+    right: auto;
+    left: 0px;
+    z-index: 101
+}
+.slick-next:before
+{
+    /*content: '→';*/
+}
+[dir='rtl'] .slick-next:before
+{
+    /*content: '←';*/
+}
+
+/* Dots */
+.slick-dotted.slick-slider
+{
+    /*margin-bottom: 30px;*/
+    
+}
+
+.crs .slick-dots
+{
+    position: absolute;
+    bottom: 15px;
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+}
+.crs .slick-dots li
+{
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 5px;
+    margin: 0 5px;
+    padding: 0;
+    cursor: pointer;
+    margin-left: 4px;
+     opacity: 0.7
+
+}
+/*
+.csr .slick-dots li:nth-child(1) button{
+    background-image: url(../img/test-img.jpg);
+    overflow: hidden
+}
+
+.csr .slick-dots li:nth-child(2) button{
+    background-image: url(../img/test-img.jpg)
+}
+
+.csr .slick-dots li:nth-child(3) button{
+    background-image: url(../img/test-img.jpg)
+}
+
+.csr .slick-dots li:nth-child(4) button{
+    background-image: url(../img/test-img.jpg)
+}
+
+*/
+
+
+/*.slick-dots li:nth-child(1)::before{
+    content: '사전가입 이벤트';
+    position: absolute;
+    left: 0;
+    font-size: 11px;
+    bottom: 5px;
+    width: 80px;
+    text-align: center
+}
+
+.slick-dots li:nth-child(2)::before{
+    content: '소문내자 이벤트';
+    position: absolute;
+    left: 0;
+    font-size: 11px;
+    bottom: 5px;
+    width: 80px;
+    text-align: center
+}*/
+
+.crs .slick-dots li button
+{
+    font-size: 0;
+    line-height: 0;
+    display: block;
+    width: 30px;
+    height: 3px;
+    padding: 0px;
+    cursor: pointer;
+    color: transparent;
+    border: 0;
+    outline: none;
+    /*background: transparent;*/
+    background-color: #fff;
+    opacity: 1;
+}
+.crs .slick-dots li button:hover,
+.crs .slick-dots li button:focus
+{
+    outline: none;
+    opacity: 1;
+    
+   
+}
+.crs .slick-dots li button:hover:before,
+.crs .slick-dots li button:focus:before
+{
+    opacity: 1;
+}
+.crs .slick-dots li button:before
+{
+    font-family: 'slick';
+    font-size: 6px;
+    line-height: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    /*content: '•';*/
+    text-align: center;
+    color: black;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    opacity: 1;
+}
+.crs .slick-dots li.slick-active button:before
+{
+    
+    color: black;
+    /*opacity: 1;*/
+}
+
+
+
+/*jquery ui*/
+
+/* datepicker 커스터마이징 */
+.ui-datepicker {
+    width: 233px;
+    display: none;
+    background-color: #f2f3f4;
+    border: 1px solid #acaeb2;
+
+}
+
+/*.ui-datepicker button + button{
+    float: right
+}*/
+
+.ui-datepicker .ui-datepicker-header {
+    position: relative;
+    padding: 10px 0 8px;
+    background-color: #acaeb2;
+}
+
+.ui-datepicker .ui-datepicker-prev,
+.ui-datepicker .ui-datepicker-next {
+    position: absolute;
+    top: 25px;
+    width: 14px;
+    height: 16px;
+    overflow: hidden;
+}
+
+.ui-datepicker .ui-datepicker-prev-hover,
+.ui-datepicker .ui-datepicker-next-hover {
+    top: 25px;
+}
+
+.ui-datepicker .ui-datepicker-prev {
+    left: 10px;
+}
+
+.ui-datepicker .ui-datepicker-next {
+    right: 10px;
+}
+
+.ui-datepicker .ui-datepicker-prev-hover {
+    left: 10px;
+}
+
+.ui-datepicker .ui-datepicker-next-hover {
+    right: 10px;
+}
+
+.ui-datepicker .ui-datepicker-prev span,
+.ui-datepicker .ui-datepicker-next span {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.ui-datepicker .ui-datepicker-title {
+    text-align: center;
+    color: #fff;
+}
+
+.ui-datepicker .ui-datepicker-year {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: initial;
+    margin-bottom: 1px;
+    background-color: inherit;
+    font-size: 15px;
+    cursor: pointer
+}
+
+.ui-datepicker .ui-datepicker-month {
+    font-size: 22px;
+    display: inline-block;
+    background-color: inherit;
+    cursor: pointer
+}
+
+.ui-datepicker table {
+    /*display: inline-block;*/
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    color: #7a7d85;
+    padding: 22px 12px 18px;
+    margin: 0 auto;
+    border-top: 0;
+}
+
+.ui-datepicker tr {
+    border-bottom: 0;
+}
+
+.ui-datepicker th {
+    height: auto;
+    text-align: center;
+    border: 0;
+    padding: 0;
+    padding-bottom: 6px;
+}
+
+.ui-datepicker th span {
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.ui-datepicker td {
+    height: auto;
+    border: 0;
+    padding: 0;
+}
+
+.ui-datepicker td span,
+.ui-datepicker td a {
+    display: block;
+    padding: 6px 5px;
+    margin: 0 4px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 11px;
+    color: #7a7d85;
+}
+
+.ui-datepicker td a:hover {
+    color: #fff;
+    background-color: #7a7d85;
+}
+
+.ui-state-highlight,
+.ui-widget-content .ui-state-highlight {
+    /*background: transparent;*/
+    background-color: #aaa;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.ui-state-active,
+.ui-widget-content .ui-state-active {
+    color: inherit;
+    background-color: #d2d4d7;
+}
+
+/* Icons */
+.ui-datepicker .ui-icon {
+    display: block;
+    text-indent: -99999px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+}
+
+.ui-icon {
+    width: 14px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.ui-icon,
+.ui-widget-content .ui-icon {
+    background-image: url(../img/datepicker-icon.png);
+}
+
+.ui-icon-circle-triangle-e {
+    background-position: -48px 0px;
+}
+
+.ui-icon-circle-triangle-w {
+    background-position: 0px 0px;
+}
+
+
+/*jquery tab 탭 커스터마이징*/
+.ui-tabs {
+    position: relative;
+}
+
+.ui-tabs .ui-tabs-nav li {
+    position: relative;
+    z-index: 1;
+    float: left;
+    text-align: center;
+    font-size: 14px;
+    border-right: 0;
+    border: 0
+    
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+    position: relative;
+    z-index: 3;
+    border: 0;
+    color: inherit;
+    font-weight: 700;
+    background-color: #fff;
+}
+
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+    display: flex;
+    height:45px;
+    justify-content: center;
+    align-items: center;
+    color: #908d8d;
+    background-color: #f0f0f0;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor,
+.ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor,
+.ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor {
+    color: #fff;
+    font-weight: 700;
+    background-color: #1761ab;
+}
+
+
+
+.ui-tabs .ui-tabs-panel > .content-item > .table-nobg {
+    margin-top: -30px;
+    border: 1px solid red;
+}
+
+
+.ui-tabs .tabs-gray,
+.ui-tabs .ui-tabs-nav li.ui-tabs-active.tabs-gray {
+    border-color: #f8413d;
+    border-bottom: 0;
+    background-color: #636971;
+    color: #ffffff;
+}
+
+/* 아코디언 : 자주묻는질문 FAQ */
+
+
+
+aside .ui-tabs .ui-tabs-nav li {
+    position: relative;
+    z-index: 1;
+    float: left;
+    display: inline-block;
+    text-align: center;
+    line-height: 42px;
+    font-size: 14px;
+
+    border-right: 0;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+    z-index: 3;
+    color: white;
+    font-weight: 700;
+    background-color: #1761ab;
+}
+
+
+
+.ui-state-active,
+.ui-widget-content .ui-state-active {color: inherit;
+background-color: #d2d4d7;
+}
+
+.tab-dark > ul li {
+    width: 16.5%;
+    height: 40px;
+    background-color: #f2f3f4;
+}
+
+.ui-accordion {
+    border-bottom: 1px solid #dcdee2;
+    min-height: 600px
+}
+
+.ui-accordion .ui-icon {
+    background-image: url(../img/accordion-down.png);
+}
+
+.ui-accordion .ui-icon {
+    position: absolute;
+    display: inline-block;
+    width: 14px;
+    height: 9px;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    margin-right: 20px;
+    vertical-align: middle;
+    text-indent: -99999px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+}
+
+.ui-accordion .ui-state-active .ui-icon {
+    background-image: url(../img/accordion-up.png);
+}
+
+.ui-accordion .ui-accordion-header {
+    display: block;
+    position: relative;
+    margin: 0;
+    padding: 12px 0 9px 30px;
+    font-size: inherit;
+    font-weight: normal;
+    border-top: 1px solid #dcdee2;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.ui-accordion .ui-accordion-header .faq-category {
+    display: inline-block;
+    min-width: 120px;
+    color: #7a7d85;
+    margin-right: 34px;
+}
+
+.ui-tabs .ui-tabs-panel {
+    display: block;
+    border-width: 0;
+    background: none;
+    clear: both;
+    padding: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.ui-accordion .ui-accordion-content {
+    position: relative;
+    padding: 30px;
+    border-top: 1px solid #dcdee2;
+    background-color: #eaf3fc;
+    color: #7a7d85;
+    line-height: 1.4;
+    overflow: hidden;
+}
+
+.ui-accordion .ui-accordion-header:before {
+    content: 'Q';
+    color: #7a7d85;
+    font-size: 20px;
+    font-weight: 700;
+    vertical-align: middle;
+    margin-right: 30px;
+}
+
+.ui-accordion .ui-accordion-content .answer-mark {
+    position: absolute;
+    display: inline-block;
+    width: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #0089ff;
+    font-size: 20px;
+    font-weight: 700;
+    margin-right: 30px;
+}
+
+.ui-accordion .ui-accordion-content .answer-content {
+    position: relative;
+    display: inline-block;
+    width: 750px;
+    left: 44px;
+    line-height: 170%
+}
+
+/*라디오버튼*/
+
+
+input[type="radio"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+input[type="radio"] + label {
+    position: relative;
+    padding-left: 20px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    color: #000;
+    margin-right: 5px
+}
+
+input[type="radio"] + label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 16px;
+    height: 16px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #cfd2d7;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+}
+
+input[type="radio"]:checked + label:before {
+    background: #fff;
+    border-color: #0089ff;
+}
+
+input[type="radio"]:checked + label:after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 4px;
+    width: 10px;
+    height: 10px;
+    background: #0089ff;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+}

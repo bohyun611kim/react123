@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    
+	<!-- MS-SQL Coins DataSource  -->
+	<!-- global.coinis.net 반영시 password 주석 필요  -->        
+	<bean id="dataSources" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+    	<property name="driverClassName" value="${jdbc.mariadb.driver}" />
+        <property name="url" value="${jdbc.mariadb.url}" />
+        <property name="username" value="${jdbc.mariadb.username}" />
+        <property name="password" value="${jdbc.mariadb.password}" />
+        <property name="initialSize" value="2"/>
+	    <property name="maxTotal" value="20"/>
+        <property name="maxIdle" value="15"/>
+	    <property name="validationQuery" value="SELECT 1 "/>
+	    <property name="testWhileIdle" value="true"/>
+	    <property name="removeAbandonedOnBorrow" value="true"/>
+	    <property name="removeAbandonedOnMaintenance" value="true"/>
+	    <property name="maxWaitMillis" value="1000"/>
+	    <property name="timeBetweenEvictionRunsMillis" value="300000"/>
+	    <property name="defaultAutoCommit" value="true"/>
+	    
+	    
+	    <!-- <property name="driverClassName" value="${jdbc.mariadb.driver}" />
+        <property name="url" value="${jdbc.mariadb.url}" />
+        <property name="username" value="${jdbc.mariadb.username}" />
+        <property name="password" value="${jdbc.mariadb.password}" />
+        <property name="initialSize" value="2"/>
+	    <property name="maxActive" value="20"/>
+        <property name="maxIdle" value="15"/>
+	    <property name="validationQuery" value="SELECT 1 "/>
+	    <property name="testWhileIdle" value="true"/>
+	    <property name="removeAbandoned" value="true"/>
+	    <property name="timeBetweenEvictionRunsMillis" value="300000"/> -->
+	</bean>
+   
+
+</beans>

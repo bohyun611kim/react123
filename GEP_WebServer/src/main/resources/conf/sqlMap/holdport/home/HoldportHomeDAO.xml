@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.holdport.home.dao.HoldportHomeDAO">
+
+	<resultMap type="kr.co.coinis.webserver.holdport.home.vo.BannerVO" id="BannerVO">
+		<result property="seqNo" 		column="REC_SEQ_NO" 			jdbcType="NUMERIC"/>
+		<result property="title" 		column="TITLE" 					jdbcType="VARCHAR"/>
+		<result property="eventUrl" 	column="EVENT_URL" 				jdbcType="VARCHAR"/>
+		<result property="bannerUrl" 	column="BANNER_URL" 			jdbcType="VARCHAR"/>
+		<result property="contents"		column="EVENT_PAGE_CONTENTS" 	jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.holdport.home.vo.TopNoticeVO" id="TopNoticeVO">
+		<result property="recSeqNo"	column="REC_SEQ_NO"	jdbcType="NUMERIC"/>
+		<result property="title" 	column="TITLE" 		jdbcType="VARCHAR"/>
+		
+	</resultMap>
+	
+	<select id="selectBannerList" resultMap="BannerVO">
+		SELECT REC_SEQ_NO, TITLE, EVENT_URL, BANNER_URL, EVENT_PAGE_CONTENTS
+		  FROM TB_EVENT
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND HOME_DISPAY_YN = 1
+		   AND USE_YN = 1
+		   AND DISPLAY_START_DT <![CDATA[ <= ]]> DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y%m%d%H%i%s')
+		   AND DISPLAY_END_DT <![CDATA[ >= ]]> DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y%m%d%H%i%s')
+	  ORDER BY REC_SEQ_NO DESC
+	     LIMIT 3
+	</select>
+	
+	<select id="selectBanner" resultMap="BannerVO">
+		SELECT REC_SEQ_NO, TITLE, EVENT_URL, BANNER_URL, EVENT_PAGE_CONTENTS
+		  FROM TB_EVENT
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND HOME_DISPAY_YN = 1
+		   AND USE_YN = 1
+		   AND DISPLAY_START_DT <![CDATA[ <= ]]> DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y%m%d%H%i%s')
+		   AND DISPLAY_END_DT <![CDATA[ >= ]]> DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y%m%d%H%i%s')
+	  ORDER BY REC_SEQ_NO DESC
+	     LIMIT 1
+	</select>
+	
+	<select id="selectNoticeList" resultMap="TopNoticeVO">
+		SELECT TITLE, REC_SEQ_NO
+		  FROM TB_NOTICE
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		 	AND DISP_START_DT <![CDATA[ <= ]]> DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+	  ORDER BY REC_SEQ_NO DESC
+		 LIMIT 5
+	</select>
+	
+	<select id="selectInfluencerTop10List" resultType="java.util.Map">
+		SELECT 
+			*, 
+			(SELECT USER_ID FROM TB_MEMBER_INFO_EXTRA WHERE RECOMMENDER_CD = A.RECOMMENDER_CD) AS USER_ID
+		FROM  
+		(
+			SELECT COUNT(RECOMMENDER_CD) CNT, RECOMMENDER_CD
+			FROM TB_MEMBER_INFO
+			WHERE RECOMMENDER_CD IS NOT NULL
+			AND RECOMMENDER_CD <![CDATA[<>]]> ''
+			AND AUTH_LEVEL >= 3
+			GROUP BY RECOMMENDER_CD
+		) A
+		ORDER BY CNT DESC
+	</select>
+	
+</mapper>
+

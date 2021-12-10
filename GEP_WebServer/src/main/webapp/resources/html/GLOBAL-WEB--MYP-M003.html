@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Security Authentication</title>
+
+    <link rel="shortcut icon" href="../path/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../css/uiGlobal.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+
+
+    <script src="../js/jquery/jquery-3.3.1.js"></script>
+    <script src="../js/jquery/jquery-ui.js"></script>
+    <script src="../js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="../js/jquery/slick.js"></script>
+    <script src="../js/jquery/script.js"></script>
+    <!--나라별 국기 나오는거 스크립트-->
+
+    <script type="text/javascript">
+        //상단 네비게이션
+        $(document).ready(function() {
+
+            $(".topnav").hover(function() { //마우스를 topnav에 오버시
+                $(this).parent().find(".subnav").slideDown('normal').show(); //subnav가 내려옴.
+                $(this).addClass('on');
+                $(this).parent().hover(function() {}, function() {
+                    $(this).parent().find(".subnav").slideUp('fast'); //subnav에서 마우스 벗어났을 시 원위치  
+                    $(".topnav").removeClass('on');
+                });
+            });
+        });
+
+        //달력
+        $(function() {
+            $("#startDate").datepicker();
+        });
+        $(function() {
+            $("#endDate").datepicker();
+        });
+
+        //드롭다운 셀렉트박스
+        $(document).ready(function() {
+            $(".dropdown img.flag").addClass("flagvisibility");
+
+            $(".dropdown dt a").click(function() {
+                $(".dropdown dd ul").toggle();
+            });
+
+            $(".dropdown dd ul li a").click(function() {
+                var text = $(this).html();
+                $(".dropdown dt a span").html(text);
+                $(".dropdown dd ul").hide();
+                $("#result").html("" + getSelectedValue("sample"));
+            });
+
+            function getSelectedValue(id) {
+                return $("#" + id).find("dt a span.value").html();
+            }
+
+            $(document).bind('click', function(e) {
+                var $clicked = $(e.target);
+                if (!$clicked.parents().hasClass("dropdown"))
+                    $(".dropdown dd ul").hide();
+            });
+
+
+            $("#flagSwitcher").click(function() {
+                $(".dropdown img.flag").toggleClass("flagvisibility");
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <!-- HEADER : Start -->
+    <header>
+        <!--최상단 네비게이션 시작-->
+        <nav>
+            <div class="navi-wrap">
+                <div class="navi-logo">
+                    <h1>
+                        <a href="home.html" target="_parent"><img src="../img/logo.png" alt="logo"></a>
+                    </h1>
+
+                </div>
+                <div class="navi-menu">
+                    <ul class="navi">
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MKT-M001.html','_parent')">Exchange</div>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Wallet</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M001.html','_parent')">Deposit & Withdrawal</li>
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M002.html','_parent')">Transaction</li>
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M003.html','_parent')">Holdings</li>
+                            </ul>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Orders</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--MKT-M002.html','_parent')">Trading Histroy</li>
+                                <li onclick="window.open('GLOBAL-WEB--MKT-M003.html','_parent')">Outstanding Orders</li>
+                            </ul>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Support</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--CST-M001.html','_parent')">Notice</li>
+                                <li onclick="window.open('GLOBAL-WEB--CST-M002.html','_parent')">FAQ</li>
+                                <li onclick="window.open('GLOBAL-WEB--CST-M003.html','_parent')">1:1 Inquiry</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navi-user">
+                    <ul class="navi">
+                        <li class="navi_set">
+                            <!--<div class="topnav" onclick="window.open('GLOBAL-WEB--MBR-M001.html','_parent')">Register</div>-->
+                            <div class="topnav active" onclick="window.open('GLOBAL-WEB--MYP-M001.html','_parent')">My Page</div>
+                        </li>
+                        <li class="navi_set">
+                            <!--<div class="topnav" onclick="window.open('GLOBAL-WEB--MBR-M002.html','_parent')">Log In</div>-->
+                            <div class="topnav">Log Out</div>
+                        </li>
+                        <li class="navi_set">
+                            <div class="topnav">English</div>
+                            <ul class="subnav">
+                                <li>English</li>
+                                <li>한국어</li>
+                                <li>ภาษาไทย</li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!--최상단 네비게이션 끝-->
+    </header>
+    <!-- //HEADER : End -->
+
+    <!--컨텐츠 내용 영역 시작-->
+    <section>
+        <!--보안설정 전체 내용 시작-->
+        <article class="bgwhite">
+
+            <h1 class="sub-title">
+                <ul>
+                    <li>My page</li>
+                    <li>Security Authentication</li>
+                </ul>
+            </h1>
+            <div class="content-item">
+                <div id="tab-group" class="secure">
+                    <ul class="tabs-2li">
+                        <li class="tabs-gray"><a href="#tab1">SMS Authentication </a></li>
+                        <li class="tabs-gray"><a href="#tab2">OTP Authentication</a></li>
+                    </ul>
+                    
+                    <div id="tab1">
+                        <h1> SMS 인증 설정</h1>
+                        <ul class="disc">
+                            <li>SMS 인증을 설정하시면 로그인, 출금신청시 SMS 추가인증을 통해 보안이 강화됩니다.</li>
+                        </ul>
+                        <table class="tblType01 mgt20">
+                            <colgroup>
+                                <col style="width: 200px">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th>Phone Number</th>
+                                    <td>
+                                        <dl id="sample" class="dropdown">
+                                            <dt>
+                                                <a href="#"><span id="result">+82</span></a></dt>
+                                            <dd>
+                                                <ul>
+                                                    <li>
+                                                        <a href="#">South Korea <span>+82</span>
+                                                            <span class="value">+82</span></a></li>
+                                                    <li>
+                                                        <a href="#">Russia <span>+7</span>
+                                                            <span class="value">+7</span></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Saint Kitts and Nevis <span>+1369</span>
+                                                            <span class="value">+1369</span></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Romania <span>+40</span>
+                                                            <span class="value">+40</span></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Saint Pierre and Miqueliona <span>+508</span>
+                                                            <span class="value">+508</span></a></li>
+                                                    <li>
+                                                        <a href="#">Russia <span>+7</span>
+                                                            <span class="value">+7</span></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Saint Kitts and Nevis <span>+1369</span>
+                                                            <span class="value">+1369</span></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Romania <span>+40</span>
+                                                            <span class="value">+40</span></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">South Korea <span>+82</span>
+                                                            <span class="value">+82</span></a></li>
+                                                    <li>
+                                                        <a href="#">Russia <span>+7</span>
+                                                            <span class="value">+7</span></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Saint Kitts and Nevis <span>+1369</span>
+                                                            <span class="value">+1369</span></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Romania <span>+40</span>
+                                                            <span class="value">+40</span></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">South Korea <span>+82</span>
+                                                            <span class="value">+82</span></a></li>
+                                                </ul>
+                                            </dd>
+                                            <dd><input type="text"></dd>
+                                        </dl>
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>SMS Authentication Code</th>
+                                    <td>
+                                        <span class="btn-mini fl-left">
+                                            <button class="small bggray">Send SMS</button>
+                                        </span>
+                                        <span>
+                                            <input type="text" id="" name="" value="" placeholder="Enter SMS Authentication Code" class="basic">
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="btn-wrap">
+                            <button class="big bgblue">Setup</button>
+                        </div>
+                    </div>
+                    
+                    <div id="tab2">
+                        <h1> OTP 설정</h1>
+                        <ul class="disc">
+                            <li>OTP 인증을 설정하시면 로그인, 출금신청시 OTP 추가인증을 통해 보안이 강화됩니다.</li>
+                        </ul>
+
+                        <div class="mgt20">
+                            <h1> 1. OTP 앱 설치</h1>
+                            <ul class="mgb20">
+                                <li>스마트폰의 Play스토어(안드로이드 폰) 또는 App스토어(아이폰) 에서 Google OTP 앱을 검색 후 설치 합니다.</li>
+                            </ul>
+                            <div>
+                                <img src="../img/img-google.jpg">
+                                <img src="../img/img-apple.jpg">
+                            </div>
+                        </div>
+
+                        <div class="mgt20">
+                            <h1> 2. OTP 앱 실행 및 키 값 설정</h1>
+                            <ul class="mgb20">
+                                <li>Google OTP 앱을 실행 하신 후 아래의 바코드를 스캔 하거나 키를 입력 하십시오.</li>
+                            </ul>
+                            <div class="my-key">
+                                <span class="my-key-qr">
+                                    <img src="../img/temp-qrimg.png" alt="qr code">
+                                </span>
+                                <span class="my-key-txt">
+                                    <span>바코드 스캔을 할 수 없는 경우에는 아래의 키를 OTP 앱에 직접 입력 하세요<br><span>HFCECNBRGRATGNCDGYYDIM2GGQ4UENSDHFBTGMJSIM3EKNBUGVDA</span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="mgt20">
+                            <h1>3. OTP 인증 하기</h1>
+                            <ul class="mgb20">
+                                <li>OTP 앱 화면에 표시된 인증번호 여섯자리를 입력 하세요.</li>
+                            </ul>
+                            <table class="tblType01 mgt20">
+                                <colgroup>
+                                    <col style="width: 200px">
+                                    <col>
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th>로그인 비밀번호</th>
+                                        <td>
+                                            <input type="text" id="" name="" value="" class="basic">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>OTP Authentication Code</th>
+                                        <td>
+                                            <input type="text" id="" name="" value="" placeholder="Enter OTP Authentication Code" class="basic">
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                             <div class="btn-wrap mgb20">
+                                <button class="big bgblue">Setup</button>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="mgt20">
+                            <h1>OTP 인증 해제</h1>
+                            <ul class="disc">
+                                <li>회원님께서는 현재 보안강화를 위한 OTP인증을 사용하고 계십니다.</li>
+                                <li>사용해제 하시더라도 언제든지 다시 사용 설정 하실 수 있습니다.</li>
+                            </ul>
+                            <table class="tblType01 mgt20">
+                                <colgroup>
+                                    <col style="width: 200px">
+                                    <col>
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th>로그인 비밀번호</th>
+                                        <td>
+                                            <input type="text" id="" name="" value="" class="basic">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>SMS Authentication Code</th>
+                                        <td>
+                                            <input type="text" id="" name="" value="" placeholder="Enter SMS Authentication Code" class="basic">
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>OTP Authentication Code</th>
+                                        <td>
+                                            <input type="text" id="" name="" value="" placeholder="Enter OTP Authentication Code" class="basic">
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                             <div class="btn-wrap mgb20">
+                                <button class="big bgblue">Setup</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </article>
+        <!--보안설정 전체 내용 끝-->
+    </section>
+    <!--컨텐츠 내용 영역 끝-->
+
+    <!-- FOOTER : Start -->
+    <footer>
+        <div class="footer-menu-wrap">
+            <div class="footer-menu">
+               <a href="GLOBAL-WEB--ETC-M002.html">Terms and Conditions </a>
+                <a href="GLOBAL-WEB--ETC-M003.html">Privacy Statements </a>
+                <a href="GLOBAL-WEB--ETC-M001.html">Fees</a>
+            </div>
+        </div>
+
+        <div class="footer-wrap">
+            <p class="footer-logo">
+                <a href="#">WAVE STRAING</a>
+            </p>
+            <div class="footer-group">
+                <ul>
+                    <li>주식회사 <span class="orange-bold">웨이브스트링</span></li>
+                    <li>서울특별시 구로구 디지털로 273, 306호(구로동, 에이스트윈타워 2차)</li>
+                    <li>대표이사 : 정명묵</li>
+                </ul>
+                <ul>
+                    <li>사업자등록번호 : 113-86-84751</li>
+                </ul>
+                <ul>
+                    <li>현금입출금 :<span class="white-bold"> 09:00~18:00 (휴일포함)</span></li>
+                    <li>코인입출금 : <span class="white-bold">24시간 (휴일포함)</span></li>
+                </ul>
+                <p class="copyright-area">Copyright&copy; 2012 wavestring All rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+    <!-- FOOTER : End -->
+
+
+    <script>
+        //상단 전체메뉴 
+        var zoomx = 100;
+        $(document).ready(function() {
+            $(".gnb-menu").hover(
+                function() {
+                    $(".sub-menu-wrap").stop().slideDown(400);
+                },
+                function() {
+                    $(".sub-menu-wrap").stop().slideUp(200);
+                });
+
+            $(".sub-menu-wrap").hover(
+                function() {
+                    $(".sub-menu-wrap").stop().slideDown(400);
+                },
+                function() {
+                    $(".sub-menu-wrap").stop().slideUp(200);
+                });
+        });
+
+        //마켓별 전체보기
+        $(document).ready(function() {
+            $('.btn-folding').click(function() {
+                $('.folding').toggleClass('more');
+            });
+
+        });
+
+        /*북마크*/
+        $('.bookmark').click(function() {
+            $(this).toggleClass('mark-on');
+        });
+
+
+
+        /*슬릭스 슬라이더*/
+        $(".regular").slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            autoplay: false,
+            autoplaySpeed: 4000
+        });
+
+
+        //jquery 탭
+        $(document).ready(function() {
+            $("#tab-group").tabs();
+
+            $("#datepicker").datepicker({
+                inline: true
+            });
+        });
+
+        //1:1문의 토글
+        $('.filetitle-view').click(function() {
+            $('.filetitle-box').toggle();
+        });
+
+        $('.re-btn').click(function() {
+            $('.re-ask').toggle();
+        });
+
+        //팝업 열고 닫기   
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

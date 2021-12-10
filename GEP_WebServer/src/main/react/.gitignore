@@ -1,0 +1,6 @@
+/.vscode
+/.metadata
+test
+log_*
+uploads
+**/node_modules/*

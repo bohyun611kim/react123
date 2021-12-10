@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit and Withdrawal</title>
+    <link rel="stylesheet" type="text/css" href="../css/uiStyle.css">
+	<link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="../css/style.css">
+	<script src="../js/jquery/jquery-3.3.1.js"></script>
+	<script src="../js/jquery/jquery-ui.js"></script>
+	<script src="../js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="../js/jquery/slick.js"></script>
+
+	<script type="text/javascript">
+		//label을 사용한 셀렉트
+		$(document).ready(function() {
+			var selectTarget = $('.select-box select');
+			selectTarget.change(function() {
+				var select_name = $(this).children('option:selected').text();
+				$(this).siblings('label').text(select_name);
+				/*$('label').addClass('on');*/
+			});
+		});
+		//달력
+		$(function() {
+			$("#startDate").datepicker();
+		});
+		$(function() {
+			$("#endDate").datepicker();
+		});
+        	//탭메뉴  2019-07-19 수정(탭메뉴 추가)
+		$(document).on(
+            "click", ".yep_tab_btn li", 
+            function(){
+				$(this).addClass("on").siblings().removeClass("on");
+				var thisNum=$(this).index();
+				$(this).parents(".yep_tab").find(".yep_tab_cont").hide();
+				$(this).parents(".yep_tab").find(".yep_tab_cont").eq(thisNum).show();
+				return false;
+            }
+        );
+	</script>
+
+</head>
+<body>
+    <div id="wrap" class="sc-gzVnrw ibZhkv">
+        <div class="header">
+            <!-- menu PC -->
+            <div id="sub_top">
+                <div class="inner">
+                    <div class="s_logo">
+                        <a href="#/">
+                            <!-- lost image -->
+                            <img src="../img/logo.png" alt="Logo" />
+                        </a>
+                    </div>
+                    <div class="gnb">
+                        <ul class="gnb_btn_box">
+                            <li id="active">
+                                <a href="signup.html"> Sign up </a>
+                            </li>
+                            <li>
+                                <a href="login.html"> Login </a>
+                            </li> 
+                        </ul>
+                        <select name="language.selector" class="select_lan">
+                            <option value="en">English</option>
+                            <option value="ko">Korean</option>
+                            <option value="ja">Japanese</option>
+                            <option value="id">Indonesian</option>
+                            <option value="zh">Chinese</option>
+                        </select>
+                        <div class="notice_header">
+                            <img src="../img/ic_notice.png" alt="notice" width="20px"/>
+                        </div>
+                        <div class="sc-bdVaJa dXfIaQ">
+                            <ul class="gnb_menu">
+                                <li class="nav-item">
+                                    <a href="exchange.html">Exchange</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="is-active" href="#">Deposit and withdrawal</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="invest.html">Investment details</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="mypage.html">My page</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="support.html">Support</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- menu mobile -->
+            <div class="m_top">
+                <div class="inner">
+                    <div class="m_logo">
+                        <a href="#/">
+                            <img src="../img/logo_m.png" alt="Logo" />
+                        </a>
+                    </div>
+                    <div class="m_btn" onclick="openNavMobile()">
+                        <img src="../img/toggle.png" alt="toggle">
+                    </div>
+                </div>
+                <aside class="global-sidebar">
+                    <div id="m_nav" class="slide-side-enter-done" style="right: -100%;">
+                        <div class="m_nav_inner">
+                            <div class="close">
+                                <img src="../img/modal_close.png" alt="close" onclick="closeNavMobile()" />
+                            </div>
+                            <ul class="m_nav_btnbox">
+                                <li>
+                                    <a href="#/user/signin">SIGN IN</a>
+                                </li>
+                                <li>
+                                    <a href="#/user/signup">SIGN UP</a>
+                                </li>
+                             </ul>
+                                <select name="language.selector" class="m_select_lan">
+                                    <option value="en">English</option>
+                                    <option value="ko">Korean</option>
+                                    <option value="ja">Japanese</option>
+                                    <option value="id">Indonesian</option>
+                                    <option value="zh">Chinese</option>
+                                </select>
+                            <ul>
+                                <li class="m_nav_menu">
+                                    <a class="m_menu_dep01" href="#/exchange">Exchange</a>
+                                </li>
+                                <li class="m_nav_menu">
+                                    <a class="m_menu_dep01" href="#/wallet/balances">Deposit and withdrawa</a>
+                                </li>
+                                <li class="m_nav_menu">
+                                    <a class="m_menu_dep01" href="#/order/openorders">Investment details</a>
+                                </li>
+                                <li class="m_nav_menu">
+                                    <a class="m_menu_dep01" href="#/account/myassets">My page</a>
+                                </li>
+                                <li class="m_nav_menu">
+                                    <a class="m_menu_dep01" href="#/support/notice">Support</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+        <main id="content" role="main" class="main">
+            <article class="layoutB">
+                <!-- Left side : Start -->
+                <aside>
+                    <ul>
+                        <li>
+                            <div class="whole-asset-group">
+                                <span class="txt-box">Total evaluation amount</span>
+                                <span class="asset-value">240,000,000</span>
+                                <span class="asset-unit">KRW</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="sch-coin-group">
+                                <p class="sch-coin-input">
+                                    <input type="text"  placeholder="Crypto coin name/sysbol search" class="sch-input">
+                                </p>
+                                <span class="checks-item">
+                                    <input type="checkbox" id="ex_chk">
+                                    <label for="ex_chk">Holding</label>
+                                </span>
+
+                            </div>
+                        </li>
+                        <!-- 코인 리스트. 10개 이상일 때는 스크롤 생김 : Start -->
+                        <li class="coin-list-wrap mCustomScrollbar">
+                            <table class="coin-list-inner">
+                                <colgroup>
+                                    <col style="width:30px;">
+                                    <col style="width:80px;">
+                                    <col>
+                                </colgroup>
+                                <!-- 리스트 1개 반복 : Start -->
+                                <tr>
+                                    <td>
+                                        <span class="coin-symbol">
+                                            <img src="../img/coin-symbol/KRW.png" alt="coin">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <p class="coin-name">원</p> 
+                                    </td>
+                                    <td>
+                                        <p class="vertual-coin-type">
+                                            <span>19,290,000.12345678</span>
+                                            <span>KRW</span>
+                                        </p>
+                                        <p class="country-real-money">
+                                            <span>200,290,000</span>
+                                            <span>KRW</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <!-- //리스트 1개 반복 : End -->
+                                <tr class="active">
+                                    <td>
+                                        <span class="coin-symbol">
+                                            <img src="../img/coin-symbol/BTC.png" alt="coin">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <p class="coin-name">비트코인</p>
+                                    </td>
+                                    <td>
+                                        <p class="vertual-coin-type">
+                                            <span>19,290,000</span>
+                                            <span>BTC</span>
+                                        </p>
+                                        <p class="country-real-money">
+                                            <span>200,290,000</span>
+                                            <span>KRW</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="coin-symbol">
+                                            <img src="../img/coin-symbol/SRCOIN.png" alt="coin">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <p class="coin-name">에스알코인</p>
+                                    </td>
+                                    <td>
+                                        <p class="vertual-coin-type">
+                                            <span>19,290,000</span>
+                                            <span>SRCOIN</span>
+                                        </p>
+                                        <p class="country-real-money">
+                                            <span>200,290,000</span>
+                                            <span>KRW</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="coin-symbol">
+                                            <img src="../img/coin-symbol/MEDIBIT.png" alt="coin">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <p class="coin-name">메디비트</p>  
+                                    </td>
+                                    <td>
+                                        <p class="vertual-coin-type">
+                                            <span>19,290,000</span>
+                                            <span>MEDIBIT</span>
+                                        </p>
+                                        <p class="country-real-money">
+                                            <span>200,290,000</span>
+                                            <span>KRW</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="coin-symbol">
+                                            <img src="../img/coin-symbol/LSTR.png" alt="coin">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <p class="coin-name">루나코인</p>
+                                    </td>
+                                    <td>
+                                        <p class="vertual-coin-type">
+                                            <span>19,290,000</span>
+                                            <span>LSTR</span>
+                                        </p>
+                                        <p class="country-real-money">
+                                            <span>200,290,000</span>
+                                            <span>KRW</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="coin-symbol">
+                                            <img src="../img/coin-symbol/WAVES.png" alt="coin">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <p class="coin-name">웨이브코인</p>
+                                    </td>
+                                    <td>
+                                        <p class="vertual-coin-type">
+                                            <span>19,290,000</span>
+                                            <span>WAVES</span>
+                                        </p>
+                                        <p class="country-real-money">
+                                            <span>200,290,000</span>
+                                            <span>KRW</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="coin-symbol">
+                                            <img src="../img/coin-symbol/SRCOIN.png" alt="coin">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <p class="coin-name">에스알코인</p>
+                                    </td>
+                                    <td>
+                                        <p class="vertual-coin-type">
+                                            <span>19,290,000</span>
+                                            <span>SRCOIN</span>
+                                        </p>
+                                        <p class="country-real-money">
+                                            <span>200,290,000</span>
+                                            <span>KRW</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="coin-symbol">
+                                            <img src="../img/coin-symbol/MEDIBIT.png" alt="coin">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <p class="coin-name">메디비트</p>
+                                    </td>
+                                    <td>
+                                        <p class="vertual-coin-type">
+                                            <span>19,290,000</span>
+                                            <span>MEDIBIT</span>
+                                        </p>
+                                        <p class="country-real-money">
+                                            <span>200,290,000</span>
+                                            <span>KRW</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="coin-symbol">
+                                            <img src="../img/coin-symbol/LSTR.png" alt="coin">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <p class="coin-name">루나코인</p>
+                                    </td>
+                                    <td>
+                                        <p class="vertual-coin-type">
+                                            <span>19,290,000</span>
+                                            <span>LSTR</span>
+                                        </p>
+                                        <p class="country-real-money">
+                                            <span>200,290,000</span>
+                                            <span>KRW</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="coin-symbol">
+                                            <img src="../img/coin-symbol/WAVES.png" alt="coin">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <p class="coin-name">웨이브코인</p>
+                                    </td>
+                                    <td>
+                                        <p class="vertual-coin-type">
+                                            <span>19,290,000</span>
+                                            <span>WAVES</span>
+                                        </p>
+                                        <p class="country-real-money">
+                                            <span>200,290,000</span>
+                                            <span>KRW</span>
+                                        </p>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </li>
+                        <!-- //코인 리스트. 10개 이상일 때는 스크롤 생김 : End -->
+                    </ul>
+                    <ul class="wlt_info">
+                    <li>In terms of tradeable quantity excluding outstanding quantity</li>
+                    <li>There is a difference from the actual holding quatity</li>
+                    <li>You can check the actual holding amount in the investment history menu</li>
+                    </ul>
+                </aside>
+                <!-- //Left side : End -->
+                
+                <!--입금 출금 탭 영역 시작-->
+                <div class="content">
+                    <!-- CONTENT INNER : Start -->
+                    <div>
+                        <h1 class="subtitle">Deposit and Withdrawal</h1>
+                        <!-- 원화일 때 : Start -->
+                        <div id="tab-group-1">
+                            <ul class="li3">
+                                <li><a href="#tabs-1">Deposit page</a></li>
+                                <li><a href="#tabs-2">Withdrawal page</a></li>
+                                <li><a href="#tabs-3">Deposit and Withdrawal</a></li>
+                            </ul>
+                            <!-- 계좌인증 및 입금신청 탭 컨텐츠 : Start -->
+                            <div id="tabs-1">
+                                <!-- 계좌 인증 전 탭 내용 : Start -->
+                                <p class="my-addr-title">Bitcoin Deposit</p>
+                                <p class="tit">Please make a Bitcoin deposit to the address below</p>
+                                <p class="tit">If you do not have a Bitcoin deposit address, click [Create deposit address] to get a unique Bitcoin address</p>
+                                <div class="my-address-wrap">
+									<div class="my-addr-group">
+										<div class="extra-addr-group">
+											<p class="extra-addr-item">
+												<span class="extra-title">회원님의 비트코인 입금 주소</span>
+												<span class="extra-addr">GrcDJ4zYrBX26ArZ3ja38J9KG9F3</span>
+                                                <button>Copy address</button>
+											</p>
+										</div>
+									</div>
+									<div class="my-addr-qr">
+										<!-- QR코드. background로 해당하는 이미지를 import. -->
+										<span class="" style="background: url('../img/temp-qrimg.png') no-repeat;">QR코드</span>
+									</div>
+								</div>
+                             
+                                <!-- //계좌인증후 입금신청 탭 내용 : End -->
+                            </div>
+                            <!-- //계좌인증 및 입금신청 탭 탭 컨텐츠 : End -->
+
+                            <!-- 출금신청 탭 컨텐츠 : Start -->
+                            <div id="tabs-2">
+                                <!--출금 입력영역 시작-->
+                                <div class="withdrawal">
+                                    <table class="type01">
+                                        <colgroup>
+                                            <col style="width:180px;">
+                                            <col style="width:410px;">
+                                            <col>
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <th>Withdrawal Bank</th>
+                                                <td><input type="text" value="농협은행"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Account Number</th>
+                                                <td><input type="text" value="201-0000-5555-21"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Account Holder</th>
+                                                <td><input type="text" value="홍길동"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th>KRW Balance</th>
+                                                <td><input type="text" value="0 KRW"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th>1 Withdrawal Limit</th>
+                                                <td>
+                                                    <span><input type="text" value="2.0000000000 KRW"></span><!-- 코인수량 -->
+                                                </td>
+                                                <td>
+                                                    <button>Authentication level setting</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>1 Day Remaining Limit</th>
+                                                <td>
+                                                    <input type="text" value="0 KRW">
+                                                </td>
+                                                <td>
+                                                    <button>Max</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Withdrawal request amount</th>
+                                                <td>
+                                                    <input type="text" name="coin" >
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Fees</th>
+                                                <td>
+                                                    <input type="text" name="coin" value="1,000 KRW">
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- 출금 요청, 취소 버튼 : Start -->
+                                    <div class="btn-group">
+                                        <ul>
+                                            <li><button class="btn-cancel">Cancel</button></li>
+                                            <li><button class="red">Withdrawal apply</button></li>
+                                        </ul>
+                                    </div>
+                                    <!-- //출금 요청, 취소 버튼 : End -->
+                                </div>
+                                <!--출금 입력영역 끝-->
+                            </div>
+                            <!-- //출금신청 탭 컨텐츠 : End -->
+
+                            <!-- 입출금내역 탭 컨텐츠 : Start -->
+                            <div id="tabs-3">
+                                <div class="dw-history">
+                                    <!-- 조회 옵션 : Start -->
+                                    <div class="mgt20">
+                                        <select class="select-box">
+                                            <option selected>ALL</option>
+                                            <option>출금</option>
+                                            <option>입금</option>
+                                        </select>
+                                        <div class="calendar">
+                                            <input type="text" name="calendar" id="startDate" required="" value="2019-04-14">
+                                            <span>~</span>
+                                            <input type="text" name="calendar" id="endDate" required="" value="2019-04-15">
+                                            <button class="red">Search</button>
+                                        </div>
+                                    </div>
+                                    <!-- //조회 옵션 : End -->
+                                    <p>A total of 0 data were viewed</p>
+                                    <table class="mgt10">
+                                        <thead>
+                                            <th>Type</th>
+                                            <th>Request date</th>
+                                            <th>Amount (quanity)</th>
+                                            <th>Deposit bank</th>
+                                            <th>Deposit account number</th>
+                                            <th>Deposit code</th>
+                                            <th>Process status</th>
+                                            <th>Cancel</th>                                         
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    <p class="notice_nodata">You have no deposit/withdrawal history</p>
+                                    <ul class="pagination">
+                                        <li><a class="btn-page first"></a></li>
+                                        <li><a class="btn-page prev"></a></li>
+                                        <li><a href="#" class="active">1</a></li><!-- 선택된 번호의 a 태그에 acitve 클래스 추가 -->
+                                        <li><a href="#">2</a></li>
+                                        <li><a href="#">3</a></li>
+                                        <li><a href="#">4</a></li>
+                                        <li><a href="#">5</a></li>
+                                        <li><a class="btn-page next"></a></li>
+                                        <li><a class="btn-page last"></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- //입출금내역 탭 컨텐츠 : End -->
+                        </div>
+                        <!-- // 원화일 때 : End -->
+                    </div>
+                    <!-- //CONTENT INNER : End -->
+                </div>
+                <!--입금 출금 탭 영역 끝-->
+             </article>
+        </main> 
+    <footer id="footer">
+        <div class="inner">
+            <div class="footer_top">
+                <div class="footer_logo">
+                    <img src="../img/logo_g.png" alt="logo">
+                </div>
+                <nav class="footer_gnb">
+                    <ul class="footer_gnb_ul">
+                        <li>
+                            <a href="#/policy">About</a>
+                        </li>
+                        <li>
+                            <a href="#/policy">Terms</a>
+                        </li>
+                        <li>
+                            <a href="#/policy?status=2">Privacy</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <address class="footer_body">
+                <p>Address : 603, Daejong-ro, Jung-gu, Daejeon, Republic of Korea</p>
+                <p>Contact: help@holdport.com</p><p>Telegram: https://t.me/HOLDPORT</p>
+                <p>© 2019 HOLDPORT. All rights reserved</p>
+            </address>
+        </div>
+    </footer>
+    <aside class="global-sidebar"></aside>
+</div>
+<script>
+    $(document).ready(function() {
+			$("#tab-group-1").tabs();
+            $('#tab-group-deposit').tabs();
+
+			$("#datepicker").datepicker({
+				inline: true
+			});
+		});
+          //  Tab Menu
+    function openNavMobile(){
+       document.getElementById("m_nav").style.right = "0%";
+    }
+    function closeNavMobile(){
+       document.getElementById("m_nav").style.right = "-100%";
+    }
+</script>
+</body>
+</html>

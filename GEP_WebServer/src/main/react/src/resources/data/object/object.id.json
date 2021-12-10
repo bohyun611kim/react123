@@ -1,0 +1,136 @@
+{
+    "shared.markets": ["KRW", "BTC", "TRX", "USDT"],
+    "coin.names": { 
+        "BTC": "Bitcoin", "ETH": "Ethereum", "AMC": "Aircraft Mileage Coin", "LTC": "Litecoin", "EOS": "EOS", 
+        "MC" : "Mostcash", "AMB" : "AMC Blue", "BCS" : "Bitcoinstar", "BCH" : "Bitcoincash", "BTG" : "Bitcoingold", 
+        "DASH" : "DASH", "ABAG" : "ABAG", "HDN" : "Hidden", "BTH" : "Bithidden", "AIDAO" : "AIDAO", 
+        "YOC" : "YOCoin", "CWC" : "CWCoin", "EBH" : "EBlackHole", "MXR" : "MaxVRcoin", "APL" : "Aplcash", 
+        "ICZ" : "Increz", "GBC" : "Goldenbay", "COS" : "Coinstar", "SCOR" : "Scorcoin", "CIM" : "COINMAN", 
+        "RIZ" : "RIZ Token", "TAMSG" : "TAMSGOLD", "OSN" : "Official Signature", "DWC" : "DOWON COIN", "XRP" : "Ripple", 
+        "RVN" : "Ravencoin", "BIZT" : "BIZ Token", "STRO" : "Super Tron", "ETG" : "ETG TOKEN", "XET" : "ETERNAL TOKEN", 
+        "TORUS": "Torus", "MAVL": "Marvel Token", "TCG": "TCG coin", "GIGC": "GIGCoin", "DCMC": "DCMC", 
+        "RET": "Raise Entertainment Token", "LANX": "LANX Coin", "TRX": "TRON", "ABZC": "asiabizcion", "WCC": "World Check Coin", 
+        "DIOT": "DREAMIOTCOIN", "STC": "STC Coin", "UMX": "UMX Coin", "LCGC": "Life Care Global COIN", "GTT": "GOLDENTIME",
+        "AMBX" : "AMC Blue","WRD":"WRD", "SMILE":"SMILE", "HGN":"HGN"
+    },
+    "intro.visuals": [
+        { "title": "Pertukaran HOLDPORT yang cepat dan aman", 
+            "explain": "Fast and Safe Cryptocurrency" }
+    ],
+    "intro.newcoins": [
+        { "image": "event_banner1_en.png", "path": "/support/feeinfo", "alt": "#" },
+        { "image": "event_banner3_en.png", "path": "/support/notice?post=1852", "alt": "#" },
+        { "image": "event_banner4_en.png", "path": "/support/faq?post=1514", "alt": "#" },
+        { "image": "event_banner1_en.png", "path": "/support/feeinfo", "alt": "#" },
+        { "image": "event_banner4_en.png", "path": "/support/faq?post=1514", "alt": "#" }
+    ],
+    "events.new": [
+        { "image": "event_banner6_ko.png", "path": "https://holdport.com/frontend/build/index.html#/support/notice?post=5803", "alt": "#" }
+    ],
+    "intro.asideBanners": [
+        { "path": "https://krwcworld.com", "image": "aside_krwc.en.png", "alt": "krwc world" },
+        { "path": "https://www.blockchain.com/id/explorer", "image": "aside_banner1.png", "alt": "blockchain" },
+        { "path": "https://etherscan.io", "image": "aside_banner2.png", "alt": "etherscan" },
+        { "path": "https://xrpscan.com", "image": "aside_banner4.png", "alt": "xrpcharts" },
+        { "path": "https://tronscan.io/#/", "image": "aside_banner8.png", "alt": "tronscan" },
+        { "path": "http://smilescan.co.kr/", "image": "aside_banner9.png", "alt": "smilescan" },
+        { "path": "http://gdcscan.com/", "image": "aside_banner10.png", "alt": "gdcscan" }
+    ],
+    "intro.features": [
+        { "image": "#", "title": "Solusi Keamanan Terbaik", 
+          "desc": "Kami menjaga aset kami lebih aman dengan membangun solusi dan sistem keamanan terbaik untuk mendeteksi dan mempertahankan diri dari serangan peretasan eksternal melalui diskusi dan desain berkelanjutan antara perusahaan dan pengembang keamanan teratas." },
+        { "image": "#", "title": "Teknologi Terpercaya", 
+          "desc": "Tim Pengembangan Exchange kami memiliki lebih dari 20 tahun pengalaman dalam pengembangan dan operasi program, dan mendukung sistem yang paling aman dengan operasi server yang andal dan kemampuan serta pengalaman terbaik." },
+        { "image": "#", "title": "Manajemen Aset yang Aman", 
+          "desc": "Pertukaran kami menggunakan coldwelllets dan hotwelllet secara terpisah untuk situasi darurat. Lebih dari 90% aset Anda disimpan secara terpisah di Caldwell Wallet Anda untuk menjaga aset Anda seaman mungkin." }
+    ],
+    "intro.partners": [
+        { "path": "#", "image": "main_partner_amazon.png", "alt": "amazon" },
+        { "path": "#", "image": "main_partner_fntoday.png", "alt": "fntoday" },
+        { "path": "#", "image": "main_partner_qubit.png", "alt": "qubit security" },
+        { "path": "#", "image": "main_partner_daily.png", "alt": "daily coin news" },
+        { "path": "#", "image": "main_partner_camon.png", "alt": "comonpay" }
+    ],
+    "intro.shortcuts": [
+        { "title": "Tukar", "to": "/exchange", "className": "exchange" },
+        { "title": "Riwayat transaksi", "to": "/order/tradehistory", "className": "trade_h" },
+        { "title": "Aset saya", "to": "/account/assets", "className": "asset" },
+        { "title": "Riwayat setoran", "to": "/wallet/history?type=deposit", "className": "deposit_h" },
+        { "title": "Penarikan sejarah", "to": "/wallet/history?type=withdraw", "className": "withdrawal_h" },
+        { "title": "Pusat Sertifikasi", "to": "/account/levelset", "className": "certificate" },
+        { "title": "Informasi Biaya", "to": "/support/feeinfo", "className": "fee" },
+        { "title": "Riwayat Masuk", "to": "/account/loginhistory", "className": "login_h" }
+    ],
+    "wallet.notices": {  
+        "deposit":{  
+           "address":[
+                "Kami tidak dapat menemukan Anda di kantor tukar kami jika Anda gagal memasukkan alamat pembayaran Anda..",
+                "Minimum deposit: deposit_minimum_limit symbol"
+            ],
+           "banking":[
+                "symbol Waktu setoran mungkin memakan waktu 5 ~ 30 menit setelah mengajukan permohonan setoran..",
+                "Jika Anda mengajukan permintaan setoran, manajer akan melakukan setoran dengan tangan.",
+                "Setoran mungkin tertunda jika Anda menyetor nama lain.",
+                "Ketika pembayaran diminta, data akan dihapus setelah waktu tertentu, jadi harap setorkan sesegera mungkin setelah permintaan.."
+           ],
+           "tag":[
+                "Kami tidak dapat menemukan Anda di kantor tukar kami jika Anda gagal memasukkan alamat pembayaran Anda..",
+                "Minimum deposit: deposit_minimum_limit symbol",
+                "Deposit will not be processed unless Tag number is entered."
+            ]
+        },
+        "withdraw":{ 
+           "address":[
+               "Penarikan minimum: withdrawal_minimum_limit symbol", "Penarikan maksimum: withdrawal_maximum_limit symbol",
+               "Kami tidak dapat menemukan Anda di bursa kami ketika Anda memasukkan alamat penarikan Anda secara berbeda."
+            ],
+           "banking":[
+                "Penarikan minimum: withdrawal_minimum_limit symbol", "Penarikan maksimum: withdrawal_maximum_limit symbol",
+                "symbol Penarikan hanya dimungkinkan dengan rekening bank yang diotorisasi untuk pertukaran ini.",
+                "symbol Batas penarikan tergantung pada langkah otentikasi."
+           ], 
+           "tag":[
+               "Penarikan minimum: withdrawal_minimum_limit symbol", "Penarikan maksimum: withdrawal_maximum_limit symbol",
+               "Kami tidak dapat menemukan Anda di bursa kami ketika Anda memasukkan alamat penarikan Anda secara berbeda.",
+               "Sulit untuk bergerak di dalam symbol dalam sistem (holdport-> holdport)."
+            ]
+        }
+    },
+    "wallet.servicenote": [
+        "Koin akan disimpan setelah memeriksa jaringan rantai blok.", 
+        "Setelah menyimpan, Anda dapat melacak kemajuan Anda di halaman riwayat."
+    ],
+    "account.levelset.list": [
+        [
+            { "title": "Keanggotaan", "explain": "Diperlukan: Verifikasi email" }
+        ],
+        [
+            { "title": "Otentikasi OTP", "explain": "Diperlukan: Setoran dan transaksi uang virtual dimungkinkan" }
+        ],
+        [
+            { "title": "Identifikasi", "explain": "Diperlukan Identifikasi: Sertifikat (ID atau paspor) yang dikeluarkan pemerintah yang valid berisi nama dan foto.\nBatas penarikan: $ 2 juta per hari" }
+        ],
+        [
+            { "title": "Pengirim tanda terima pajak dengan nama Anda", "explain": "Diperlukan: Salah satu tanda terima untuk tagihan listrik, tanda terima pajak air, pajak mobil, premi asuransi\nBatas penarikan: $ 5 juta per hari" }
+        ],
+        [
+            { "title": "Pedagang VIP", "explain": "Wajib: Seorang pedagang yang telah berdagang lebih dari 1 bulan dan diperdagangkan lebih dari $ 50 juta\nWithdrawal limit: $ Batas penarikan: $ 10 juta per hari" }
+        ]
+    ],
+    "account.levelset.modal": [
+        {
+            "explain": "Sertifikat yang dikeluarkan pemerintah yang sah yang berisi identifikasi atau nama paspor dan foto Anda(Ukuran gambar 1M atau kurang)",
+            "body": [{"title": "Unggah gambar ID", "type": "file"}]
+        },
+        {
+            "explain": "Tanda terima listrik, tanda terima pajak air, pajak mobil, tanda terima asuransi (Ukuran gambar 1M atau kurang)",
+            "body": [{"title": "Alamat", "type": "text", "placeholder": "address line" }, {"title": "Unggah gambar tanda terima pajak Anda", "type": "file"}]
+        },
+        {
+            "explain": "",
+            "body": [{"title": "Unggah gambar", "type": "file"}]
+        }
+    ]
+}
+
+

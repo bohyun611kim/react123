@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.coinis.order.odr001.dao.TradingHistoryDAO">
+
+	<resultMap type="kr.co.coinis.webserver.coinis.order.odr001.vo.MarketListVO" id="MarketListVO">
+		<result property="mkt_id"	column="MKT_ID"		jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.coinis.order.odr001.vo.ItemListVO" id="ItemListVO">
+		<result property="item_nm"	column="ITEM_NM"	jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.coinis.order.odr001.vo.ContractedListVO" id="ContractedListVO">
+			<result property="contract_dt"				column="CONTRACT_DT"				jdbcType="CHAR"/>
+			<result property="ord_seq_no"				column="ORD_SEQ_NO"		 			jdbcType="BIGINT"/>
+			<result property="item_nm"					column="ITEM_NM"			 		jdbcType="VARCHAR"/>
+			<result property="sell_buy_recog_cd" 		column="SELL_BUY_RECOG_CD"			jdbcType="INTEGER"/>
+			<result property="ord_price"				column="ORD_PRICE"					jdbcType="DECIMAL"/>
+			<result property="ord_qty"					column="ORD_QTY"					jdbcType="DECIMAL"/>
+			<result property="ord_dt"					column="ORD_DT"						jdbcType="CHAR"/>
+			<result property="contract_price"			column="CONTRACT_PRICE"				jdbcType="DECIMAL"/>
+			<result property="contract_qty"				column="CONTRACT_QTY"				jdbcType="DECIMAL"/>
+			<result property="trade_fee_amt"			column="TRADE_FEE_AMT"				jdbcType="DECIMAL"/>
+			<result property="price_dsp_decimal_pnt"	column="PRICE_DSP_DECIMAL_PNT"		jdbcType="INTEGER"/>
+			<result property="qty_dsp_decimal_pnt"		column="QTY_DSP_DECIMAL_PNT"		jdbcType="INTEGER"/>
+	</resultMap>
+	
+	<select id="retrieveMarketList" resultMap="MarketListVO">
+			SELECT 
+				MKT_ID
+			FROM 
+				TB_EXCHANGE_MKT_INFO
+			WHERE 
+				EXCHANGE_ID = #{ExchangeID}
+				AND MKT_STAT_CD = 1
+			ORDER BY MKT_DISP_ORDER ASC;
+	</select>
+	
+	<select id="retrieveItemList" resultMap="ItemListVO">
+			SELECT
+				DISTINCT B.ITEM_NM
+			FROM 
+				TB_MKT_ITEM_CODE_INFO A, TB_ITEM_CODE_MAST B
+			WHERE
+				A.ITEM_CODE = B.ITEM_CODE
+				AND MKT_ID = #{MarketID}
+	</select>	
+	
+	<select id="retrieveContractedListCount" resultType="integer">
+		<if test='day_e.equals(dateToday) and !day_s.equals(day_e)'>
+			SELECT (
+		</if>
+			SELECT
+				COUNT(*)
+			FROM
+			<if test='day_e.equals(dateToday)'>
+				TB_ORDER_LIST A, TB_ITEM_CODE_MAST B
+			</if>
+			<if test='!day_e.equals(dateToday) and day_s.equals(day_e)'>
+				TB_ORDER_LIST_BACKUP A, TB_ITEM_CODE_MAST B
+			</if>
+			WHERE
+				ORD_STATUS_CD = '322'
+				AND USER_ID=#{user_id} AND EXCHANGE_ID=#{exchange_id}
+			<choose>
+				<when test='!market.equals("ALL") and item_nm.equals("ALL")'>
+					AND MKT_ID=#{mkt_id}
+				</when>
+				<when test='market.equals("ALL") and item_nm.equals("ALL")'>
+				</when>
+				<otherwise>
+					AND B.ITEM_NM=#{item_nm}
+				</otherwise>
+			</choose>
+			
+			<if test='sell_buy_recog_cd_buy.equals("1") and sell_buy_recog_cd_sell.equals("0")'>
+				AND SELL_BUY_RECOG_CD = '2'
+			</if>
+			<if test='sell_buy_recog_cd_buy.equals("0") and sell_buy_recog_cd_sell.equals("1")'>
+				AND SELL_BUY_RECOG_CD = '1'
+			</if>
+			<if test='day_s.equals(day_e)'>
+				AND CONTRACT_DT = DATE(#{day_s})
+			</if>
+			<if test='!day_s.equals(day_e)'>
+				AND CONTRACT_DT BETWEEN DATE(#{day_s}) AND DATE(#{day_e})
+			</if>
+				AND A.ITEM_CODE = B.ITEM_CODE
+			
+			
+			<if test='day_e.equals(dateToday) and !day_s.equals(day_e)'>
+				)+(
+					SELECT
+						COUNT(*)
+					FROM
+						TB_ORDER_LIST_BACKUP A, TB_ITEM_CODE_MAST B
+					WHERE
+						ORD_STATUS_CD = '322'
+						AND USER_ID=#{user_id} AND EXCHANGE_ID=#{exchange_id}
+					<choose>
+						<when test='!market.equals("ALL") and item_nm.equals("ALL")'>
+							AND MKT_ID=#{mkt_id}
+						</when>
+						<when test='market.equals("ALL") and item_nm.equals("ALL")'>
+						</when>
+						<otherwise>
+							AND B.ITEM_NM=#{item_nm}
+						</otherwise>
+					</choose>
+					
+					<if test='sell_buy_recog_cd_buy.equals("1") and sell_buy_recog_cd_sell.equals("0")'>
+						AND SELL_BUY_RECOG_CD = '2'
+					</if>
+					<if test='sell_buy_recog_cd_buy.equals("0") and sell_buy_recog_cd_sell.equals("1")'>
+						AND SELL_BUY_RECOG_CD = '1'
+					</if>
+						AND CONTRACT_DT BETWEEN DATE(#{day_s}) AND DATE(#{dateYesterday})
+						AND A.ITEM_CODE = B.ITEM_CODE
+				)
+			</if>
+				
+	</select>
+	
+	<select id="retrieveContractedList" resultMap="ContractedListVO" parameterType="kr.co.coinis.webserver.coinis.order.odr001.vo.ReqContractedListVO">
+			SELECT
+				DATE_FORMAT(CONVERT_TZ(DATE_FORMAT(CONTRACT_DT, "%Y-%m-%d %T"), '+00:00', '+00:00'), "%Y%m%d%H%i%S") AS CONTRACT_DT
+				, ORD_SEQ_NO, B.ITEM_NM, SELL_BUY_RECOG_CD, ORD_PRICE, ORD_QTY
+				, DATE_FORMAT(CONVERT_TZ(DATE_FORMAT(ORD_DT, "%Y-%m-%d %T"), '+00:00', '+00:00'), "%Y%m%d%H%i%S") AS ORD_DT, CONTRACT_PRICE, CONTRACT_QTY
+				, IFNULL(TRADE_FEE_AMT, 0) AS TRADE_FEE_AMT
+				, B.PRICE_DSP_DECIMAL_PNT, B.QTY_DSP_DECIMAL_PNT
+			FROM
+			<if test='day_e.equals(dateToday)'>
+				TB_ORDER_LIST A, TB_ITEM_CODE_MAST B
+			</if>
+			<if test='!day_e.equals(dateToday) and day_s.equals(day_e)'>
+				TB_ORDER_LIST_BACKUP A, TB_ITEM_CODE_MAST B
+			</if>
+			WHERE
+				ORD_STATUS_CD = '322'
+				AND USER_ID=#{user_id} AND EXCHANGE_ID=#{exchange_id}
+			<choose>
+				<when test='!market.equals("ALL") and item_nm.equals("ALL")'>
+					AND MKT_ID=#{mkt_id}
+				</when>
+				<when test='market.equals("ALL") and item_nm.equals("ALL")'>
+				</when>
+				<otherwise>
+					AND B.ITEM_NM=#{item_nm}
+				</otherwise>
+			</choose>
+			
+			<if test='sell_buy_recog_cd_buy.equals("1") and sell_buy_recog_cd_sell.equals("0")'>
+				AND SELL_BUY_RECOG_CD = '2'
+			</if>
+			<if test='sell_buy_recog_cd_buy.equals("0") and sell_buy_recog_cd_sell.equals("1")'>
+				AND SELL_BUY_RECOG_CD = '1'
+			</if>
+			<if test='day_s.equals(day_e)'>
+				AND CONTRACT_DT = DATE(#{day_s})
+			</if>
+			<if test='!day_s.equals(day_e)'>
+				AND CONTRACT_DT BETWEEN DATE(#{day_s}) AND DATE(#{day_e})
+			</if>
+				AND A.ITEM_CODE = B.ITEM_CODE
+				
+			<if test='day_e.equals(dateToday) and !day_s.equals(day_e)'>
+				UNION(
+					SELECT
+						DATE_FORMAT(CONVERT_TZ(DATE_FORMAT(CONTRACT_DT, "%Y-%m-%d %T"), '+00:00', '+00:00'), "%Y%m%d%H%i%S") AS CONTRACT_DT
+						, ORD_SEQ_NO, B.ITEM_NM, SELL_BUY_RECOG_CD, ORD_PRICE, ORD_QTY
+						, DATE_FORMAT(CONVERT_TZ(DATE_FORMAT(ORD_DT, "%Y-%m-%d %T"), '+00:00', '+00:00'), "%Y%m%d%H%i%S") AS ORD_DT, CONTRACT_PRICE, CONTRACT_QTY
+						, IFNULL(TRADE_FEE_AMT, 0) AS TRADE_FEE_AMT
+						, B.PRICE_DSP_DECIMAL_PNT, B.QTY_DSP_DECIMAL_PNT
+					
+					FROM
+						TB_ORDER_LIST_BACKUP A, TB_ITEM_CODE_MAST B
+					WHERE
+						ORD_STATUS_CD = '322'
+						AND USER_ID=#{user_id} AND EXCHANGE_ID=#{exchange_id}
+					<choose>
+						<when test='!market.equals("ALL") and item_nm.equals("ALL")'>
+							AND MKT_ID=#{mkt_id}
+						</when>
+						<when test='market.equals("ALL") and item_nm.equals("ALL")'>
+						</when>
+						<otherwise>
+							AND B.ITEM_NM=#{item_nm}
+						</otherwise>
+					</choose>
+					
+					<if test='sell_buy_recog_cd_buy.equals("1") and sell_buy_recog_cd_sell.equals("0")'>
+						AND SELL_BUY_RECOG_CD = '2'
+					</if>
+					<if test='sell_buy_recog_cd_buy.equals("0") and sell_buy_recog_cd_sell.equals("1")'>
+						AND SELL_BUY_RECOG_CD = '1'
+					</if>
+						AND CONTRACT_DT BETWEEN DATE(#{day_s}) AND DATE(#{dateYesterday})
+						AND A.ITEM_CODE = B.ITEM_CODE
+						ORDER BY CONTRACT_DT DESC
+				)
+			</if>
+				ORDER BY CONTRACT_DT DESC
+				LIMIT #{startIndex}, #{queryDataNum}
+	</select>
+	
+	
+
+	
+</mapper>
+

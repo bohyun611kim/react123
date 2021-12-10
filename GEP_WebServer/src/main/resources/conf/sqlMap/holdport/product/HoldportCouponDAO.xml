@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.holdport.product.prd002.dao.HoldportCouponDAO">
+
+	<resultMap id="CouponMap" type="kr.co.coinis.webserver.holdport.product.prd002.vo.CouponVO">
+	</resultMap>
+
+	<select id="selectUserCouponHistoryList" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT 
+			A.ORD_SEQ_NO, A.HIST_INSERT_DT, A.ORD_DAY, A.EXCHANGE_ID, A.USER_ID,
+			A.MKT_GRP_ID, A.MKT_ID, A.IF_TRANSACTION_ID, A.WAS_SVR_NO, A.ORD_SVR_NO,
+			A.EXCHG_SVR_NO, A.ORDSVR_ORD_NO, A.EXCHGSVR_ORD_NO, A.ORG_IF_TRANSACTION_ID, A.ORDSVR_ORG_ORD_NO,
+			A.EXCHGSVR_ORG_ORD_NO, A.ITEM_CODE, A.ORD_TYPE_CD, A.ORD_PRICE_TYPE_CD, A.SELL_BUY_RECOG_CD,
+			A.ORD_DT, A.ORD_PRICE, A.ORD_QTY, IFNULL(A.ORD_BONUS_QTY, 0) ORD_BONUS_QTY, A.ORD_STATUS_CD, A.CONTRACT_NO,
+			A.CONTRACT_PRICE, A.CONTRACT_QTY, A.CONTRACT_DT, A.NON_CONTRACT_QTY, A.BASIC_ASSET_COIN_QTY,
+			A.TRADE_FEE_AMT, FEE_COIN_NO, A.CONTRACT_PRICE_BY_BC, A.TRADE_FEE_BY_BC, A.PUBLIC_IP, ORD_CHNL_CD, A.PAIR_EXCHGSVR_ORD_NO,
+			CM.PRICE_DSP_DECIMAL_PNT, CM.QTY_DSP_DECIMAL_PNT, CM.AMT_DECIMAL_PNT
+        FROM
+		( 
+			SELECT * FROM 
+				TB_ORDER_LIST
+			WHERE 1 = 1
+				AND EXCHANGE_ID	    = #{EXCHANGE_ID, jdbcType=VARCHAR}
+				AND USER_ID		    = #{USER_ID, jdbcType=VARCHAR}
+				AND ORD_STATUS_CD	= 322
+				AND ITEM_CODE       = 'HPCKRW'
+				AND SELL_BUY_RECOG_CD = 1
+		) A
+        LEFT OUTER JOIN TB_ITEM_CODE_MAST CM
+        ON 1 = 1
+            AND A.ITEM_CODE         = CM.ITEM_CODE
+		ORDER BY ORD_SEQ_NO DESC
+	</select>
+
+	<select id="selectUserCouponAmount" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT BALANCE_QTY AS COUPON_AMOUNT FROM
+			TB_COIN_BALANCE
+		WHERE 1 = 1
+			AND EXCHANGE_ID	    = #{EXCHANGE_ID, jdbcType=VARCHAR}
+			AND USER_ID		    = #{USER_ID, jdbcType=VARCHAR}
+			AND COIN_NO         = 120
+	</select>
+
+
+</mapper>
+

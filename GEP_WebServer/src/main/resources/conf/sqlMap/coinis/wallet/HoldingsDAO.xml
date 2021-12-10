@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.coinis.wallet.wlt003.dao.HoldingsDAO">
+	
+	<resultMap type="kr.co.coinis.webserver.coinis.wallet.wlt003.vo.EstimatedValueVO" id="EstimatedValueVO">
+			<result property="estimated_by_bc"			column="ESTIMATED_BY_BC"			jdbcType="DECIMAL"/>
+			<result property="estimated_by_currecncy"	column="ESTIMATED_BY_CURRECNCY"		jdbcType="DECIMAL"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.coinis.wallet.wlt003.vo.DailyLimitQtyVO" id="DailyLimitQtyVO">
+			<result property="daily_limit_qty"			column="DAILY_LIMIT_QTY"			jdbcType="DECIMAL"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.coinis.wallet.wlt003.vo.PossessionInfoVO" id="PossessionInfoVO">
+			<result property="poss_asset"				column="POSS_ASSET"					jdbcType="DECIMAL"/>
+			<result property="total_qty"				column="TOTAL_QTY"					jdbcType="DECIMAL"/>
+			<result property="usable_qty"				column="USABLE_QTY"					jdbcType="DECIMAL"/>
+			<result property="in_use_qty"				column="IN_USE_QTY"					jdbcType="DECIMAL"/>
+			<result property="total_by_btc"				column="TOTAL_BY_BTC"				jdbcType="DECIMAL"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.coinis.wallet.wlt003.vo.AirdropInfoVO" id="AirdropInfoVO">
+		<result property="airdrop_compl_dt"				column="AIRDROP_COMPL_DT"			jdbcType="CHAR"/>
+		<result property="coin_symbolic_nm"				column="COIN_SYMBOLIC_NM"			jdbcType="VARCHAR"/>
+		<result property="airdrop_qty"					column="AIRDROP_QTY"				jdbcType="DECIMAL"/>
+		<result property="title"						column="TITLE"						jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.coinis.wallet.wlt003.vo.CompensatedRewardInfoVO" id="CompensatedRewardInfoVO">
+			<result property="apply_dt"					column="APPLY_DT"					jdbcType="VARCHAR"/>
+			<result property="coin_symbolic_nm"			column="COIN_SYMBOLIC_NM"			jdbcType="CHAR"/>
+			<result property="proc_qty"					column="PROC_QTY"					jdbcType="DECIMAL"/>
+			<result property="proc_detail"				column="PROC_DETAIL"				jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	
+	<select id="retrieveEstimatedValue" resultMap="EstimatedValueVO" parameterType="kr.co.coinis.webserver.coinis.wallet.wlt003.vo.ReqHoldingsVO">
+			SELECT A.ESTIMATED_BY_BC AS ESTIMATED_BY_BC,
+				   TRUNCATE(A.ESTIMATED_BY_BC * B.CLOSE_PRICE, 2) AS ESTIMATED_BY_CURRENCY
+			FROM
+			(
+		        SELECT TRUNCATE(SUM(BALANCE_QTY *  FN_WAS_GET_PRICE_BY_BC(COIN_NO, (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO WHERE EXCHANGE_ID='COINIS'), #{exchange_id})), 8) AS ESTIMATED_BY_BC
+		        FROM TB_COIN_BALANCE 
+		        WHERE EXCHANGE_ID = #{exchange_id}
+		        AND    USER_ID = #{user_id}
+			) A,
+			(  
+		        SELECT CLOSE_PRICE
+		        FROM  TB_ITEM_CODE_MAST A,
+		              TB_EXCHANGE_MKT_INFO B,
+		              TB_EXCHANGE_MKT_GRP_SISE C,
+		              TB_EXCHANGE_INFO D
+		        WHERE A.COIN_NO = (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO WHERE EXCHANGE_ID='COINIS')
+		        AND   D.EXCHANGE_ID = TRIM(#{exchange_id})
+		        AND   B.EXCHANGE_ID = D.EXCHANGE_ID
+		        AND   A.BASIC_ASSET_COIN_NO = D.CURRENCY_COIN_NO
+		        AND   C.ITEM_CODE = A.ITEM_CODE
+		        AND   C.MKT_GRP_ID = B.MKT_GRP_ID
+			) B <!-- 거래소의 통화화폐코드에 대한 BTC 가격 -->
+			
+	</select>
+	
+	<select id="retrieveDailyLimitQty" resultMap="DailyLimitQtyVO" parameterType="kr.co.coinis.webserver.coinis.wallet.wlt003.vo.ReqHoldingsVO">
+	
+			SELECT TRUNCATE(DAILY_LIMIT_QTY, 8) AS DAILY_LIMIT_QTY
+			FROM  TB_COIN_WITHDRAW_LIMIT A, TB_MEMBER_INFO B, TB_MEMBER_INFO_EXTRA C
+			WHERE B.EXCHANGE_ID = TRIM(#{exchange_id})
+			AND   B.USER_ID = TRIM(#{user_id})
+			AND   A.EXCHANGE_ID = B.EXCHANGE_ID
+			AND   C.EXCHANGE_ID = B.EXCHANGE_ID
+			AND   C.USER_ID = B.USER_ID
+			AND   A.COIN_NO = (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO WHERE EXCHANGE_ID='COINIS')
+			AND   C.USER_TYPE_CD = A.USER_TYPE_CD
+			AND   B.AUTH_LEVEL = A.AUTH_LEVEL
+	</select>
+	
+	<select id="retrieveTotalInUse" resultType="double" parameterType="kr.co.coinis.webserver.coinis.wallet.wlt003.vo.ReqHoldingsVO">
+		    SELECT TRUNCATE(IFNULL(A.QTY_BY_BC, 0.0) + IFNULL(B.QTY_BY_BC, 0.0) + IFNULL(C.QTY_BY_BC, 0.0), 8) AS IN_USE
+		    FROM
+		    (
+		           SELECT SUM(NON_CONTRACT_QTY * FN_WAS_GET_PRICE_BY_BC(B.COIN_NO, 20, #{exchange_id})) AS QTY_BY_BC
+		           FROM  TB_NON_CONTRACT_ORDER A,
+		                 TB_ITEM_CODE_MAST B  
+		           WHERE A.EXCHANGE_ID = TRIM(#{exchange_id})
+		           AND    A.USER_ID = TRIM(#{user_id})
+		           AND    A.NON_CONTRACT_QTY > 0.0 
+		           AND    ORD_TYPE_CD = 1  -- 신규주문
+		           AND    SELL_BUY_RECOG_CD = 2 -- 매도
+		           AND    A.ITEM_CODE = B.ITEM_CODE
+		    ) A,
+		    (
+		           SELECT SUM(REQ_QTY * FN_WAS_GET_PRICE_BY_BC(COIN_NO, 20, #{exchange_id})) AS QTY_BY_BC
+		           FROM  TB_DEPOSIT_WITHDRAW_MGR
+		           WHERE EXCHANGE_ID = TRIM(#{exchange_id})
+		           AND     USER_ID = TRIM(#{user_id})
+		           AND     REQ_STAT_PROC_CD != 5   -- 요청취소 아님
+		           AND     APPROVAL_STAT_CD != -1  -- 승인취소 아님
+		           AND     DW_PROC_STAT_CD  NOT IN (1, -1) -- 처리완료, 처리실패 아님
+		    ) B,
+		    (
+		           SELECT SUM(NON_CONTRACT_QTY * FN_WAS_GET_PRICE_BY_BC(B.BASIC_ASSET_COIN_NO, 20, #{exchange_id})) AS QTY_BY_BC
+		           FROM  TB_NON_CONTRACT_ORDER A,
+		                 TB_ITEM_CODE_MAST B
+		           WHERE A.EXCHANGE_ID = TRIM(#{exchange_id})
+		           AND   USER_ID = TRIM(#{user_id})
+		           AND   A.NON_CONTRACT_QTY > 0.0
+		           AND   ORD_TYPE_CD = 1  -- 신규주문
+		           AND   SELL_BUY_RECOG_CD = 1 -- 매수
+		           AND   A.ITEM_CODE = B.ITEM_CODE
+		    ) C;
+			
+	</select>
+	
+	<select id="retrievePossessionInfo" resultMap="PossessionInfoVO" parameterType="kr.co.coinis.webserver.coinis.wallet.wlt003.vo.ReqHoldingsVO">
+			SELECT  COIN_SYMBOLIC_NM AS 'POSS_ASSET',
+					IFNULL(BALANCE_QTY,0.0) AS 'TOTAL_QTY',
+					IFNULL(BALANCE_QTY,0.0) - IFNULL(USED_QTY,0.0) AS 'USABLE_QTY',
+					IFNULL(USED_QTY,0.0) AS 'IN_USE_QTY',
+					IFNULL(QTY_BY_BC,0.0) AS 'TOTAL_BY_BTC'
+			FROM
+			(
+		                SELECT  A.COIN_NO AS COIN_NO,
+		                        B.COIN_SYMBOLIC_NM AS COIN_SYMBOLIC_NM,
+		                        A.BALANCE_QTY AS BALANCE_QTY,
+		                        TRUNCATE(A.BALANCE_QTY * FN_WAS_GET_PRICE_BY_BC(A.COIN_NO, (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO WHERE EXCHANGE_ID='COINIS'), #{exchange_id}), 8) AS QTY_BY_BC
+		                FROM   TB_COIN_BALANCE A,
+		                        TB_COIN_MAST B
+		                WHERE  A.EXCHANGE_ID = #{exchange_id}
+		                AND     A.USER_ID = #{user_id}
+		                AND     A.COIN_NO = B.COIN_NO
+			) A
+            LEFT OUTER JOIN
+			(
+		                SELECT  COIN_NO,
+		                           TRUNCATE(SUM(USE_QTY), 8) AS USED_QTY
+		                FROM
+		                (
+		                        SELECT COIN_NO,
+		                                  SUM(NON_CONTRACT_QTY) AS USE_QTY
+		                        FROM  TB_NON_CONTRACT_ORDER A,
+		                                  TB_ITEM_CODE_MAST B  
+		                        WHERE A.EXCHANGE_ID = TRIM(#{exchange_id})
+		                        AND    A.USER_ID = TRIM(#{user_id})
+		                        AND    A.NON_CONTRACT_QTY > 0.0
+		                        AND    ORD_TYPE_CD = 1  -- 신규주문
+		                        AND    SELL_BUY_RECOG_CD = 2 -- 매도
+		                        AND    A.ITEM_CODE = B.ITEM_CODE
+		                        GROUP BY COIN_NO
+		                        
+		                        UNION ALL
+		                        SELECT COIN_NO,
+		                                  SUM(REQ_QTY) AS USE_QTY
+		                        FROM  TB_DEPOSIT_WITHDRAW_MGR
+		                        WHERE EXCHANGE_ID = TRIM(#{exchange_id})
+		                        AND     USER_ID = TRIM(#{user_id})
+		                        AND     REQ_STAT_PROC_CD != 5   -- 요청취소 아님
+		                        AND     APPROVAL_STAT_CD != -1  -- 승인취소 아님
+		                        AND     DW_PROC_STAT_CD  NOT IN (1, -1) -- 처리완료, 처리실패 아님
+		                        GROUP BY COIN_NO
+		                        
+		                        UNION ALL
+		                        SELECT BASIC_ASSET_COIN_NO AS COIN_NO,
+		                               SUM(NON_CONTRACT_QTY * ORD_PRICE) AS USE_QTY
+		                        FROM  TB_NON_CONTRACT_ORDER A,
+		                                  TB_ITEM_CODE_MAST B  
+		                        WHERE A.EXCHANGE_ID = TRIM(#{exchange_id})
+		                        AND    USER_ID = TRIM(#{user_id})
+		                        AND    A.NON_CONTRACT_QTY > 0.0
+		                        AND    ORD_TYPE_CD = 1  -- 신규주문
+		                        AND    SELL_BUY_RECOG_CD = 1 -- 매수
+		                        AND    A.ITEM_CODE = B.ITEM_CODE
+		                        GROUP BY BASIC_ASSET_COIN_NO
+		                ) A
+		                GROUP BY COIN_NO
+			) B
+			
+			ON A.COIN_NO = B.COIN_NO;
+		
+	</select>
+	
+	<select id="retrieveAirdropInfoCount" resultType="integer" parameterType="kr.co.coinis.webserver.coinis.wallet.wlt003.vo.ReqHoldingsVO">
+		SELECT COUNT(*)
+		FROM (
+			SELECT AIRDROP_COMPL_DT, COIN_SYMBOLIC_NM, AIRDROP_QTY, TITLE
+			FROM TB_SNAPSHOT_HIST A, TB_SNAPSHOT_BASE_INFO B, TB_COIN_MAST C
+			WHERE APPROVAL_STAT_CD=1 
+				AND EXCEPT_YN=0
+			    AND A.REC_VER_MGT_NO = B.REC_VER_MGT_NO
+			    AND A.COIN_NO = C.COIN_NO
+			    AND EXCHANGE_ID=#{exchange_id}
+			    AND USER_ID=#{user_id}
+		) A
+	</select>
+	
+	<select id="retrieveAirdropInfo" resultMap="AirdropInfoVO" parameterType="kr.co.coinis.webserver.coinis.wallet.wlt003.vo.ReqHoldingsVO">
+		SELECT AIRDROP_COMPL_DT
+				, COIN_SYMBOLIC_NM
+				, AIRDROP_QTY
+				, TITLE
+		FROM TB_SNAPSHOT_HIST A, TB_SNAPSHOT_BASE_INFO B, TB_COIN_MAST C
+		WHERE APPROVAL_STAT_CD=1
+			AND EXCEPT_YN=0
+		    AND A.REC_VER_MGT_NO = B.REC_VER_MGT_NO
+		    AND A.COIN_NO = C.COIN_NO
+		    AND EXCHANGE_ID=#{exchange_id}
+		    AND USER_ID=#{user_id}
+		ORDER BY AIRDROP_COMPL_DT
+		LIMIT #{startIndex}, #{queryDataNum}
+	</select>
+	
+	<select id="retrieveCompensatedRewardInfoCount" resultType="integer" parameterType="kr.co.coinis.webserver.coinis.wallet.wlt003.vo.ReqHoldingsVO">
+		SELECT COUNT(*)
+		FROM (
+			SELECT APPLY_DT, COIN_SYMBOLIC_NM
+					, REQ_QTY AS PROC_QTY
+			      	, PROC_DETAIL
+			FROM TB_MANUAL_PROC_HIST A, TB_COIN_MAST B
+			WHERE APPLY_COMPL_YN = 1
+				  AND A.COIN_NO = B.COIN_NO
+			      AND EXCHANGE_ID=#{exchange_id}
+			      AND USER_ID=#{user_id}
+		) A
+	</select>
+	
+	<select id="retrieveCompensatedRewardInfo" resultMap="CompensatedRewardInfoVO" parameterType="kr.co.coinis.webserver.coinis.wallet.wlt003.vo.ReqHoldingsVO">
+		SELECT APPLY_DT
+				, COIN_SYMBOLIC_NM
+				, IF( (IFNULL(REQ_QTY, 0) - IFNULL(PROC_FEE, 0) - IFNULL(WTDRW_FEE, 0)) > 0, (IFNULL(REQ_QTY, 0) - IFNULL(PROC_FEE, 0) - IFNULL(WTDRW_FEE, 0)), 0) AS PROC_QTY
+      			, PROC_DETAIL
+		FROM TB_MANUAL_PROC_HIST A, TB_COIN_MAST B
+		WHERE APPLY_COMPL_YN = 1
+		      AND A.COIN_NO = B.COIN_NO
+		      AND EXCHANGE_ID=#{exchange_id}
+		      AND USER_ID=#{user_id}
+		ORDER BY APPLY_DT
+		LIMIT #{startIndex}, #{queryDataNum}
+	</select>
+	
+</mapper>
+

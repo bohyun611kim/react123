@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.coinis.mypage.mpg004.dao.IdSetupDAO">
+
+	<resultMap type="kr.co.coinis.webserver.coinis.mypage.mpg004.vo.ExtraUserInfoVO" id="ExtraUserInfoVO">
+		<result property="user_type_cd"			column="USER_TYPE_CD"			jdbcType="INTEGER"/>
+		<result property="auth_level"			column="AUTH_LEVEL"				jdbcType="INTEGER"/>
+		<result property="reg_dt"				column="REG_DT"					jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.coinis.mypage.mpg004.vo.CorpInfoVO" id="CorpInfoVO">
+		<result property="corp_nm"				column="CORP_NM"				jdbcType="VARCHAR"/>
+		<result property="represent_nm"			column="REPRESENT_NM"			jdbcType="VARCHAR"/>
+		<result property="corp_addr"			column="CORP_ADDR"				jdbcType="VARCHAR"/>
+		<result property="corp_tel_no"			column="CORP_TEL_NO"			jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<select id="selectCountryList" resultType="hashmap">
+		SELECT ENG_NM
+			 , COUNTRY_CD
+		FROM TB_COUNTRY_INFO
+		WHERE USE_YN = 1
+		ORDER BY ENG_NM ASC
+	</select>
+	
+	<!-- 사용자 신분증 인증 파일 정보 저장 프로시져 -->
+	<update id="call_PR_WAS_INSERT_ID_AUTH_INFO" statementType="CALLABLE" parameterType="java.util.Map">
+		{
+			CALL PR_WAS_INSERT_ID_AUTH_INFO (
+				#{ARG_EXCHANGE_ID,		mode=IN,	jdbcType=VARCHAR},
+				#{ARG_USER_ID,			mode=IN,	jdbcType=VARCHAR},
+				#{ARG_FILE_NM_OF_ID,	mode=IN,	jdbcType=VARCHAR},
+				#{V_RTN_CD,				mode=OUT,	jdbcType=NUMERIC},
+				#{V_RTN_MSG,			mode=OUT,	jdbcType=VARCHAR}
+			)
+		}		
+	</update>
+	
+	<!-- 사용자 추가정보 저장 프로시져 -->
+	<update id="call_PR_WAS_UPDATE_MEMBER_INFO_EXTRA" statementType="CALLABLE" parameterType="java.util.Map">
+		{
+			CALL PR_WAS_UPDATE_MEMBER_INFO_EXTRA (
+				#{ARG_EXCHANGE_ID,				mode=IN,		jdbcType=VARCHAR},
+				#{ARG_USER_ID,					mode=IN,		jdbcType=VARCHAR},
+				#{ARG_USER_TYPE_CD,				mode=IN,		jdbcType=NUMERIC},
+				#{ARG_COUNTRY_CD,				mode=IN,		jdbcType=VARCHAR},
+				#{ARG_POSTAL_CODE,				mode=IN,		jdbcType=VARCHAR},
+				#{ARG_ADDRESS,					mode=IN,		jdbcType=VARCHAR},
+				#{ARG_FULL_NAME,				mode=IN,		jdbcType=VARCHAR},
+				#{ARG_BIRTHDAY,					mode=IN,		jdbcType=VARCHAR},
+				#{ARG_ID_TYPE_CD,				mode=IN,		jdbcType=NUMERIC},
+				#{ARG_ID_VERIFI_YN,				mode=IN,		jdbcType=NUMERIC},
+				#{ARG_ID_VERIFI_RESULT_CD,		mode=IN,		jdbcType=NUMERIC},
+				#{ARG_ID_VERIFI_ERR_DET_CD,		mode=IN,		jdbcType=NUMERIC},
+				#{ARG_ID_MEMO_CONT,				mode=IN,		jdbcType=VARCHAR},
+				#{ARG_ID_VERIFI_PROC_ID,		mode=IN,		jdbcType=VARCHAR},
+				null,
+				#{ARG_KEY1,						mode=IN,		jdbcType=VARCHAR},
+				#{ARG_KEY2,						mode=IN,		jdbcType=VARCHAR},
+				#{V_RTN_CD,						mode=OUT,		jdbcType=NUMERIC},
+				#{V_RTN_MSG,					mode=OUT,		jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<select id="selectExtraUserInfo" parameterType="kr.co.coinis.webserver.common.vo.ExchangeIDUserIDPairVO" resultMap="ExtraUserInfoVO">
+		SELECT B.USER_TYPE_CD
+		     , A.AUTH_LEVEL
+		     , A.REG_DT
+		FROM TB_MEMBER_INFO A
+		   , TB_MEMBER_INFO_EXTRA B
+		WHERE A.EXCHANGE_ID = TRIM(#{exchange_id})
+		AND   A.USER_ID = TRIM(#{user_id})
+		AND   A.EXCHANGE_ID = B.EXCHANGE_ID
+		AND   A.USER_ID = B.USER_ID
+	</select>
+	
+	<!-- 사업자 등록번호로 법인 정보 조회 -->
+	<select id="selectCorpInfo" parameterType="java.util.Map" resultMap="CorpInfoVO">
+		SELECT CORP_NM
+		     , REPRESENT_NM
+		     , CORP_ADDR
+		     , CORP_TEL_NO
+		FROM TB_MEMBER_CORP_INFO A
+		   , TB_MEMBER_INFO_EXTRA B
+		WHERE A.CORP_REG_NUM = TRIM(#{corpNo})
+		AND   USER_ID = TRIM(#{user_id})
+		AND   A.CORP_REG_NUM = B.CORP_REG_NUM
+	</select>
+	
+	<!-- 법인 회원 신분증 인증 파일 정보 저장 프로시져 -->
+	<update id="call_PR_WAS_INSERT_MEMBER_CORP_AUTH_INFO" statementType="CALLABLE" parameterType="java.util.Map">
+		{
+			CALL PR_WAS_INSERT_MEMBER_CORP_AUTH_INFO (
+				#{ARG_CORP_REG_NUM,				mode=IN,		jdbcType=VARCHAR},
+				#{ARG_FILE_NM_OF_CORP_AUTH,		mode=IN,		jdbcType=VARCHAR},
+				#{V_RTN_CD,						mode=OUT,		jdbcType=NUMERIC},
+				#{V_RTN_MSG,					mode=OUT,		jdbcType=VARCHAR}
+			)
+		}		
+	</update>
+	
+	<!-- 회원 추가정보 신분증 인증정보 업데이트 -->
+	<update id="updateMemberInfoExtraIDAuthInfo" parameterType="java.util.Map">
+		UPDATE TB_MEMBER_INFO_EXTRA
+		SET	   ID_TYPE_CD = #{idCardType}
+			 , ID_VERIFI_REQ_DT = DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s')
+			 , ID_VERIFI_YN = 0
+		WHERE EXCHANGE_ID = TRIM(#{exchangeId})
+		AND   USER_ID = TRIM(#{userId})
+	</update>
+	
+</mapper>
+

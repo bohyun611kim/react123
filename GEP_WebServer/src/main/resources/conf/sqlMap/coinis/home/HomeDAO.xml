@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.coinis.home.dao.HomeDAO">
+
+	<resultMap type="kr.co.coinis.webserver.coinis.home.vo.HomeTopItemVO" id="HomeTopItemVO">
+			<result property="item_nm"					column="ITEM_NM"					jdbcType="VARCHAR"/>
+			<result property="item_code"				column="ITEM_CODE"					jdbcType="VARCHAR"/>
+			<result property="price_dev_amt"			column="PRICE_DEV_AMT"		 		jdbcType="DECIMAL"/>
+			<result property="price_dev_rate"			column="PRICE_DEV_RATE"				jdbcType="DECIMAL"/>
+			<result property="trade_vol"				column="TRADE_VOL"					jdbcType="DECIMAL"/>
+			<result property="close_price" 				column="CLOSE_PRICE"				jdbcType="DECIMAL"/>
+			<result property="price_dsp_decimal_pnt"	column="PRICE_DSP_DECIMAL_PNT"		jdbcType="INTEGER"/>
+
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.coinis.home.vo.MarketsByExchangeVO" id="MarketsByExchangeVO">
+			<result property="mkt_nm"					column="MKT_NM"						jdbcType="VARCHAR"/>
+			<result property="exchange_id"				column="EXCHANGE_ID"				jdbcType="VARCHAR"/>
+			<result property="coin_no"					column="COIN_NO"					jdbcType="INTEGER"/>
+			<collection 
+				property="itemSiseList"
+				column="{coinNo=COIN_NO, exchangeID=EXCHANGE_ID}"
+				javaType="java.util.ArrayList"
+				ofType="kr.co.coinis.webserver.home.vo.ItemSiseListByMarketVO"
+				select="retrieveItemSiseListByMarket"
+			>
+			</collection>
+	
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.coinis.home.vo.ItemSiseListByMarketVO" id="ItemSiseListByMarketVO">
+			<result property="item_nm"					column="ITEM_NM"					jdbcType="VARCHAR"/>
+			<result property="item_code"				column="ITEM_CODE"					jdbcType="VARCHAR"/>
+			<result property="close_price"				column="CLOSE_PRICE"				jdbcType="DECIMAL"/>
+			<result property="price_dev_rate"			column="PRICE_DEV_RATE"				jdbcType="DECIMAL"/>
+			<result property="high_price"				column="HIGH_PRICE"					jdbcType="DECIMAL"/>
+			<result property="low_price"				column="LOW_PRICE"					jdbcType="DECIMAL"/>
+			<result property="trade_vol"				column="TRADE_VOL"					jdbcType="DECIMAL"/>
+			<result property="price_dsp_decimal_pnt"	column="PRICE_DSP_DECIMAL_PNT"		jdbcType="INTEGER"/>
+			<result property="vol_dsp_decimal_pnt"		column="VOL_DSP_DECIMAL_PNT"		jdbcType="INTEGER"/>
+	</resultMap>
+	
+	<select id="retrieveTopVolumeList" resultMap="HomeTopItemVO">
+			SELECT B.ITEM_NM
+				   , B.ITEM_CODE
+			       , A.PRICE_DEV_AMT
+			       , TRUNCATE(PRICE_DEV_RATE, 2) AS PRICE_DEV_RATE
+			       , A.CLOSE_PRICE
+			       , B.PRICE_DSP_DECIMAL_PNT
+			       , C.TRADE_VOL
+			FROM  TB_EXCHANGE_MKT_GRP_SISE A
+			      , TB_ITEM_CODE_MAST B
+			      , TB_ITEM_CODE_24HOUR_VOL C
+			      , TB_EXCHANGE_MKT_INFO D
+			      , TB_MKT_ITEM_CODE_INFO E
+			WHERE D.EXCHANGE_ID = TRIM(#{exchangeID})
+			      AND A.ITEM_CODE = C.ITEM_CODE
+			      AND C.ITEM_CODE = B.ITEM_CODE
+			      AND A.MKT_GRP_ID = D.MKT_GRP_ID
+			      AND D.MKT_GRP_ID = C.MKT_GRP_ID
+			      AND E.TRADE_STAT_CD = 1
+			      AND E.ITEM_CODE = A.ITEM_CODE
+			      AND E.ITEM_CODE = C.ITEM_CODE
+			ORDER BY TRADE_VOL DESC LIMIT 1
+	</select>
+
+	<select id="retrieveTopGainList" resultMap="HomeTopItemVO">
+			SELECT B.ITEM_NM
+				   , B.ITEM_CODE
+			       , A.PRICE_DEV_AMT
+			       , TRUNCATE(PRICE_DEV_RATE, 2) AS PRICE_DEV_RATE
+			       , A.CLOSE_PRICE
+			       , B.PRICE_DSP_DECIMAL_PNT
+			       , C.TRADE_VOL
+			FROM  TB_EXCHANGE_MKT_GRP_SISE A
+			      , TB_ITEM_CODE_MAST B
+			      , TB_ITEM_CODE_24HOUR_VOL C
+			      , TB_EXCHANGE_MKT_INFO D
+			      , TB_MKT_ITEM_CODE_INFO E
+			WHERE D.EXCHANGE_ID = TRIM(#{exchangeID})
+				  AND E.EXCHANGE_ID = D.EXCHANGE_ID
+			      AND A.ITEM_CODE = C.ITEM_CODE
+			      AND C.ITEM_CODE = B.ITEM_CODE
+			      AND A.MKT_GRP_ID = D.MKT_GRP_ID
+			      AND D.MKT_GRP_ID = C.MKT_GRP_ID
+			      AND E.TRADE_STAT_CD = 1
+			      AND E.ITEM_CODE = A.ITEM_CODE
+			      AND E.ITEM_CODE = C.ITEM_CODE
+			ORDER BY PRICE_DEV_RATE DESC LIMIT 2
+	</select>
+	
+	<select id="retrieveNewListingList" resultMap="HomeTopItemVO">
+			SELECT B.ITEM_NM
+				   , B.ITEM_CODE
+			       , A.PRICE_DEV_AMT
+			       , TRUNCATE(PRICE_DEV_RATE, 2) AS PRICE_DEV_RATE
+			       , A.CLOSE_PRICE
+			       , B.PRICE_DSP_DECIMAL_PNT
+			       , C.TRADE_VOL
+			FROM  TB_EXCHANGE_MKT_GRP_SISE A
+			      , TB_ITEM_CODE_MAST B
+			      , TB_ITEM_CODE_24HOUR_VOL C
+			      , TB_EXCHANGE_MKT_INFO D
+			      , TB_MKT_ITEM_CODE_INFO E
+			WHERE D.EXCHANGE_ID = TRIM(#{exchangeID})
+			      AND E.EXCHANGE_ID = D.EXCHANGE_ID
+			      AND A.ITEM_CODE = C.ITEM_CODE
+			      AND C.ITEM_CODE = B.ITEM_CODE
+			      AND A.MKT_GRP_ID = D.MKT_GRP_ID
+			      AND D.MKT_GRP_ID = C.MKT_GRP_ID
+			      AND E.TRADE_STAT_CD = 1
+			      AND E.ITEM_CODE = A.ITEM_CODE
+			      AND E.ITEM_CODE = C.ITEM_CODE
+			ORDER BY LISTED_DAY DESC LIMIT 2
+	</select>
+	
+	<select id="retriveMarketsByExchange" resultMap="MarketsByExchangeVO">
+			SELECT B.COIN_SYMBOLIC_NM AS MKT_NM
+			     , EXCHANGE_ID
+			     , B.COIN_NO
+			FROM TB_EXCHANGE_MKT_INFO A
+			   , TB_COIN_MAST B
+			WHERE EXCHANGE_ID= TRIM(#{exchangeID})
+			AND   A.BASIC_ASSET_COIN_NO = B.COIN_NO
+			AND   MKT_STAT_CD = 1
+			ORDER BY MKT_DISP_ORDER ASC
+	</select>
+	
+	<select id="retrieveItemSiseListByMarket" resultMap="ItemSiseListByMarketVO">
+<!-- 			SELECT SUBSTRING_INDEX(ITEM_NM, '/', 1) AS ITEM_NM
+			      , CLOSE_PRICE
+			      , TRUNCATE(PRICE_DEV_RATE, 2) AS PRICE_DEV_RATE
+			      , HIGH_PRICE
+			      , LOW_PRICE
+			      , TRADE_VOL
+			      , B.PRICE_DSP_DECIMAL_PNT
+			      , B.VOL_DSP_DECIMAL_PNT
+			FROM TB_EXCHANGE_MKT_GRP_SISE A
+			   , TB_ITEM_CODE_MAST B
+			   , TB_EXCHANGE_MKT_INFO C
+			   , TB_ITEM_CODE_24HOUR_VOL D
+			   , TB_MKT_ITEM_CODE_INFO E
+			WHERE C.EXCHANGE_ID = TRIM(#{exchangeID})
+			AND C.BASIC_ASSET_COIN_NO = TRIM(#{coinNo})
+			AND E.EXCHANGE_ID = C.EXCHANGE_ID
+			AND E.ITEM_CODE = D.ITEM_CODE
+			AND E.TRADE_STAT_CD = 1
+			AND A.ITEM_CODE = B.ITEM_CODE
+			AND A.ITEM_CODE = D.ITEM_CODE
+			AND A.MKT_GRP_ID = C.MKT_GRP_ID
+			AND D.MKT_GRP_ID = C.MKT_GRP_ID
+			ORDER BY TRADE_VOL DESC -->
+			
+			SELECT SUBSTRING_INDEX(E.ITEM_NM, '/', 1) AS ITEM_NM
+			      , E.ITEM_CODE
+			      , C.CLOSE_PRICE
+			      , TRUNCATE(C.PRICE_DEV_RATE, 2) AS PRICE_DEV_RATE
+			      , C.HIGH_PRICE
+			      , C.LOW_PRICE
+			      , D.TRADE_VOL
+			      , E.PRICE_DSP_DECIMAL_PNT
+			      , E.VOL_DSP_DECIMAL_PNT
+			FROM TB_MKT_ITEM_CODE_INFO A
+			   , TB_EXCHANGE_MKT_INFO B
+			   , TB_EXCHANGE_MKT_GRP_SISE C
+			   , TB_ITEM_CODE_24HOUR_VOL D
+			   , TB_ITEM_CODE_MAST E
+			WHERE B.EXCHANGE_ID = 'COINIS'
+			AND   B.BASIC_ASSET_COIN_NO = TRIM(#{coinNo})
+			AND   A.TRADE_STAT_CD = 1
+			AND   A.MKT_ID = B.MKT_ID
+			AND   B.MKT_STAT_CD = 1
+			AND   B.MKT_GRP_ID = C.MKT_GRP_ID
+			AND   A.ITEM_CODE = C.ITEM_CODE
+			AND   B.MKT_GRP_ID = D.MKT_GRP_ID
+			AND   A.ITEM_CODE = D.ITEM_CODE
+			AND   A.ITEM_CODE = E.ITEM_CODE
+			ORDER BY TRADE_VOL DESC
+	</select>
+	
+</mapper>
+

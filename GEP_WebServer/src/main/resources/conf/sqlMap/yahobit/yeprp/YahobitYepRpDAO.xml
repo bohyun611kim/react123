@@ -1,0 +1,1332 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.yahobit.yeprp.dao.YahobitYepRpDAO">
+
+	<!-- select TB_STAKING_DETAIL_RECORD, TB_STAKING_EXCHANGE_INFO, TB_EXCHANGE_INFO, TB_STAKING_BASIS_INFO -->
+	<!-- 회원의 Staking 정보를 가져온다. -->
+	<select id="selectStakeInfo" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			* 
+		FROM
+		(
+			SELECT
+				  DATE_FORMAT(DATE_ADD(NOW(6), INTERVAL - 1 DAY),  '%Y%m%d') AS TRADE_DAY
+				, A.COIN_NO		AS COIN_NO
+				, DATE_FORMAT(NOW(6),  '%Y%m%d')	AS SUMMARY_DAY
+				, SUM(A.STAKING_QTY)	AS TOTAL_STAKING_QTY
+				, COUNT(DISTINCT A.EXCHANGE_ID, A.USER_ID) AS TOT_STAKING_USERS
+				, TRUNCATE(SUM(A.STAKING_QTY) / COUNT(DISTINCT A.EXCHANGE_ID, A.USER_ID), 0)	AS STAKING_AVG_QTY
+				, MAX(IFNULL(D.REF_REWARD_PCT, 0.0))	AS REF_REWARD_PCT
+				
+			FROM 	TB_STAKING_DETAIL_RECORD A,
+					TB_STAKING_EXCHANGE_INFO B,
+					TB_EXCHANGE_INFO C,
+					TB_STAKING_BASIS_INFO D
+			WHERE
+					A.EXCHANGE_ID = B.EXCHANGE_ID
+				AND	A.COIN_NO = 430
+				AND	A.COIN_NO = B.COIN_NO
+				AND	B.APPLY_START_DAY <= DATE_FORMAT(DATE_ADD(NOW(6), INTERVAL - 1 DAY),  '%Y%m%d')
+				AND	B.APPLY_END_DAY >= DATE_FORMAT(DATE_ADD(NOW(6), INTERVAL - 1 DAY),  '%Y%m%d')
+				AND	B.EXCHANGE_ID = C.EXCHANGE_ID
+				AND	C.EXCHANGE_STAT_CD = 1
+				AND	A.COIN_NO = D.COIN_NO
+				AND	D.APPLY_START_DAY <= DATE_FORMAT(DATE_ADD(NOW(6), INTERVAL - 1 DAY),  '%Y%m%d')
+				AND	D.APPLY_END_DAY >= DATE_FORMAT(DATE_ADD(NOW(6), INTERVAL - 1 DAY),  '%Y%m%d')
+				AND	TIMESTAMPDIFF(DAY, STR_TO_DATE(STAKING_ACTIVATE_DT, '%Y%m%d%H%i%s%f') , STR_TO_DATE( CONCAT(DATE_FORMAT(DATE_ADD(NOW(6), INTERVAL - 1 DAY),  '%Y%m%d'),'235959999999'),'%Y%m%d%H%i%s%f')) > 0
+		) A
+		LEFT OUTER JOIN 
+		( 
+			SELECT 
+				* 
+			FROM 	TB_STAKING_DETAIL_RECORD 
+			WHERE 
+					EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}
+				AND USER_ID = #{USER_ID, jdbcType=VARCHAR}
+				AND COIN_NO = 430
+		) B
+		ON A.COIN_NO = B.COIN_NO
+	]]>
+	</select>
+	
+	<!-- select TB_ITEM_CODE_24HOUR_VOL, TB_MKT_ITEM_CODE_INFO, TB_EXCHANGE_MKT_INFO -->
+	<!-- KRW, YEP 마켓별 거래량, 거래대금정보를 가져온다. -->
+	<select id="selectMarketTradeVolume" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			  SUM(V.TRADE_AMT) AS TRADE_AMT
+			, SUM(V.TRADE_VOL) AS TRADE_VOL
+		FROM 
+			TB_ITEM_CODE_24HOUR_VOL V,
+			TB_MKT_ITEM_CODE_INFO A,
+			TB_EXCHANGE_MKT_INFO B
+		WHERE 1 = 1
+			AND V.MKT_GRP_ID = B.MKT_GRP_ID
+			AND V.ITEM_CODE = A.ITEM_CODE
+			AND A.MKT_ID = B.MKT_ID
+			AND A.TRADE_STAT_CD = 1
+			AND B.EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}
+			AND B.MKT_NM = #{MKT_NM, jdbcType=VARCHAR}
+	]]>
+	</select>
+	
+	<!-- ============================================================================================= -->
+	<!--                                      Mining 현황 관련                                                                            -->
+	<!-- ============================================================================================= -->
+	<!-- select TB_STATUS_DSTRBT -->
+	<!-- YEP 유통현황 정보를 가져온다. -->
+	<select id="selectDistributionStatus" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			*
+		FROM 
+			TB_STATUS_DSTRBT
+		WHERE COIN_NO = 430
+		ORDER BY SUM_UP_DT DESC
+		LIMIT 1
+	]]>
+	</select>
+	
+	<!-- select TB_STATUS_MINING -->
+	<!-- YEP Mining 현황 상단 종합 Status 자료를 가져온다. -->
+	<select id="selectMiningStatus" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			  TOTAL_MINING_QTY
+			, TOTAL_MINING_WAIT_QTY
+			, TOTAL_MINING_COMPL_QTY
+			, TOT_FREEZING_QTY
+			-- , (SELECT SUM(T.FREEZING_COMPL_QTY) FROM TB_MINING_FREEZING_RECORD T WHERE T.FREEZING_REAS_CD = 1) AS TOT_FREEZING_QTY
+		FROM 
+			TB_STATUS_MINING
+		WHERE COIN_NO = 430
+		ORDER BY SUM_UP_DT DESC
+		LIMIT 1
+	]]>
+	</select>
+	
+	<!-- select TB_STATUS_MINING -->
+	<!-- YEP Mining 현황 어제 및 오늘의 발생수수료 대비 실 배분량 자료를 가져온다. -->
+	<select id="selectMiningDistributionInfo" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			  A.MINING_UNIT_PRICE			-- 채굴 단가
+			, A.FEE_AMT						-- 전체 수수료
+			, A.YEB_AVG_PRICE				-- YEP 평단가
+			, IFNULL(B.REAL_DSTRBT_QTY, 0) REAL_DSTRBT_QTY				-- 기여도기준실배분수량
+			, IFNULL(B.DAILY_MINING_FRZ_QTY, 0)	DAILY_MINING_FRZ_QTY	-- 기여도기준 일채굴Freeze수량
+			, B.CNTRBT_BONUS_DSTRBT_QTY		-- 기여보너스배분수량
+			, B.CNTRBT_BONUS_FRZ_QTY		-- 기여보너스Freez수량
+			, B.REAL_DSTRBT_RATE			-- 실 배분율
+		FROM 
+			TB_STATUS_MINING A
+		LEFT OUTER JOIN TB_MINING_DAILY_SUMMARY B
+		ON A.BASE_DAY = B.TRADE_DAY
+		WHERE A.COIN_NO = 430
+			AND A.BASE_DAY = #{BASE_DATE, jdbcType=VARCHAR}
+		ORDER BY A.SUM_UP_DT DESC
+		LIMIT 1
+	]]>
+	</select>
+	
+	<!-- select TB_MINING_DAILY_MBR_SUMMARY -->
+	<!-- YEP Mining 현황 오늘의 기여율 순위 YEP Mining 형황 리스트 자료를 가져온다. -->
+	<select id="selectTodayMinersList" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			* ,
+			IFNULL( (
+				SELECT
+				  A.BONUS_DSTRBT_RATE
+				FROM TB_MINING_CNTRBT_BONUS_POLICY A
+				WHERE 1 = 1
+					AND A.COIN_NO = 430
+					AND A.APPLY_START_DAY <= DATE_FORMAT(NOW(6),  '%Y%m%d')
+					AND A.APPLY_END_DAY >= DATE_FORMAT(NOW(6),  '%Y%m%d')
+					AND A.FROM_RANKING_PCT < TOP_PCT
+					AND A.TO_RANKING_PCT >= TOP_PCT
+          			AND A.CNTRBT_TYPE_CD = 1
+			), 0) AS WEIGHT_APPLIED_PCT
+		FROM 
+			TB_MINING_DAILY_MBR_SUMMARY
+		WHERE
+			TOP_PCT <= 20
+			AND TRADE_DAY = DATE_FORMAT(DATE_ADD(NOW(6), INTERVAL - 0 DAY),  '%Y%m%d')
+		ORDER BY CNTRBT_RANK ASC
+	]]>
+	</select>
+	
+	<!-- select TB_MINING_DAILY_MBR_SUMMARY -->
+	<!-- YEP Mining 현황 날짜별 나의 Mining현황 자료를 가져온다. -->
+	<select id="selectMyMiningStatus" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT * FROM
+  		(
+			SELECT 
+				A.*
+			FROM 
+				 TB_MINING_DAILY_MBR_SUMMARY A
+			LEFT OUTER JOIN TB_STATUS_MINING B
+			ON	A.COIN_NO 			= B.COIN_NO
+				AND A.TRADE_DAY 	= B.BASE_DAY
+			WHERE 1 = 1
+				AND A.EXCHANGE_ID 	= #{EXCHANGE_ID, jdbcType=VARCHAR}
+				AND A.USER_ID 		= #{USER_ID, jdbcType=VARCHAR}
+				AND A.TRADE_DAY 	= #{BASE_DATE, jdbcType=VARCHAR}
+				AND A.COIN_NO		= 430
+	  	)A
+	  	RIGHT OUTER JOIN 
+	    (
+	      	SELECT 
+	        	B.BASE_DAY
+	        	, B.COIN_NO
+			    , B.FEE_AMT AS TOT_FEE_AMT
+	      	FROM TB_STATUS_MINING B
+		    WHERE B.BASE_DAY = #{BASE_DATE, jdbcType=VARCHAR}
+	        AND B.COIN_NO = 430
+	    ) B    
+	  	ON A.COIN_NO = B.COIN_NO
+		AND A.TRADE_DAY	= B.BASE_DAY
+	]]>
+	</select>
+	
+	<!-- select TB_STATUS_MINING -->
+	<!-- YEP Mining 현황 월별 일자별 Mining현황 자료를 가져온다. -->
+	<select id="selectMonthlyMiningList" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			  BASE_DAY
+			, FEE_AMT
+			, YEB_AVG_PRICE
+			, DSTRBT_QTY_BY_CNTRBT
+			, CNTRBT_BONUS_DSTRBT_QTY
+			, (DAILY_MINING_FRZ_QTY + CNTRBT_BONUS_FRZ_QTY) AS FREEZING_QTY
+			-- , (DSTRBT_QTY_BY_CNTRBT + CNTRBT_BONUS_DSTRBT_QTY) / (FEE_AMT / 100000) AS YEP_PER_10K
+			, (100000 / MINING_UNIT_PRICE) AS YEP_PER_10K
+			, MINING_UNIT_PRICE
+		FROM 
+			TB_STATUS_MINING
+		WHERE 1 = 1
+			AND SUBSTRING(BASE_DAY, 1, 6) = #{BASE_MONTH, jdbcType=VARCHAR}
+			AND BASE_DAY 	< DATE_FORMAT(NOW(6),  '%Y%m%d')
+			AND COIN_NO		= 430
+		ORDER BY BASE_DAY DESC
+	]]>
+	</select>
+	
+	<!-- select TB_MINING_DAILY_MBR_SUMMARY -->
+	<!-- YEP Mining 현황 회원 월별 일자별 Mining현황 자료를 가져온다. -->
+	<select id="selectMiningListByDate" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			  A.TRADE_DAY
+			, A.FEE_AMT
+			, A.APPLY_COMPL_YN
+			, A.CNTRBT_RATE
+			, A.REAL_DSTRBT_QTY
+			, A.WEIGHT_APPLIED_FEE_AMT
+			, A.AVG_UNIT_PRICE
+      		, B.MINING_UNIT_PRICE
+		FROM 
+			TB_MINING_DAILY_MBR_SUMMARY A
+      		, TB_STATUS_MINING B
+		WHERE 1 = 1
+		    AND A.TRADE_DAY = B.BASE_DAY 
+		    AND A.COIN_NO = B.COIN_NO
+			AND A.EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}
+			AND A.USER_ID 	= #{USER_ID, jdbcType=VARCHAR}
+			AND SUBSTRING(A.TRADE_DAY, 1, 6) = #{BASE_MONTH, jdbcType=VARCHAR}
+			AND A.TRADE_DAY 	< DATE_FORMAT(NOW(6),  '%Y%m%d')
+			AND A.COIN_NO		= 430
+		ORDER BY A.TRADE_DAY DESC
+	]]>
+	</select>
+
+	<!-- select TB_SISE_TICK_DATA -->
+	<!-- YEP Mining 현황 회원 월별 일자별 Mining현황 자료를 가져온다. -->
+	<select id="selectYepClosePrice" resultType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			  CLOSE_PRICE
+		FROM 
+			TB_SISE_TICK_DATA
+		WHERE 1 = 1
+			AND MKT_GRP_ID	= 'MKT_GRP_0005'
+			AND ITEM_CODE	= 'YEPKRW'
+		ORDER BY TRADE_DT DESC
+		LIMIT 1
+	]]>
+	</select>
+
+	<!-- select TB_CODE_MAST -->
+	<!-- 회원의 보유 KRW 잔고를 가져온다.  -->
+	<select id="selectKrwPossessionInfo" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT  
+                A.COIN_NO AS 'COIN_NO',
+                COIN_SYMBOLIC_NM AS 'POSS_ASSET',
+                IFNULL(BALANCE_QTY, 0.0) AS 'TOTAL_QTY',
+                IFNULL(BALANCE_QTY, 0.0) - IFNULL(USED_QTY,0.0) AS 'USABLE_QTY',
+                IFNULL(USED_QTY, 0.0) AS 'IN_USE_QTY',
+				TRUNCATE((IFNULL(BALANCE_QTY, 0.0) - IFNULL(USED_QTY,0.0)) * FN_WAS_GET_PRICE_BY_BC(A.COIN_NO, (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO WHERE EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}), #{EXCHANGE_ID, jdbcType=VARCHAR}), 8) AS 'TOTAL_USABLE_BY_BC',
+                IFNULL(QTY_BY_BC, 0.0) AS 'TOTAL_BY_BC'
+        FROM
+            (
+                SELECT  A.COIN_NO AS COIN_NO,
+                        B.COIN_SYMBOLIC_NM AS COIN_SYMBOLIC_NM,
+                        A.BALANCE_QTY AS BALANCE_QTY,
+                        TRUNCATE(A.BALANCE_QTY * FN_WAS_GET_PRICE_BY_BC(A.COIN_NO, (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO WHERE EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}), #{EXCHANGE_ID, jdbcType=VARCHAR}), 8) AS QTY_BY_BC
+                FROM   TB_COIN_BALANCE A,
+                        TB_COIN_MAST B
+                WHERE  A.EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}
+                AND     A.USER_ID = #{USER_ID, jdbcType=VARCHAR}
+                AND     A.COIN_NO = B.COIN_NO
+                AND     A.COIN_NO = 10		-- KRW만 가져옴
+            ) A
+        LEFT OUTER JOIN
+            (
+                SELECT  COIN_NO,
+                        TRUNCATE(SUM(USE_QTY), 8) AS USED_QTY
+                FROM
+                (
+                    SELECT COIN_NO,
+                        SUM(NON_CONTRACT_QTY) AS USE_QTY
+                    FROM  TB_NON_CONTRACT_ORDER A,
+                        TB_ITEM_CODE_MAST B  
+                    WHERE A.EXCHANGE_ID = TRIM(#{EXCHANGE_ID, jdbcType=VARCHAR})
+                    AND    A.USER_ID = TRIM(#{USER_ID, jdbcType=VARCHAR})
+                    AND    A.NON_CONTRACT_QTY &gt; 0.0
+                    AND    ORD_TYPE_CD = 1 
+                    AND    SELL_BUY_RECOG_CD = 2 
+                    AND    A.ITEM_CODE = B.ITEM_CODE
+                    GROUP BY COIN_NO
+                    
+                    UNION ALL
+                    SELECT COIN_NO,
+                        SUM(REQ_QTY) AS USE_QTY
+                    FROM  TB_DEPOSIT_WITHDRAW_MGR
+                    WHERE EXCHANGE_ID = TRIM(#{EXCHANGE_ID, jdbcType=VARCHAR})
+                    AND     USER_ID = TRIM(#{USER_ID, jdbcType=VARCHAR})
+                    AND     REQ_STAT_PROC_CD != 5  
+                    AND     APPROVAL_STAT_CD != -1 
+                    AND     DW_PROC_STAT_CD  NOT IN (1, -1) 
+                    AND     DW_REQ_TYPE_CD IN (2, 4)
+                    GROUP BY COIN_NO
+                    
+                    UNION ALL
+                    SELECT BASIC_ASSET_COIN_NO AS COIN_NO,
+                        SUM(NON_CONTRACT_QTY * ORD_PRICE) AS USE_QTY
+                    FROM  TB_NON_CONTRACT_ORDER A,
+                        TB_ITEM_CODE_MAST B  
+                    WHERE A.EXCHANGE_ID = TRIM(#{EXCHANGE_ID, jdbcType=VARCHAR})
+                    AND    USER_ID = TRIM(#{USER_ID, jdbcType=VARCHAR})
+                    AND    A.NON_CONTRACT_QTY &gt; 0.0
+                    AND    ORD_TYPE_CD = 1 
+                    AND    SELL_BUY_RECOG_CD = 1 
+                    AND    A.ITEM_CODE = B.ITEM_CODE
+                    GROUP BY BASIC_ASSET_COIN_NO
+                ) A
+                GROUP BY COIN_NO
+            ) B
+        
+        ON A.COIN_NO = B.COIN_NO
+	</select>
+
+	<!-- ============================================================================================= -->
+	<!--                                      Staking 현황 관련                                                                            -->
+	<!-- ============================================================================================= -->
+	<!-- select TB_STATUS_STAKING -->
+	<!-- YEP Staking 현황 정보를 가져온다. -->
+	<select id="selectStakingStatus" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+    	SELECT * FROM 
+    	(
+			SELECT 
+				  A.BASE_DAY
+				, A.TOT_DSTRBT_QTY
+				-- , A.TOTAL_UN_DSTRBT_QTY
+				, A.TOTAL_CIRCUL_QTY
+				, A.TOTAL_STAKING_QTY
+				-- , A.TOT_FREEZING_QTY
+				, (SELECT SUM(T.FREEZING_COMPL_QTY) FROM TB_MINING_FREEZING_RECORD T WHERE T.FREEZING_REAS_CD = 2 OR T.FREEZING_REAS_CD = 3) AS TOT_FREEZING_QTY
+				, B.STAKING_MIN_QTY	
+				, A.COIN_NO
+			FROM
+				TB_STATUS_STAKING A,
+				TB_STAKING_BASIS_INFO B
+			WHERE 
+				A.COIN_NO = 430 AND A.COIN_NO = B.COIN_NO
+			ORDER BY BASE_DAY DESC
+			LIMIT 1
+    	) A
+    	LEFT OUTER JOIN
+    	( 
+    		SELECT 
+    			COIN_NO 
+        		, SUM(FREEZING_COMPL_QTY) FREEZING_COMPL_QTY
+      		FROM TB_STAKING_DEACTIVATED_RECORD
+    	) B
+    	ON A.COIN_NO = B.COIN_NO
+	]]>
+	</select>
+	
+	<!-- select TB_STAKING_DAILY_SUMMARY -->
+	<!-- YEP Staking 일별 집계 정보를 가져온다. -->
+	<select id="selectStakingInfo" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[    
+			SELECT * FROM 
+    		(
+				SELECT
+					  BASE_DAY				-- 거래일자
+					, TOTAL_STAKING_QTY		-- 총스테이킹수량
+					, STAKING_USERS			-- 총스테이킹참여자수
+					, AVG_STAKING_QTY		-- 스테이킹평균수량
+					, STAKING_QTY			-- 스테이킹수량
+					, FREEZING_QTY			-- Freezing수량
+					, UN_FREEZING_QTY		-- 유통전환수량
+					, COIN_NO
+				FROM 
+					TB_STATUS_STAKING 
+    		) A
+    		INNER JOIN 
+    		(  
+    		  	SELECT 
+    		    	TRADE_DAY
+    		    	, TOT_STAKING_USERS
+    		  	FROM TB_STAKING_DAILY_SUMMARY
+    		) B
+			WHERE 1 = 1
+      			AND A.BASE_DAY = B.TRADE_DAY
+				AND A.BASE_DAY 			= #{BASE_DATE, jdbcType=VARCHAR}
+				AND A.COIN_NO			= 430
+	]]>
+	</select>
+	
+	<!-- select TB_STAKING_DAILY_SUMMARY -->
+	<!-- YEP Staking 나의 Staking 현황 조회 정보를 가져온다. -->
+	<select id="selectMyStakingStatus" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			  B.AVG_BUY_PRICE
+			, IFNULL(B.STAKING_QTY, 0) AS STAKING_QTY
+			, A.TOTAL_STAKING_QTY
+			, (SELECT FN_WAS_GET_PRICE_BY_BC( 430, 10, #{EXCHANGE_ID, jdbcType=VARCHAR})) AS TOT_STAKING_AVG_PRC
+			, IFNULL(C.CNTRBT_RANK, 0) AS CNTRBT_RANK
+			, IFNULL(E.STAKING_CNTRBT_PCT, 0) AS STAKING_CNTRBT_PCT
+			, IFNULL(E.PERCENT_RANKING, 0) AS TOP_PCT
+      		, D.TOT_STAKING_QTY
+		FROM
+			TB_STATUS_STAKING A
+		LEFT OUTER JOIN
+			( SELECT 
+				#{BASE_DATE, jdbcType=VARCHAR} AS STAKING_ACTIVATE_DAY 
+				, EXCHANGE_ID
+				, USER_ID
+				, COIN_NO
+				, SUM(STAKING_QTY) AS STAKING_QTY
+				, SUM(STAKING_QTY * AVG_BUY_PRICE) / SUM(STAKING_QTY) AS AVG_BUY_PRICE
+			  FROM 
+				TB_STAKING_DETAIL_RECORD 
+			  WHERE 1 = 1
+				AND EXCHANGE_ID 	= #{EXCHANGE_ID, jdbcType=VARCHAR}
+				AND USER_ID 		= #{USER_ID, jdbcType=VARCHAR}
+				AND STAKING_ACTIVATE_DAY <= #{BASE_DATE, jdbcType=VARCHAR}
+			) B 
+		ON 1 = 1
+			AND A.COIN_NO = B.COIN_NO
+			AND A.BASE_DAY = B.STAKING_ACTIVATE_DAY
+		LEFT OUTER JOIN
+		(
+			SELECT 
+				  A.TRADE_DAY
+				, A.EXCHANGE_ID
+				, A.USER_ID
+				, A.CNTRBT_RANK
+				, A.TOP_PCT
+				, B.STAKING_CNTRBT_PCT
+			FROM
+				TB_STAKING_TOP_BONUS_RECORD A
+				INNER JOIN TB_STAKING_REWARD_RECORD B
+			ON 1 = 1
+				AND A.EXCHANGE_ID = B.EXCHANGE_ID
+				AND A.USER_ID = B.USER_ID
+				AND A.TRADE_DAY = B.TRADE_DAY
+		) C
+		ON 1 = 1
+			AND A.BASE_DAY = C.TRADE_DAY
+			AND C.EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}
+			AND C.USER_ID = #{USER_ID, jdbcType=VARCHAR}
+	    LEFT OUTER JOIN 
+	    (
+	      SELECT 
+	        #{BASE_DATE, jdbcType=VARCHAR} AS STAKING_ACTIVATE_DAY
+	        , SUM(STAKING_QTY * AVG_BUY_PRICE) AS TOT_STAKING_QTY
+	        FROM TB_STAKING_DETAIL_RECORD
+	        WHERE STAKING_ACTIVATE_DAY <= #{BASE_DATE, jdbcType=VARCHAR}
+	    ) D
+	    ON A.BASE_DAY = D.STAKING_ACTIVATE_DAY
+	    LEFT OUTER JOIN ( 
+	      SELECT
+	        TRADE_DAY,
+	        COIN_NO,
+	        EXCHANGE_ID,
+	        USER_ID,
+          	RANK() OVER (ORDER BY (STAKING_QTY / (SELECT SUM(STAKING_QTY) FROM TB_STAKING_REWARD_RECORD WHERE TRADE_DAY = 20191128) * 100) DESC) AS RANKING,
+	        (PERCENT_RANK() OVER (ORDER BY (STAKING_QTY / (SELECT SUM(STAKING_QTY) FROM TB_STAKING_REWARD_RECORD WHERE TRADE_DAY = 20191128) * 100) DESC)) * 100.0 AS PERCENT_RANKING,  
+          	STAKING_CNTRBT_PCT
+	 	FROM  TB_STAKING_REWARD_RECORD
+	 	WHERE TRADE_DAY = #{BASE_DATE, jdbcType=VARCHAR}
+	    	AND    COIN_NO =  430
+	    ) E
+		ON 1 = 1
+	      	AND E.TRADE_DAY = A.BASE_DAY
+	      	AND E.EXCHANGE_ID = B.EXCHANGE_ID
+			AND E.USER_ID  = B.USER_ID
+		WHERE 1 = 1
+			AND A.BASE_DAY 			= #{BASE_DATE, jdbcType=VARCHAR}
+			AND A.COIN_NO			= 430
+	]]>
+	</select>
+
+	<!-- select TB_COIN_BALANCE -->
+	<!-- YEP Staking 나의 Staking 가능수량 정보를 가져온다. -->
+	<select id="selectAvailableStakingQty" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			  BALANCE.AVAILABLE_QTY
+			, IFNULL(STAKE.STAKING_QTY,0.0) AS STAKING_QTY
+			, IFNULL(UNSTAKE.UNSTAKING_QTY,0.0) AS UNSTAKING_QTY
+			, IFNULL(UNSTAKE.PULL_BACK_COMPL_QTY,0.0) AS PULL_BACK_COMPL_QTY
+			, IFNULL(UNSTAKE.FREEZING_COMPL_QTY,0.0) AS FREEZING_COMPL_QTY
+		FROM 
+			(
+				SELECT
+					IFNULL(A.BALANCE_QTY,0.0) - (IFNULL(B.NON_CONTRACT_QTY,0.0) + IFNULL(C.DW_REQ_QTY,0.0) + IFNULL(D.NON_CONTRACT_QTY,0.0)) AS AVAILABLE_QTY -- 잔고수량 - (매수미체결수량 + 출금진행중수량) 
+					, #{EXCHANGE_ID, jdbcType=VARCHAR} AS EXCHANGE_ID
+					, #{USER_ID, jdbcType=VARCHAR} AS USER_ID
+				FROM
+				(
+					SELECT  SUM(BALANCE_QTY ) AS  BALANCE_QTY
+					FROM   TB_COIN_BALANCE
+					WHERE  
+						EXCHANGE_ID 		= TRIM(#{EXCHANGE_ID, jdbcType=VARCHAR}) 
+						AND	USER_ID 		= TRIM(#{USER_ID, jdbcType=VARCHAR})
+						AND	COIN_NO 		= 430
+				) A,
+				(
+					SELECT SUM(NON_CONTRACT_QTY) AS NON_CONTRACT_QTY
+					FROM  TB_NON_CONTRACT_ORDER A,
+							  TB_ITEM_CODE_MAST B  
+					WHERE 
+						A.EXCHANGE_ID 		= TRIM(#{EXCHANGE_ID, jdbcType=VARCHAR})
+						AND	A.USER_ID 		= TRIM(#{USER_ID, jdbcType=VARCHAR})
+						AND	A.NON_CONTRACT_QTY > 0.0
+						AND	ORD_TYPE_CD 	= 1  -- 신규주문
+						AND	SELL_BUY_RECOG_CD = 2 -- 매도
+						AND	A.ITEM_CODE 	= B.ITEM_CODE
+						AND	B.COIN_NO 		= 430
+				) B,
+				(
+					SELECT SUM(REQ_QTY + IFNULL(WTDRW_FEE, 0.0)) AS DW_REQ_QTY
+					FROM  TB_DEPOSIT_WITHDRAW_MGR
+					WHERE 
+						EXCHANGE_ID 		= TRIM(#{EXCHANGE_ID, jdbcType=VARCHAR})
+						AND	USER_ID 		= TRIM(#{USER_ID, jdbcType=VARCHAR})
+						AND	COIN_NO 		= 430
+						AND	DW_REQ_TYPE_CD IN (2, 4)
+						AND	REQ_STAT_PROC_CD != 5   -- 요청취소 아님
+						AND	APPROVAL_STAT_CD != -1  -- 승인취소 아님
+						AND	DW_PROC_STAT_CD  NOT IN (1, -1) -- 처리완료, 처리실패 아님
+				) C,
+				(
+					SELECT SUM(NON_CONTRACT_QTY * ORD_PRICE) AS NON_CONTRACT_QTY
+					FROM  TB_NON_CONTRACT_ORDER A,
+							TB_ITEM_CODE_MAST B  
+					WHERE
+						A.EXCHANGE_ID 		= TRIM(#{EXCHANGE_ID, jdbcType=VARCHAR})
+						AND	A.USER_ID 		= TRIM(#{USER_ID, jdbcType=VARCHAR})
+						AND	A.NON_CONTRACT_QTY > 0.0
+						AND	ORD_TYPE_CD 	= 1  -- 신규주문
+						AND	SELL_BUY_RECOG_CD = 1 -- 매수
+						AND	A.ITEM_CODE		= B.ITEM_CODE
+						AND	B.BASIC_ASSET_COIN_NO = 430 
+				) D
+			) BALANCE
+		LEFT OUTER JOIN
+			(
+				SELECT 
+					  EXCHANGE_ID, USER_ID
+					, SUM(STAKING_QTY) AS STAKING_QTY
+				FROM  TB_STAKING_DETAIL_RECORD
+				WHERE
+						EXCHANGE_ID 		= TRIM(#{EXCHANGE_ID, jdbcType=VARCHAR})
+					AND	USER_ID 			= TRIM(#{USER_ID, jdbcType=VARCHAR})
+					AND	COIN_NO			= 430
+			) STAKE
+		ON 1 = 1
+			AND BALANCE.EXCHANGE_ID = STAKE.EXCHANGE_ID
+			AND BALANCE.USER_ID = STAKE.USER_ID
+		LEFT OUTER JOIN
+			(
+				SELECT
+					  EXCHANGE_ID, USER_ID
+					, IFNULL(SUM(REQ_QTY), 0) AS UNSTAKING_QTY
+					, IFNULL(SUM(PULL_BACK_COMPL_QTY), 0) AS PULL_BACK_COMPL_QTY
+					, IFNULL(SUM(FREEZING_COMPL_QTY), 0) AS FREEZING_COMPL_QTY
+				FROM  TB_STAKING_DEACTIVATED_RECORD
+				WHERE
+						EXCHANGE_ID 		= TRIM(#{EXCHANGE_ID, jdbcType=VARCHAR})
+					AND	USER_ID 			= TRIM(#{USER_ID, jdbcType=VARCHAR})
+					AND	COIN_NO			= 430
+			) UNSTAKE
+		ON 1 = 1
+			AND BALANCE.EXCHANGE_ID = UNSTAKE.EXCHANGE_ID
+			AND BALANCE.USER_ID = UNSTAKE.USER_ID
+	]]>
+	</select>
+	
+	<!-- select TB_STAKING_DEACTIVATED_RECORD -->
+	<!-- YEP Staking 나의 Un Staking History 리스트 정보를 가져온다. -->
+	<select id="selectUnstakingHistoryList" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			  SR.STAKING_MGT_NO
+			, SR.STAKING_ACTIVATE_DT
+			, SR.STAKING_QTY	AS REQ_QTY
+			, TIMESTAMPDIFF(DAY,  STR_TO_DATE(SR.STAKING_ACTIVATE_DT, '%Y%m%d%H%i%s%f'), NOW(6)) AS STAKING_DUR_DAYS
+			, ROUND(IFNULL(USR.PULL_BACK_COMPL_QTY, 0), 3) AS PULL_BACK_COMPL_QTY
+			, ROUND(IFNULL(USR.FREEZING_COMPL_QTY, 0), 3) AS FREEZING_COMPL_QTY
+		    , TSD.BASIC_TRANS_RATE
+		    , TSD.TRANS_RATE_PER_DAY
+		    , TSD.STAKING_OBL_DAYS
+		FROM
+			TB_STAKING_DETAIL_RECORD SR
+			LEFT OUTER JOIN 
+				(SELECT 
+					STAKING_MGT_NO, 
+					SUM(PULL_BACK_COMPL_QTY) AS PULL_BACK_COMPL_QTY,  
+					SUM(FREEZING_COMPL_QTY) AS FREEZING_COMPL_QTY 
+				FROM TB_STAKING_DEACTIVATED_RECORD 
+				GROUP BY STAKING_MGT_NO 
+				) USR
+			ON SR.STAKING_MGT_NO = USR.STAKING_MGT_NO
+			LEFT OUTER JOIN 
+	        	TB_STAKING_DEACT_BASIS_INFO TSD
+	      	ON SR.COIN_NO = TSD.COIN_NO
+		    AND TSD.APPLY_START_DAY <= SR.STAKING_ACTIVATE_DAY
+		    AND TSD.APPLY_END_DAY >= SR.STAKING_ACTIVATE_DAY
+		WHERE 1 = 1
+			AND SR.EXCHANGE_ID	= #{EXCHANGE_ID, jdbcType=VARCHAR}
+			AND SR.USER_ID		= #{USER_ID, jdbcType=VARCHAR}
+			AND SR.COIN_NO		= 430
+			AND SR.STAKING_QTY 	> 0
+		ORDER BY SR.STAKING_MGT_NO DESC
+	]]>
+	</select>
+
+	<!-- select TB_STATUS_STAKING -->
+	<!-- YEP Staking 일별 Staking 내역 리스트 정보를 가져온다. -->
+	<select id="selectMonthlyStakingInfoByDate" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT * FROM
+		(
+			SELECT 
+				  A.BASE_DAY
+				, A.STAKING_QTY
+				, A.TOTAL_STAKING_QTY
+				, A.STAKING_USERS
+				, SUM(B.STAKING_USERS) AS STAKING_USERS_SUM
+				, A.AVG_STAKING_QTY
+				, A.UN_FREEZING_QTY
+				, A.FREEZING_QTY
+				, A.SUM_UP_DT
+			FROM TB_STATUS_STAKING A, TB_STATUS_STAKING B
+			WHERE 1 = 1
+				AND A.BASE_DAY >= B.BASE_DAY
+				AND A.BASE_DAY 	< DATE_FORMAT(NOW(6),  '%Y%m%d')
+				AND A.COIN_NO		= 430
+			GROUP BY A.BASE_DAY, A.STAKING_USERS
+		) A
+    	INNER JOIN 
+    	(  
+      	SELECT 
+        	TRADE_DAY
+        	, TOT_STAKING_USERS
+      	FROM TB_STAKING_DAILY_SUMMARY
+    	) B
+		WHERE A.BASE_DAY = B.TRADE_DAY
+			AND SUBSTRING(A.BASE_DAY, 1, 6) = #{BASE_MONTH, jdbcType=VARCHAR}
+		ORDER BY A.BASE_DAY DESC, A.SUM_UP_DT DESC
+	]]>
+	</select>
+	
+	<!-- select TB_STAKING_DEACTIVATED_RECORD -->
+	<!-- YEP Staking 나의 Staking 내역 리스트 정보를 가져온다. -->
+	<select id="selectStakingHistoryByDate" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			  A.STAKING_ACTIVATE_DAY AS BASE_DAY
+			, A.COIN_NO
+			, A.STAKING_ACTIVATE_DAY												-- Staking 요청일자
+			, SUM(A.STAKING_QTY) AS STAKING_QTY										-- Staking 요청 수량
+		 -- , TO_DAYS(NOW()) - TO_DAYS(A.STAKING_ACTIVATE_DAY) AS STAKING_DUR_DAYS	-- Staking 누적기간
+		 -- , ROUND((TIMESTAMPDIFF(HOUR, A.STAKING_ACTIVATE_DAY, NOW()) - MOD(TIMESTAMPDIFF(HOUR, A.STAKING_ACTIVATE_DAY, NOW()), 24)) / 24) AS STAKING_DUR_DAYS	-- Staking 누적기간
+		    , IF(SUM(A.STAKING_QTY) != 0 , TIMESTAMPDIFF(DAY,  STR_TO_DATE(A.STAKING_ACTIVATE_DT, '%Y%m%d%H%i%s%f'), NOW(6)), B.STAKING_DUR_DAYS) AS STAKING_DUR_DAYS	-- Staking 누적기간
+			, IFNULL(SUM(B.REQ_QTY), 0) AS UNSTAKING_REQ_QTY
+			, IFNULL(B.STAKING_DEACT_DAY, '') AS UNSTAKING_DATE
+			, IFNULL((SUM(IFNULL(B.PULL_BACK_COMPL_QTY, 0)) / SUM(IFNULL(B.REQ_QTY, 0))), 0) * 100 AS CHANGE_RATE
+			, IFNULL(SUM(B.FREEZING_COMPL_QTY), 0) AS FREEZING_QTY
+			, SUM(IFNULL(A.STAKING_QTY,0)) - SUM(IFNULL(B.REQ_QTY, 0)) AS UNSTAKING_AVAILABLE_QTY
+		FROM TB_STAKING_DETAIL_RECORD A
+		LEFT OUTER JOIN 
+			(SELECT 
+				STAKING_MGT_NO, 
+				MAX(STAKING_DEACT_DAY) AS STAKING_DEACT_DAY,
+        		MAX(STAKING_DUR_DAYS) AS STAKING_DUR_DAYS,
+				SUM(REQ_QTY) AS REQ_QTY,  
+				SUM(PULL_BACK_COMPL_QTY) AS PULL_BACK_COMPL_QTY,  
+				SUM(FREEZING_COMPL_QTY) AS FREEZING_COMPL_QTY 
+			FROM TB_STAKING_DEACTIVATED_RECORD 
+			GROUP BY STAKING_MGT_NO 
+			) B
+		ON A.STAKING_MGT_NO = B.STAKING_MGT_NO
+		WHERE 1=1
+			AND A.EXCHANGE_ID	= #{EXCHANGE_ID, jdbcType=VARCHAR}
+			AND A.USER_ID		= #{USER_ID, jdbcType=VARCHAR}
+			AND A.COIN_NO 		= 430
+			AND SUBSTRING(A.STAKING_ACTIVATE_DAY, 1, 6) = #{BASE_MONTH, jdbcType=VARCHAR}
+			AND A.STAKING_ACTIVATE_DAY 	< DATE_FORMAT(NOW(6),  '%Y%m%d')
+		GROUP BY A.STAKING_ACTIVATE_DAY
+		ORDER BY A.STAKING_ACTIVATE_DAY DESC
+	]]>
+	</select>
+	
+	<!-- select TB_STAKING_TOP_BONUS_RECORD -->
+	<!-- YEP Staking 상위 랭커 리스트 정보를 가져온다. -->
+	<select id="selectStakingRankerList" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT B.TOP_PCT
+		  , A.USER_ID
+		  , A.AVG_PRC_STAKING_AMT
+		  , A.AVG_PRC_STAKING_CNTRBT_PCT
+		  , A.CNTRBT_WEIGHT_APPLIED_PCT
+		FROM 
+				(
+		    SELECT 
+					A.TRADE_DAY, A.COIN_NO, A.EXCHANGE_ID, A.USER_ID, A.STAKING_QTY_BY_DUR, 
+					IF(A.STAKING_QTY_BY_DUR > D.STAKING_AVG_QTY , 
+						IFNULL( (
+							SELECT
+		      				  A.BONUS_DSTRBT_RATE
+		      				FROM TB_MINING_CNTRBT_BONUS_POLICY A
+							WHERE 1 = 1
+								AND A.COIN_NO = 430
+								AND A.APPLY_START_DAY <= DATE_FORMAT(NOW(6),  '%Y%m%d')
+								AND A.APPLY_END_DAY >= DATE_FORMAT(NOW(6),  '%Y%m%d')
+								AND A.FROM_RANKING_PCT < TOP_PCT
+								AND A.TO_RANKING_PCT >= TOP_PCT
+                				AND A.CNTRBT_TYPE_CD = 2
+						), 0) 
+					, 0) AS CNTRBT_WEIGHT_APPLIED_PCT,
+					IF ( ISNULL(B.SPEC_REWARD_PCT), 0, 100 + B.SPEC_REWARD_PCT ) AS SPEC_REWARD_PCT ,
+		      		C.YEB_AVG_PRICE ,
+		          B.AVG_PRC_STAKING_AMT ,
+		          B.AVG_PRC_STAKING_AMT / (SELECT SUM(E.AVG_PRC_STAKING_AMT) FROM TB_STAKING_REWARD_RECORD E WHERE E.TRADE_DAY = A.TRADE_DAY) * 100 AS AVG_PRC_STAKING_CNTRBT_PCT
+				FROM TB_STAKING_TOP_BONUS_RECORD A
+				LEFT OUTER JOIN TB_STAKING_REWARD_RECORD B
+					ON A.EXCHANGE_ID = B.EXCHANGE_ID 
+						AND A.USER_ID = B.USER_ID
+						AND A.TRADE_DAY = B.TRADE_DAY
+		    		, TB_STATUS_MINING C
+		        	, TB_STAKING_DAILY_SUMMARY D
+				WHERE 1 = 1
+				    AND A.TRADE_DAY = C.BASE_DAY
+				    AND A.COIN_NO = C.COIN_NO
+		        	AND A.TRADE_DAY = D.TRADE_DAY
+					AND A.TRADE_DAY = DATE_FORMAT(DATE_ADD(NOW(6), INTERVAL - 0 DAY),  '%Y%m%d')
+				ORDER BY A.CNTRBT_RANK ASC
+		    ) A
+		    LEFT OUTER JOIN( 
+		                    SELECT                                    
+		                      A.TRADE_DAY,
+		                      A.COIN_NO,
+		                      A.EXCHANGE_ID,
+		                      A.USER_ID,
+		                      (PERCENT_RANK() OVER (ORDER BY C.AVG_PRC_STAKING_AMT DESC)) * 100.0 AS TOP_PCT,
+                          	  B.STAKING_AVG_QTY
+		                    FROM  TB_STAKING_TOP_BONUS_RECORD A
+		                    LEFT OUTER JOIN TB_STAKING_DAILY_SUMMARY B
+		                      ON A.TRADE_DAY = B.TRADE_DAY
+		                      AND A.COIN_NO = B.COIN_NO
+		                    , TB_STAKING_REWARD_RECORD C                     
+		                    WHERE A.TRADE_DAY = C.TRADE_DAY
+		                      AND A.COIN_NO = C.COIN_NO
+		                      AND A.EXCHANGE_ID = C.EXCHANGE_ID
+		                      AND A.USER_ID = C.USER_ID
+                      		  AND A.TRADE_DAY = DATE_FORMAT(NOW(6),  '%Y%m%d')
+		    ) B
+		    ON A.TRADE_DAY = B.TRADE_DAY
+		      AND A.COIN_NO = B.COIN_NO
+		      AND A.EXCHANGE_ID = B.EXCHANGE_ID
+		      AND A.USER_ID = B.USER_ID
+        	WHERE A.STAKING_QTY_BY_DUR > B.STAKING_AVG_QTY
+		    ORDER BY B.TOP_PCT
+	]]>
+	</select>
+	
+	<!-- ============================================================================================= -->
+	<!--                                      AirDrop 현황 관련                                                                            -->
+	<!-- ============================================================================================= -->
+	<!-- select TB_STATUS_REWARD -->
+	<!-- YEP Airdrop 상단 종합 AirDrop 현황 자료  정보를 가져온다. -->
+	<select id="selectAirDropStatus" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			  SUM(TRADE_FEE_TOT_AMT) AS TRADE_FEE_TOT_AMT 
+			, SUM(NOR_REWARD_TOT_AMT) AS NOR_REWARD_TOT_AMT
+			, SUM(SPEC_REWARD_TOT_AMT) AS SPEC_REWARD_TOT_AMT
+			, SUM(REF_REWARD_TOT_AMT) AS REF_REWARD_TOT_AMT
+			, SUM(PLATFORM_FEE_TOT_AMT) AS PLATFORM_FEE_TOT_AMT
+			, SUM(PLATFORM_FEE_REWARD_AMT) AS PLATFORM_FEE_REWARD_AMT
+		FROM
+			TB_STATUS_REWARD
+	]]>
+	</select>
+
+	<!-- select  -->
+	<!-- YEP Airdrop 일별 거래수소료, Staking Reward, 기여보너스 자료 정보를 가져온다. -->
+	<select id="selectAirDropInfo" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			  TRADE_FEE_TOT_AMT 
+			, TRADE_FEE_TOT_AMT / (SELECT TOTAL_STAKING_QTY FROM TB_STATUS_STAKING WHERE BASE_DAY = #{BASE_DATE, jdbcType=VARCHAR}) * 1000 AS STAKING_REWARD_1K_YEP
+			, IFNULL((SELECT SUM(CNTRBT_BONUS_DSTRBT_QTY) FROM TB_STAKING_TOP_BONUS_RECORD WHERE TRADE_DAY = #{BASE_DATE, jdbcType=VARCHAR}) + 
+        			(SELECT SUM(CNTRBT_BONUS_DSTRBT_QTY) FROM TB_MINING_DAILY_SUMMARY WHERE TRADE_DAY = #{BASE_DATE, jdbcType=VARCHAR}), 0) AS TOT_CNTRBT_BONUS_DSTRBT_QTY
+			, NOR_REWARD_TOT_AMT
+			, SPEC_REWARD_TOT_AMT
+			, REF_REWARD_TOT_AMT
+			, PLATFORM_FEE_REWARD_AMT
+		FROM
+			TB_STATUS_REWARD
+		WHERE
+			BASE_DAY = #{BASE_DATE, jdbcType=VARCHAR}
+	]]>
+	</select>
+
+	<!-- select TB_MINING_DAILY_MBR_SUMMARY, TB_STAKING_REWARD_RECORD -->
+	<!-- YEP Airdrop 나의 Mining/Staking 기여도 현황 정보를 가져온다. -->
+	<select id="selectMiningStakingContributionInfo" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			* 
+		FROM
+		(
+			SELECT 
+				TOP_PCT
+				, CNTRBT_RATE
+				, IFNULL(SUM(FEE_AMT), 0) AS MY_FEE_AMT
+				, IFNULL((SELECT SUM(FEE_AMT) FROM TB_STATUS_MINING WHERE BASE_DAY = #{BASE_DATE, jdbcType=VARCHAR}), 0) AS TOT_FEE_AMT
+			FROM
+				TB_MINING_DAILY_MBR_SUMMARY
+			WHERE
+				    EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}
+				AND USER_ID = #{USER_ID, jdbcType=VARCHAR}
+				AND COIN_NO = 430
+				AND TRADE_DAY = #{BASE_DATE, jdbcType=VARCHAR}
+		) A,
+		(
+			SELECT 
+				IFNULL(B.AVG_BUY_PRICE, 0 ) AS AVG_BUY_PRICE
+				, IFNULL(B.STAKING_QTY, 0) AS STAKING_QTY
+				, A.TOTAL_STAKING_QTY
+				, (SELECT FN_WAS_GET_PRICE_BY_BC( 430, 10, #{EXCHANGE_ID, jdbcType=VARCHAR})) AS TOT_STAKING_AVG_PRC
+			 	, IFNULL(C.CNTRBT_RANK, 0) AS CNTRBT_RANK
+				, IFNULL(E.STAKING_CNTRBT_PCT, 0) AS STAKING_CNTRBT_PCT
+				, IFNULL(E.PERCENT_RANKING, 0) AS STAKING_TOP_PCT
+				, IFNULL(D.TOT_STAKING_QTY, 0) AS TOT_STAKING_QTY
+			FROM
+				TB_STATUS_STAKING A
+			LEFT OUTER JOIN
+				( SELECT 
+					STAKING_ACTIVATE_DAY 
+					, EXCHANGE_ID
+					, USER_ID
+					, COIN_NO
+					, SUM(STAKING_QTY) AS STAKING_QTY
+					, SUM(STAKING_QTY * AVG_BUY_PRICE) / SUM(STAKING_QTY) AS AVG_BUY_PRICE
+				  FROM 
+					TB_STAKING_DETAIL_RECORD 
+				  WHERE 1 = 1
+					AND EXCHANGE_ID 			= #{EXCHANGE_ID, jdbcType=VARCHAR}
+					AND USER_ID 				= #{USER_ID, jdbcType=VARCHAR}
+					AND STAKING_ACTIVATE_DAY 	<= #{BASE_DATE, jdbcType=VARCHAR}
+				) B 
+			ON 1 = 1
+				AND A.COIN_NO = B.COIN_NO
+			LEFT OUTER JOIN
+			(
+				SELECT 
+					  A.TRADE_DAY
+					, A.EXCHANGE_ID
+					, A.USER_ID
+					, A.CNTRBT_RANK
+					, A.TOP_PCT
+					, B.STAKING_CNTRBT_PCT
+				FROM
+					TB_STAKING_TOP_BONUS_RECORD A
+					INNER JOIN TB_STAKING_REWARD_RECORD B
+				ON 1 = 1
+					AND A.EXCHANGE_ID = B.EXCHANGE_ID
+					AND A.USER_ID = B.USER_ID
+					AND A.TRADE_DAY = B.TRADE_DAY
+			) C
+			ON 1 = 1
+				AND A.BASE_DAY 			= C.TRADE_DAY
+				AND C.EXCHANGE_ID 		= #{EXCHANGE_ID, jdbcType=VARCHAR}
+				AND C.USER_ID 			= #{USER_ID, jdbcType=VARCHAR}
+		    LEFT OUTER JOIN 
+		    (
+		      SELECT 
+		        #{BASE_DATE, jdbcType=VARCHAR} AS STAKING_ACTIVATE_DAY
+		        ,SUM(STAKING_QTY) AS TOT_STAKING_QTY
+		        FROM TB_STAKING_DETAIL_RECORD
+		        WHERE STAKING_ACTIVATE_DAY <= #{BASE_DATE, jdbcType=VARCHAR}
+		    ) D
+		    ON A.BASE_DAY = D.STAKING_ACTIVATE_DAY
+	        LEFT OUTER JOIN ( 
+				SELECT
+					TRADE_DAY,
+					COIN_NO,
+					EXCHANGE_ID,
+					USER_ID,
+					RANK() OVER (ORDER BY (STAKING_QTY / (SELECT SUM(STAKING_QTY) FROM TB_STAKING_REWARD_RECORD WHERE TRADE_DAY = 20191128) * 100) DESC) AS RANKING,
+					(PERCENT_RANK() OVER (ORDER BY (STAKING_QTY / (SELECT SUM(STAKING_QTY) FROM TB_STAKING_REWARD_RECORD WHERE TRADE_DAY = 20191128) * 100) DESC)) * 100.0 AS PERCENT_RANKING,  
+					STAKING_CNTRBT_PCT
+	            FROM  TB_STAKING_REWARD_RECORD
+	            WHERE TRADE_DAY = #{BASE_DATE, jdbcType=VARCHAR}
+	            AND    COIN_NO =  430
+	        ) E
+			ON 1 = 1
+	          	AND E.TRADE_DAY = A.BASE_DAY
+	          	AND E.EXCHANGE_ID = B.EXCHANGE_ID
+				AND E.USER_ID  = B.USER_ID
+			WHERE 1 = 1
+				AND A.BASE_DAY 			= #{BASE_DATE, jdbcType=VARCHAR}
+				AND A.COIN_NO			= 430
+		) B
+	]]>
+	</select>
+<!-- 
+			SELECT
+				  IFNULL(BELONG_RANKING_PCT, 0) AS BELONG_RANKING_PCT
+				, STAKING_CNTRBT_PCT
+				, AVG_PRC_STAKING_AMT
+				, (SELECT STAKING_QTY FROM TB_STATUS_STAKING WHERE BASE_DAY = #{BASE_DATE, jdbcType=VARCHAR}  AND COIN_NO = 430) * AVG_BUY_PRICE AS TOT_ESTM_STAKING_AMT
+			FROM
+				TB_STAKING_REWARD_RECORD
+			WHERE
+				    EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}
+				AND USER_ID = #{USER_ID, jdbcType=VARCHAR}
+				AND COIN_NO = 430
+				AND TRADE_DAY = #{BASE_DATE, jdbcType=VARCHAR}
+ -->
+ 
+	<!-- select TB_STATUS_REWARD -->
+	<!-- YEP Airdrop 일별 Airdrop 현황 리스트 정보를 가져온다. -->
+	<select id="selectMonthlyAirdropInfoByDate" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT
+			  A.BASE_DAY
+			, A.TRADE_FEE_TOT_AMT
+			, A.NOR_REWARD_TOT_AMT
+			, A.SPEC_REWARD_TOT_AMT
+			, A.REF_REWARD_TOT_AMT
+			, A.PLATFORM_FEE_REWARD_AMT
+			, ( A.TRADE_FEE_TOT_AMT / IFNULL((SELECT SUM(T1.TOTAL_STAKING_QTY) FROM TB_STATUS_STAKING T1 WHERE T1.BASE_DAY = A.BASE_DAY),0) * 1000 ) AS STAKING_REWARD_1K_YEP 
+      		, IFNULL((SELECT SUM(CNTRBT_BONUS_DSTRBT_QTY) FROM TB_STAKING_TOP_BONUS_RECORD T3 WHERE T3.TRADE_DAY = A.BASE_DAY) + 
+      	      		(SELECT SUM(CNTRBT_BONUS_DSTRBT_QTY) FROM TB_MINING_DAILY_SUMMARY T4 WHERE T4.TRADE_DAY = A.BASE_DAY),0) AS TOT_CNTRBT_BONUS_DSTRBT_QTY
+		FROM
+			TB_STATUS_REWARD A
+		WHERE
+			SUBSTRING(BASE_DAY, 1, 6) = #{BASE_MONTH, jdbcType=VARCHAR}
+			AND BASE_DAY 	< DATE_FORMAT(NOW(6),  '%Y%m%d')
+		ORDER BY BASE_DAY DESC
+	]]>
+	</select>
+
+	<!-- select TB_STAKING_REWARD_RECORD -->
+	<!-- YEP Airdrop 나의 일별 Airdrop 내역 리스트  정보를 가져온다. -->
+	<select id="selectAirdropHistoryByDate" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT
+			  A.TRADE_DAY
+			, A.STAKING_QTY
+			, A.AVG_PRC_STAKING_AMT
+			, A.NOR_REWARD_AMT
+			, IFNULL(A.SPEC_REWARD_AMT, 0) AS SPEC_REWARD_AMT
+			, A.REF_REWARD_AMT
+			, 0 AS PLATFORM_REWARD_AMT
+			, (A.NOR_REWARD_AMT + IFNULL(A.SPEC_REWARD_AMT, 0) + A.REF_REWARD_AMT) AS TOT_REWARD_AMT
+			, FN_WAS_GET_PRICE_BY_BC(430, 10, #{EXCHANGE_ID, jdbcType=VARCHAR}) AS CUR_MKT_PRC
+			, FN_WAS_GET_PRICE_BY_BC(20, 10, #{EXCHANGE_ID, jdbcType=VARCHAR}) AS CUR_MKT_PRC_BTC
+      		, B.NOR_REWARD_TOT_AMT + B.SPEC_REWARD_TOT_AMT + B.REF_REWARD_TOT_AMT AS TOT_AMT
+		FROM
+			TB_STAKING_REWARD_RECORD A
+      		, TB_STAKING_DAILY_SUMMARY B
+		WHERE
+		    A.TRADE_DAY = B.TRADE_DAY
+		    AND A.COIN_NO = B.COIN_NO
+			AND A.EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}
+			AND A.USER_ID = #{USER_ID, jdbcType=VARCHAR}
+			AND A.COIN_NO = 430
+			AND SUBSTRING(A.TRADE_DAY, 1, 6) = #{BASE_MONTH, jdbcType=VARCHAR}
+			AND A.TRADE_DAY 	< DATE_FORMAT(NOW(6),  '%Y%m%d')
+		ORDER BY A.TRADE_DAY DESC
+  	]]>
+	</select>
+
+	<!-- select TB_MINING_DAILY_MBR_SUMMARY, TB_STAKING_TOP_BONUS_RECORD -->
+	<!-- YEP Airdrop 나의 일별 기타  Airdrop 내역 리스트  정보를 가져온다. -->
+	<select id="selectEtcAirdropHistoryByDate" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT * FROM 
+		(
+			(
+				SELECT 
+					  TRADE_DAY
+					, TOP_PCT
+					, 'Mining 상위자 기여보너스' AS GUBUN
+					, CNTRBT_BONUS_DSTRBT_QTY
+					, CNTRBT_BONUS_DSTRBT_QTY * FN_WAS_GET_PRICE_BY_BC(430, 10, #{EXCHANGE_ID, jdbcType=VARCHAR}) AS ESTMT_CNTRBT_BONUS_AMT
+				FROM 
+					TB_MINING_DAILY_MBR_SUMMARY
+				WHERE
+					EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}
+					AND USER_ID = #{USER_ID, jdbcType=VARCHAR}
+					AND COIN_NO = 430
+					AND CNTRBT_BONUS_DSTRBT_QTY	> 0
+					AND SUBSTRING(TRADE_DAY, 1, 6) = #{BASE_MONTH, jdbcType=VARCHAR}
+					AND TRADE_DAY 	< DATE_FORMAT(NOW(6),  '%Y%m%d')
+				ORDER BY TRADE_DAY DESC
+			) 
+			UNION ALL
+			(
+				SELECT 
+					  TRADE_DAY
+					, TOP_PCT
+					, 'Staking 상위자 기여보너스' AS GUBUN
+					, CNTRBT_BONUS_DSTRBT_QTY
+					, CNTRBT_BONUS_DSTRBT_QTY * FN_WAS_GET_PRICE_BY_BC(430, 10, #{EXCHANGE_ID, jdbcType=VARCHAR}) AS ESTMT_CNTRBT_BONUS_AMT
+				FROM 
+					TB_STAKING_TOP_BONUS_RECORD
+				WHERE
+					EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}
+					AND USER_ID = #{USER_ID, jdbcType=VARCHAR}
+					AND COIN_NO = 430
+					AND CNTRBT_BONUS_DSTRBT_QTY	> 0
+					AND SUBSTRING(TRADE_DAY, 1, 6) = #{BASE_MONTH, jdbcType=VARCHAR}
+					AND TRADE_DAY 	< DATE_FORMAT(NOW(6),  '%Y%m%d')
+				ORDER BY TRADE_DAY DESC
+			) 
+		) A
+		ORDER BY TRADE_DAY DESC
+	]]>
+	</select>
+
+	<!-- ============================================================================================= -->
+	<!--                                      Freezing 현황 관련                                                                         -->
+	<!-- ============================================================================================= -->
+	<!-- select TB_STATUS_DSTRBT -->
+	<!-- YEP Freezing 상단 종합 Freezing 현황 자료  정보를 가져온다. -->
+	<select id="selectFreezingStatus" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			  A.BASE_DAY
+			, A.TOTAL_CIRCUL_QTY
+			, A.TOTAL_STAKING_QTY
+			, A.TOT_FREEZING_QTY
+			, A.TOT_DSTRBT_QTY
+			, (A.TOTAL_CIRCUL_QTY + A.TOTAL_STAKING_QTY + A.TOT_FREEZING_QTY) AS TOTAL_SUPPLY_QTY
+		FROM
+			TB_STATUS_STAKING A
+		WHERE 
+			A.COIN_NO = 430 
+		ORDER BY BASE_DAY DESC
+		LIMIT 1
+	]]>
+	</select>
+
+	<!-- select TB_STATUS_STAKING -->
+	<!-- YEP Freezing 어제/오늘 Freezing 수량 및 누계  정보를 가져온다. -->
+	<select id="selectDailyFreezingStatus" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[    
+		SELECT 
+	    	A.BASE_DAY
+	      	, A.FREEZING_QTY
+	      	, B.TOT_FREEZING_QTY
+	    FROM 
+	    (
+			SELECT 
+				A.BASE_DAY
+	      		, (A.FREEZING_QTY + B.DAILY_MINING_FRZ_QTY + B.CNTRBT_BONUS_FRZ_QTY + C.CNTRBT_BONUS_FRZ_QTY) AS FREEZING_QTY
+			FROM
+				TB_STATUS_STAKING A
+	      		, TB_MINING_DAILY_SUMMARY B
+            	, TB_STAKING_DAILY_SUMMARY C
+			WHERE
+	      		A.BASE_DAY = B.TRADE_DAY
+				AND A.COIN_NO = B.COIN_NO
+		        AND A.BASE_DAY = C.TRADE_DAY
+		        AND A.COIN_NO = C.COIN_NO
+	     	 	AND A.COIN_NO = 430 
+				AND A.BASE_DAY = #{BASE_DATE, jdbcType=VARCHAR}
+			ORDER BY A.BASE_DAY DESC
+			LIMIT 1
+	    ) A
+	    INNER JOIN    
+	    (
+			SELECT 
+			 	MAX(A.BASE_DAY) BASE_DAY
+	      		, SUM(A.FREEZING_QTY) + SUM(B.DAILY_MINING_FRZ_QTY) + SUM(B.CNTRBT_BONUS_FRZ_QTY) + SUM(C.CNTRBT_BONUS_FRZ_QTY) AS TOT_FREEZING_QTY
+			FROM
+				TB_STATUS_STAKING A
+	      		, TB_MINING_DAILY_SUMMARY B
+            	, TB_STAKING_DAILY_SUMMARY C
+			WHERE
+	      		A.BASE_DAY = B.TRADE_DAY
+				AND A.COIN_NO = B.COIN_NO
+		        AND A.BASE_DAY = C.TRADE_DAY
+		        AND A.COIN_NO = C.COIN_NO
+				AND A.BASE_DAY <= #{BASE_DATE, jdbcType=VARCHAR}
+			ORDER BY A.BASE_DAY DESC
+			LIMIT 1
+	    ) B
+	    WHERE A.BASE_DAY = B.BASE_DAY;
+	]]>
+	</select>
+	<!-- 	SELECT 
+			  A.BASE_DAY
+			, A.TOT_FREEZING_QTY
+			, A.FREEZING_QTY
+		FROM
+			TB_STATUS_STAKING A
+		WHERE 
+			A.COIN_NO = 430 
+			AND A.BASE_DAY = 
+		ORDER BY BASE_DAY DESC
+		LIMIT 1 -->
+
+	<!-- select TB_STATUS_STAKING -->
+	<!-- YEP Freezing 일별 Freezing 내역 리스트  정보를 가져온다. -->
+	<select id="selectDailyFreezingStatusList" resultType="java.util.Map" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT 
+			A.BASE_DAY
+		    , (A.TOT_FRZ_B + B.TOT_FRZ_A + C.TOT_FRZ_C) AS TOT_FREEZING_QTY
+		    , (A.FREEZING_QTY + B.FRZ_A + C.FRZ_C) AS FREEZING_QTY
+      		, A.FREEZING_QTY AS UN_FREEZING_QTY
+		FROM
+		(
+			SELECT 
+		      	A.BASE_DAY
+		      	, A.FREEZING_QTY
+		      	, SUM(B.FREEZING_QTY) AS TOT_FRZ_B
+			FROM
+				TB_STATUS_STAKING A
+				, TB_STATUS_STAKING B
+			WHERE
+		      	A.BASE_DAY >= B.BASE_DAY
+				AND A.COIN_NO = B.COIN_NO
+		      	AND A.COIN_NO = 430 
+				AND SUBSTRING(A.BASE_DAY, 1, 6) = #{BASE_MONTH, jdbcType=VARCHAR}
+          		AND A.BASE_DAY < DATE_FORMAT(NOW(6),  '%Y%m%d')
+		    GROUP BY A.BASE_DAY, A.COIN_NO
+			ORDER BY A.BASE_DAY DESC
+		    ) A
+		    INNER JOIN
+		    (
+				SELECT 
+		      		A.TRADE_DAY
+		      		, (A.DAILY_MINING_FRZ_QTY + A.CNTRBT_BONUS_FRZ_QTY) AS FRZ_A
+		      		, SUM(B.DAILY_MINING_FRZ_QTY + B.CNTRBT_BONUS_FRZ_QTY) AS TOT_FRZ_A
+				FROM 
+		    	  	TB_MINING_DAILY_SUMMARY A
+		      		, TB_MINING_DAILY_SUMMARY B
+				WHERE
+		      		A.TRADE_DAY >= B.TRADE_DAY
+					AND A.COIN_NO = B.COIN_NO
+		      		AND A.COIN_NO = 430 
+					AND SUBSTRING(A.TRADE_DAY, 1, 6) = #{BASE_MONTH, jdbcType=VARCHAR}
+          			AND A.TRADE_DAY < DATE_FORMAT(NOW(6),  '%Y%m%d')
+		    GROUP BY A.TRADE_DAY
+			ORDER BY A.TRADE_DAY DESC
+		    ) B
+		    INNER JOIN
+		    (
+				SELECT 
+		      		A.TRADE_DAY
+		      		, A.CNTRBT_BONUS_FRZ_QTY AS FRZ_C
+		      		, SUM(B.CNTRBT_BONUS_FRZ_QTY) AS TOT_FRZ_C
+				FROM 
+		    	  	TB_STAKING_DAILY_SUMMARY A
+		      		, TB_STAKING_DAILY_SUMMARY B
+				WHERE
+		      		A.TRADE_DAY >= B.TRADE_DAY
+					AND A.COIN_NO = B.COIN_NO
+		      		AND A.COIN_NO = 430 
+					AND SUBSTRING(A.TRADE_DAY, 1, 6) = #{BASE_MONTH, jdbcType=VARCHAR}
+          			AND A.TRADE_DAY < DATE_FORMAT(NOW(6),  '%Y%m%d')
+		    GROUP BY A.TRADE_DAY
+			ORDER BY A.TRADE_DAY DESC
+		    ) C
+		    WHERE A.BASE_DAY = B.TRADE_DAY
+        		AND A.BASE_DAY = C.TRADE_DAY
+	]]>
+	</select>		    
+<!-- 		SELECT
+			DISTINCT A.TRADE_DAY AS BASE_DAY
+			, A.*
+		FROM
+		(
+			SELECT 
+				A.TRADE_DAY
+				, A.COIN_NO
+				, (SELECT SUM(T.FREEZING_COMPL_QTY) FROM TB_MINING_FREEZING_RECORD T WHERE T.TRADE_DAY = A.TRADE_DAY) AS FREEZING_QTY
+				, SUM(B.FREEZING_COMPL_QTY) AS TOT_FREEZING_QTY
+				, 0 AS UN_FREEZING_QTY
+			FROM
+				TB_MINING_FREEZING_RECORD A, TB_MINING_FREEZING_RECORD B
+			WHERE 1 = 1
+				AND A.TRADE_DAY >= B.TRADE_DAY
+				AND A.COIN_NO = 430
+				AND A.COIN_NO = B.COIN_NO
+			GROUP BY A.TRADE_DAY, A.FREEZING_REAS_CD
+		) A
+		WHERE 1 = 1
+			AND SUBSTRING(A.TRADE_DAY, 1, 6) = 201908
+			주석문__ AND A.TRADE_DAY 	< DATE_FORMAT(NOW(6),  '%Y%m%d')
+		ORDER BY A.TRADE_DAY DESC -->
+		
+<!-- 
+		SELECT 
+			  A.BASE_DAY
+			, A.TOT_FREEZING_QTY
+			, A.FREEZING_QTY
+			, A.UN_FREEZING_QTY
+		FROM
+			TB_STATUS_STAKING A
+		WHERE 
+			A.COIN_NO = 430 
+			AND SUBSTRING(BASE_DAY, 1, 6) = #{BASE_MONTH, jdbcType=VARCHAR}
+			AND BASE_DAY 	< DATE_FORMAT(NOW(6),  '%Y%m%d')
+		ORDER BY BASE_DAY DESC
+-->
+
+	<!-- select TB_COIN_BALANCE -->
+	<!-- YEP Staking 요청 : 회원의 YEP 평균 매수가를 가져온다. -->
+	<select id="selectYepAvgPriceByBc" resultType="java.lang.Double" parameterType="java.util.Map">
+	<![CDATA[
+		SELECT AVG_PRICE_BY_BC FROM TB_COIN_BALANCE WHERE EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR} AND USER_ID = #{USER_ID, jdbcType=VARCHAR} AND COIN_NO = 430
+	]]>
+	</select>
+<!-- 
+		SELECT FN_WAS_GET_PRICE_BY_BC(430, (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO WHERE EXCHANGE_ID=#{EXCHANGE_ID, jdbcType=VARCHAR}), #{EXCHANGE_ID, jdbcType=VARCHAR} ) AS AVG_PRICE_BY_BC
+-->
+
+    <!-- ==================================================================================== -->
+    <!-- 1.1 Procedure Call -->
+    <!-- ==================================================================================== -->
+	<!-- WAS서버 - 스테이킹 요청수량에 대한 가능여부 체크 - 관련업무[스테이킹] -->
+	<update id="call_PR_WAS_STAKING_ACTIVATE_CHECK" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_STAKING_ACTIVATE_CHECK
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_COIN_NO, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_REQ_QTY, mode=IN, jdbcType=NUMERIC}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				) 
+		}
+	</update>
+
+	<!-- WAS서버 - 스테이킹활성화요청 저장처리 - 관련업무[스테이킹] -->
+	<update id="call_PR_WAS_STAKING_ACTIVATE_REQUEST" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_STAKING_ACTIVATE_REQUEST
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_COIN_NO, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_AVG_BUY_PRICE, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_REQ_QTY, mode=IN, jdbcType=NUMERIC}
+					, #{V_REQ_SEQ_NO, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				) 
+		}
+	</update>
+	
+	<!-- WAS서버 - 스테이킹내역 저장처리 - 관련업무[스테이킹] -->
+	<update id="call_PR_WAS_STAKING_DETAIL_RECORD_INSERT" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_STAKING_DETAIL_RECORD_INSERT
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_COIN_NO, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_AVG_BUY_PRICE, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_REQ_QTY, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_REQ_SEQ_NO, mode=IN, jdbcType=NUMERIC}
+					, #{V_STAKING_MGT_NO, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				) 
+		}
+	</update>
+	
+	<!-- WAS서버 - 스테이킹 활성화 코인에 대한 잔고 변경처리 - 관련업무[스테이킹] -->
+	<update id="call_PR_WAS_STAKING_ACTIVATE_BALANCE_UPDATE" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_STAKING_ACTIVATE_BALANCE_UPDATE
+				(
+					  #{ARG_STAKING_MGT_NO, mode=IN, jdbcType=NUMERIC}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				) 
+		}
+	</update>
+
+	<!-- WAS서버 - 스테이킹해제요청 저장처리 - 관련업무[스테이킹] -->
+	<update id="call_PR_WAS_STAKING_DEACTIVATE_REQUEST" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_STAKING_DEACTIVATE_REQUEST
+				(
+					  #{ARG_STAKING_MGT_NO, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_REQ_QTY, mode=IN, jdbcType=NUMERIC}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				) 
+		}
+	</update>
+
+	<!-- 'WAS서버 - 자동채굴(자전거래) 메인 프로시저 - 관련업무[마이닝(채굴)] -->
+	<update id="call_PR_WAS_PROC_AUTO_MINING_ONETIME" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_PROC_AUTO_MINING_ONETIME
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_ITEM_CODE, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_BASIC_ASSET_COIN_AMT, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_WAS_SVR_NO, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_PUBLIC_IP, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_ORD_CHNL_CD, mode=IN, jdbcType=VARCHAR}
+					, #{V_DURATION, mode=OUT, jdbcType=NUMERIC}
+					, #{V_TRADED_QTY, mode=OUT, jdbcType=NUMERIC}
+					, #{V_TRADED_AMT, mode=OUT, jdbcType=NUMERIC}
+					, #{V_TRADED_SELL_FEE, mode=OUT, jdbcType=NUMERIC}
+					, #{V_TRADED_BUY_FEE, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				) 
+		}
+	</update>
+
+</mapper>

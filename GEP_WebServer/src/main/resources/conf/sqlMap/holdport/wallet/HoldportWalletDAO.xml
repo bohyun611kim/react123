@@ -1,0 +1,827 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.coinis.webserver.holdport.wallet.wlt001.dao.HoldportWalletDAO">
+
+    <resultMap id="CodeMastMap" type="kr.co.coinis.webserver.holdport.wallet.wlt001.vo.CodeMastVO">
+        <result property="CODE_ID"								column="CODE_ID"							jdbcType="VARCHAR" />
+        <result property="LANG_CD"                              column="LANG_CD"                            jdbcType="VARCHAR" />
+        <result property="CODE_NM"                              column="CODE_NM"                            jdbcType="VARCHAR" />
+        <result property="VALUE_TYPE_CD"                        column="VALUE_TYPE_CD"                      jdbcType="NUMERIC" />
+        <result property="CODE_DESCR"                           column="CODE_DESCR"                         jdbcType="VARCHAR" />
+        <result property="REG_DT"                               column="REG_DT"                             jdbcType="VARCHAR" />
+        <result property="REG_USER_ID"                          column="REG_USER_ID"                        jdbcType="VARCHAR" />
+        <result property="UPDT_DT"                              column="UPDT_DT"                            jdbcType="VARCHAR" />
+        <result property="UPDT_USER_ID"                         column="UPDT_USER_ID"                       jdbcType="VARCHAR" />
+	</resultMap>
+
+    <resultMap id="CodeInfoMap" type="kr.co.coinis.webserver.holdport.wallet.wlt001.vo.CodeInfoVO">
+        <result property="CODE_ID"								column="CODE_ID"							jdbcType="VARCHAR" />
+        <result property="LANG_CD"                          	column="LANG_CD"                            jdbcType="VARCHAR" />
+        <result property="REC_SEQ_NO"                       	column="REC_SEQ_NO"                         jdbcType="NUMERIC" />
+        <result property="CODE_VAL_NM"                      	column="CODE_VAL_NM"                        jdbcType="VARCHAR" />
+        <result property="CODE_NUM_VAL"                     	column="CODE_NUM_VAL"                       jdbcType="NUMERIC" />
+        <result property="CODE_STR_VAL"                     	column="CODE_STR_VAL"                       jdbcType="VARCHAR" />
+        <result property="SORT_ORDER_NO"                    	column="SORT_ORDER_NO"                      jdbcType="NUMERIC" />
+        <result property="USE_YN"                           	column="USE_YN"                             jdbcType="NUMERIC" />
+        <result property="FILTER_COND1_STR"                 	column="FILTER_COND1_STR"                   jdbcType="VARCHAR" />
+        <result property="FILTER_COND2_STR"                 	column="FILTER_COND2_STR"                   jdbcType="VARCHAR" />
+        <result property="FILTER_COND3_STR"                 	column="FILTER_COND3_STR"                   jdbcType="VARCHAR" />
+        <result property="REG_DT"                           	column="REG_DT"                             jdbcType="VARCHAR" />
+        <result property="REG_USER_ID"                      	column="REG_USER_ID"                        jdbcType="VARCHAR" />
+        <result property="UPDT_DT"                          	column="UPDT_DT"                            jdbcType="VARCHAR" />
+        <result property="UPDT_USER_ID"                     	column="UPDT_USER_ID"                       jdbcType="VARCHAR" />
+	</resultMap>
+
+    <resultMap id="MemberBankAccntInfoMap" type="kr.co.coinis.webserver.holdport.wallet.wlt001.vo.MemberBankAccntInfoVO">
+        <result property="EXCHANGE_ID"							column="EXCHANGE_ID"						jdbcType="VARCHAR" />
+        <result property="USER_ID"                              column="USER_ID"                            jdbcType="VARCHAR" />
+        <result property="REC_SEQ_NO"                           column="REC_SEQ_NO"                         jdbcType="NUMERIC" />
+        <result property="USE_START_DT"                         column="USE_START_DT"                       jdbcType="VARCHAR" />
+        <result property="USE_END_DT"                           column="USE_END_DT"                         jdbcType="VARCHAR" />
+        <result property="USE_YN"                               column="USE_YN"                             jdbcType="NUMERIC" />
+        <result property="BANK_CD"                              column="BANK_CD"                            jdbcType="VARCHAR" />
+        <result property="BANK_ACCNT_NO"                        column="BANK_ACCNT_NO"                      jdbcType="VARCHAR" />
+        <result property="ACCNT_HOLDER_NM"                      column="ACCNT_HOLDER_NM"                    jdbcType="VARCHAR" />
+        <result property="APPROVAL_STAT_CD"                     column="APPROVAL_STAT_CD"                   jdbcType="NUMERIC" />
+        <result property="APPROVAL_PROC_DT"                     column="APPROVAL_PROC_DT"                   jdbcType="VARCHAR" />
+	</resultMap>
+
+    <resultMap id="CoinBalanceMap" type="kr.co.coinis.webserver.holdport.wallet.wlt001.vo.CoinBalanceVO">
+        <result property="EXCHANGE_ID"							column="EXCHANGE_ID"						jdbcType="VARCHAR" />
+        <result property="USER_ID"                              column="USER_ID"                            jdbcType="VARCHAR" />
+        <result property="COIN_NO"                              column="COIN_NO"                            jdbcType="NUMERIC" />
+        <result property="TRADE_DT"                             column="TRADE_DT"                           jdbcType="VARCHAR" />
+        <result property="BALANCE_QTY"                          column="BALANCE_QTY"                        jdbcType="NUMERIC" />
+        <result property="AVG_PRICE_BY_BC"                      column="AVG_PRICE_BY_BC"                    jdbcType="NUMERIC" />
+        <result property="CHG_QTY"                              column="CHG_QTY"                            jdbcType="NUMERIC" />
+        <result property="CHG_REAS_CD"                          column="CHG_REAS_CD"                        jdbcType="NUMERIC" />
+        <result property="FEE_AMT"                              column="FEE_AMT"                            jdbcType="NUMERIC" />
+        <result property="CHG_QTY_WITH_FEE"                     column="CHG_QTY_WITH_FEE"                   jdbcType="NUMERIC" />
+        <result property="CHG_DT"                               column="CHG_DT"                             jdbcType="VARCHAR" />
+        <result property="TRANSACTION_KEY_VAL"                  column="TRANSACTION_KEY_VAL"                jdbcType="VARCHAR" />
+        <result property="CONTRACT_DT"                          column="CONTRACT_DT"                        jdbcType="VARCHAR" />
+	</resultMap>
+
+    <resultMap id="CoinMgtRefInfoMap" type="kr.co.coinis.webserver.holdport.wallet.wlt001.vo.CoinMgtRefInfoVO">
+        <result property="COIN_NO"								column="COIN_NO"							jdbcType="NUMERIC" />
+        <result property="COIN_SYMBOLIC_NM"                     column="COIN_SYMBOLIC_NM"                   jdbcType="VARCHAR" />
+        <result property="WTDRW_DECIMAL_PNT"                    column="WTDRW_DECIMAL_PNT"                  jdbcType="NUMERIC" />
+        <result property="CONFIRMATIONS"                        column="CONFIRMATIONS"                      jdbcType="NUMERIC" />
+        <result property="CONFIRM_DELAY_TM"                     column="CONFIRM_DELAY_TM"                   jdbcType="NUMERIC" />
+        <result property="DEPOSIT_PAGE_SHOW_YN"                 column="DEPOSIT_PAGE_SHOW_YN"               jdbcType="NUMERIC" />
+        <result property="WTDRW_PAGE_SHOW_YN"                   column="WTDRW_PAGE_SHOW_YN"                 jdbcType="NUMERIC" />
+        <result property="AUTO_DEPOSIT_YN"                      column="AUTO_DEPOSIT_YN"                    jdbcType="NUMERIC" />
+        <result property="AUTO_WTDRW_YN"                        column="AUTO_WTDRW_YN"                      jdbcType="NUMERIC" />
+        <result property="SYSTEM_AUTO_WITHDRAW_YN"              column="SYSTEM_AUTO_WITHDRAW_YN"            jdbcType="NUMERIC" />
+        <result property="WTDRW_FEE"                            column="WTDRW_FEE"                          jdbcType="NUMERIC" />
+        <result property="MIN_WTDRW_QTY"                        column="MIN_WTDRW_QTY"                      jdbcType="NUMERIC" />
+        <result property="MIN_DEPOSIT_QTY"                      column="MIN_DEPOSIT_QTY"                    jdbcType="NUMERIC" />
+        <result property="MAX_ONCE_WTHRW_QTY"                   column="MAX_ONCE_WTHRW_QTY"                 jdbcType="NUMERIC" />
+        <result property="COIN_ADDR_CNT"                        column="COIN_ADDR_CNT"                      jdbcType="NUMERIC" />
+        <result property="COIN_DEPOSIT_ADDR_CNT"                column="COIN_DEPOSIT_ADDR_CNT"              jdbcType="NUMERIC" />
+        <result property="COIN_WTDRW_ADDR_CNT"                  column="COIN_WTDRW_ADDR_CNT"                jdbcType="NUMERIC" />
+        <result property="ADDR_ETC1_NM"                         column="ADDR_ETC1_NM"                       jdbcType="VARCHAR" />
+        <result property="ADDR_ETC2_NM"                         column="ADDR_ETC2_NM"                       jdbcType="VARCHAR" />
+        <result property="TRADE_STAT_CD"                        column="TRADE_STAT_CD"                      jdbcType="NUMERIC" />
+        <result property="COIN_ADDR_CHECK_YN"                   column="COIN_ADDR_CHECK_YN"                 jdbcType="NUMERIC" />
+        <result property="COIN_ADDR_LEN"                        column="COIN_ADDR_LEN"                      jdbcType="NUMERIC" />
+        <result property="COIN_ADDR_CHECK_STR"                  column="COIN_ADDR_CHECK_STR"                jdbcType="VARCHAR" />
+        <result property="REG_DT"                               column="REG_DT"                             jdbcType="VARCHAR" />
+        <result property="REG_USER_ID"                          column="REG_USER_ID"                        jdbcType="VARCHAR" />
+        <result property="UPDT_DT"                              column="UPDT_DT"                            jdbcType="VARCHAR" />
+        <result property="UPDT_USER_ID"                         column="UPDT_USER_ID"                       jdbcType="VARCHAR" />
+	</resultMap>
+
+    <resultMap id="CoinDepositWalletInfoMap" type="kr.co.coinis.webserver.holdport.wallet.wlt001.vo.CoinDepositWalletInfoVO">
+        <result property="EXCHANGE_ID"							column="EXCHANGE_ID"						jdbcType="VARCHAR" />
+        <result property="USER_ID"                              column="USER_ID"                            jdbcType="VARCHAR" />
+        <result property="COIN_NO"                              column="COIN_NO"                            jdbcType="NUMERIC" />
+        <result property="ISSUE_SEQ_NO"                         column="ISSUE_SEQ_NO"                       jdbcType="NUMERIC" />
+        <result property="DEPOSIT_WALLET_ADDR"                  column="DEPOSIT_WALLET_ADDR"                jdbcType="VARCHAR" />
+        <result property="ADDR_ETC1"                            column="ADDR_ETC1"                          jdbcType="VARCHAR" />
+        <result property="ADDR_ETC2"                            column="ADDR_ETC2"                          jdbcType="VARCHAR" />
+        <result property="WALLET_PRIVATE_KEY"                   column="WALLET_PRIVATE_KEY"                 jdbcType="VARCHAR" />
+        <result property="REG_DT"                               column="REG_DT"                             jdbcType="VARCHAR" />
+        <result property="USE_YN"                               column="USE_YN"                             jdbcType="NUMERIC" />
+	</resultMap>
+
+    <resultMap id="DepositWithdrawMgrMap" type="kr.co.coinis.webserver.holdport.wallet.wlt001.vo.DepositWithdrawMgrVO">
+        <result property="REQ_SEQ_NO"							column="REQ_SEQ_NO"							jdbcType="NUMERIC" />
+        <result property="REQ_DAY"                              column="REQ_DAY"                        	jdbcType="VARCHAR" />
+        <result property="REQ_DT"                               column="REQ_DT"                         	jdbcType="VARCHAR" />
+        <result property="REQ_IP"                               column="REQ_IP"                         	jdbcType="VARCHAR" />
+        <result property="REQ_CHNL_CD"                          column="REQ_CHNL_CD"                    	jdbcType="VARCHAR" />
+        <result property="EXCHANGE_ID"                          column="EXCHANGE_ID"                    	jdbcType="VARCHAR" />
+        <result property="USER_ID"                              column="USER_ID"                        	jdbcType="VARCHAR" />
+        <result property="DW_REQ_TYPE_CD"                       column="DW_REQ_TYPE_CD"                 	jdbcType="NUMERIC" />
+        <result property="FROM_ADDR"                            column="FROM_ADDR"                      	jdbcType="VARCHAR" />
+        <result property="PIN_CD"                               column="PIN_CD"                         	jdbcType="VARCHAR" />
+        <result property="TARGET_ADDR"                          column="TARGET_ADDR"                    	jdbcType="VARCHAR" />
+        <result property="TARGET_ADDR_ETC1"                     column="TARGET_ADDR_ETC1"               	jdbcType="VARCHAR" />
+        <result property="TARGET_ADDR_ETC2"                     column="TARGET_ADDR_ETC2"               	jdbcType="VARCHAR" />
+        <result property="COIN_NO"                              column="COIN_NO"                        	jdbcType="NUMERIC" />
+        <result property="PRICE_BY_BC"                          column="PRICE_BY_BC"                    	jdbcType="NUMERIC" />
+        <result property="REQ_QTY"                              column="REQ_QTY"                        	jdbcType="NUMERIC" />
+        <result property="REQ_MEMO"                             column="REQ_MEMO"                       	jdbcType="VARCHAR" />
+        <result property="REQ_STAT_PROC_CD"                     column="REQ_STAT_PROC_CD"               	jdbcType="NUMERIC" />
+        <result property="REQ_STAT_PROC_DT"                     column="REQ_STAT_PROC_DT"               	jdbcType="VARCHAR" />
+        <result property="APPROVAL_STAT_CD"                     column="APPROVAL_STAT_CD"               	jdbcType="NUMERIC" />
+        <result property="APPROVAL_PROC_DT"                     column="APPROVAL_PROC_DT"               	jdbcType="VARCHAR" />
+        <result property="APPROVAL_PROC_MEMO"                   column="APPROVAL_PROC_MEMO"             	jdbcType="VARCHAR" />
+        <result property="APPROVAL_PROC_ID"                     column="APPROVAL_PROC_ID"               	jdbcType="VARCHAR" />
+        <result property="WTDRW_FEE"                            column="WTDRW_FEE"                      	jdbcType="NUMERIC" />
+        <result property="DW_PROC_STAT_CD"                      column="DW_PROC_STAT_CD"                	jdbcType="NUMERIC" />
+        <result property="DW_PROC_DET_ERR_CD"                   column="DW_PROC_DET_ERR_CD"             	jdbcType="NUMERIC" />
+        <result property="DW_PROC_DT"                           column="DW_PROC_DT"                     	jdbcType="VARCHAR" />
+        <result property="IS_WITHDRAWING_YN"                    column="IS_WITHDRAWING_YN"              	jdbcType="NUMERIC" />
+        <result property="TRANSACTION_IDX"                      column="TRANSACTION_IDX"					jdbcType="NUMERIC" />
+	</resultMap>
+	<parameterMap id="DepositWithdrawMgrMap" type="kr.co.coinis.webserver.holdport.wallet.wlt001.vo.DepositWithdrawMgrVO">
+        <parameter property="REQ_SEQ_NO"						jdbcType="NUMERIC" />
+        <parameter property="REQ_DAY"                           jdbcType="VARCHAR" />
+        <parameter property="REQ_DT"                            jdbcType="VARCHAR" />
+        <parameter property="REQ_IP"                            jdbcType="VARCHAR" />
+        <parameter property="REQ_CHNL_CD"                       jdbcType="VARCHAR" />
+        <parameter property="EXCHANGE_ID"                       jdbcType="VARCHAR" />
+        <parameter property="USER_ID"                           jdbcType="VARCHAR" />
+        <parameter property="DW_REQ_TYPE_CD"                    jdbcType="NUMERIC" />
+        <parameter property="FROM_ADDR"                         jdbcType="VARCHAR" />
+        <parameter property="PIN_CD"                            jdbcType="VARCHAR" />
+        <parameter property="TARGET_ADDR"                       jdbcType="VARCHAR" />
+        <parameter property="TARGET_ADDR_ETC1"                  jdbcType="VARCHAR" />
+        <parameter property="TARGET_ADDR_ETC2"                  jdbcType="VARCHAR" />
+        <parameter property="COIN_NO"                           jdbcType="NUMERIC" />
+        <parameter property="PRICE_BY_BC"                       jdbcType="NUMERIC" />
+        <parameter property="REQ_QTY"                           jdbcType="NUMERIC" />
+        <parameter property="REQ_MEMO"                          jdbcType="VARCHAR" />
+        <parameter property="REQ_STAT_PROC_CD"                  jdbcType="NUMERIC" />
+        <parameter property="REQ_STAT_PROC_DT"                  jdbcType="VARCHAR" />
+        <parameter property="APPROVAL_STAT_CD"                  jdbcType="NUMERIC" />
+        <parameter property="APPROVAL_PROC_DT"                  jdbcType="VARCHAR" />
+        <parameter property="APPROVAL_PROC_MEMO"                jdbcType="VARCHAR" />
+        <parameter property="APPROVAL_PROC_ID"                  jdbcType="VARCHAR" />
+        <parameter property="WTDRW_FEE"                         jdbcType="NUMERIC" />
+        <parameter property="DW_PROC_STAT_CD"                   jdbcType="NUMERIC" />
+        <parameter property="DW_PROC_DET_ERR_CD"                jdbcType="NUMERIC" />
+        <parameter property="DW_PROC_DT"                        jdbcType="VARCHAR" />
+        <parameter property="IS_WITHDRAWING_YN"                 jdbcType="NUMERIC" />
+        <parameter property="TRANSACTION_IDX"                   jdbcType="NUMERIC" />
+	</parameterMap >
+
+    <resultMap id="MemberInfoMap" type="kr.co.coinis.webserver.holdport.wallet.wlt001.vo.MemberInfoVO">
+        <result property="EXCHANGE_ID"							column="EXCHANGE_ID"						jdbcType="VARCHAR" />
+        <result property="USER_ID"                              column="USER_ID"                            jdbcType="VARCHAR" />
+        <result property="LOGIN_PASSWD"                         column="LOGIN_PASSWD"                       jdbcType="VARCHAR" />
+        <result property="LOGIN_PASSWD_CHG_DT"                  column="LOGIN_PASSWD_CHG_DT"                jdbcType="VARCHAR" />
+        <result property="AUTH_LEVEL"                           column="AUTH_LEVEL"                         jdbcType="NUMERIC" />
+        <result property="AUTH_MEANS_CD"                        column="AUTH_MEANS_CD"                      jdbcType="NUMERIC" />
+        <result property="OTP_YN"                               column="OTP_YN"                             jdbcType="NUMERIC" />
+        <result property="OTP_KEY_VAL"                          column="OTP_KEY_VAL"                        jdbcType="VARCHAR" />
+        <result property="OTP_SET_DT"                           column="OTP_SET_DT"                         jdbcType="VARCHAR" />
+        <result property="SMS_USE_YN"                           column="SMS_USE_YN"                         jdbcType="NUMERIC" />
+        <result property="TEL_CD"                               column="TEL_CD"                             jdbcType="VARCHAR" />
+        <result property="MOBILE"                               column="MOBILE"                             jdbcType="VARCHAR" />
+        <result property="SMS_SET_DT"                           column="SMS_SET_DT"                         jdbcType="VARCHAR" />
+        <result property="FISH_ANTI_CODE_YN"                    column="FISH_ANTI_CODE_YN"                  jdbcType="NUMERIC" />
+        <result property="FISH_ANTI_CODE_VAL"                   column="FISH_ANTI_CODE_VAL"                 jdbcType="VARCHAR" />
+        <result property="LAST_LOGIN_IPADDR"                    column="LAST_LOGIN_IPADDR"                  jdbcType="VARCHAR" />
+        <result property="LAST_LOGIN_APP_VER"                   column="LAST_LOGIN_APP_VER"                 jdbcType="VARCHAR" />
+        <result property="LAST_LOGIN_DT"                        column="LAST_LOGIN_DT"                      jdbcType="VARCHAR" />
+        <result property="BLACK_LIST_YN"                        column="BLACK_LIST_YN"                      jdbcType="NUMERIC" />
+        <result property="AUTO_WTDRW_BLOCK_YN"                  column="AUTO_WTDRW_BLOCK_YN"                jdbcType="NUMERIC" />
+        <result property="MRKT_AGREE_YN"                        column="MRKT_AGREE_YN"                      jdbcType="NUMERIC" />
+        <result property="JOIN_DT"                              column="JOIN_DT"                            jdbcType="VARCHAR" />
+        <result property="MEMBER_STAT_CD"                       column="MEMBER_STAT_CD"                     jdbcType="NUMERIC" />
+        <result property="UNSUBSCRIBE_DT"                       column="UNSUBSCRIBE_DT"                     jdbcType="VARCHAR" />
+        <result property="UNSUBSCRIBE_REAS_CD"                  column="UNSUBSCRIBE_REAS_CD"                jdbcType="NUMERIC" />
+        <result property="UNSUBSCRIBE_REAS_CONT"                column="UNSUBSCRIBE_REAS_CONT"              jdbcType="VARCHAR" />
+        <result property="RECOMMENDER_CD"                       column="RECOMMENDER_CD"                     jdbcType="VARCHAR" />
+        <result property="REG_DT"                               column="REG_DT"                             jdbcType="VARCHAR" />
+        <result property="UPDT_DT"                              column="UPDT_DT"                            jdbcType="VARCHAR" />
+	</resultMap>
+
+    <!-- ==================================================================================== -->
+    <!-- 1. Select Statement -->
+    <!-- ==================================================================================== -->
+
+	<!-- select TB_CODE_MAST -->
+	<!-- Select Code Master Info List  -->
+	<select id="selectCodeMast" resultMap="CodeMastMap">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			TB_CODE_MAST
+        ORDER BY CODE_ID ASC
+	]]>
+	</select>
+
+	<!-- select TB_CODE_INFO -->
+	<!-- Select Code Info List -->
+	<select id="selectCodeInfoList" parameterType="java.util.Map" resultMap="CodeInfoMap">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			TB_CODE_INFO
+        ORDER BY CODE_ID ASC
+	]]>
+	</select>
+
+	<!-- select TB_CODE_INFO -->
+	<!-- Select Code Info List By CODE_ID  -->
+	<select id="selectCodeInfoByCodeId" parameterType="java.util.Map" resultMap="CodeInfoMap">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			TB_CODE_INFO
+		WHERE
+			CODE_ID			    = #{CODE_ID, jdbcType=VARCHAR}
+        ORDER BY REC_SEQ_NO ASC
+	]]>
+	</select>
+
+	<!-- select TB_MEMBER_BANK_ACCNT_INFO -->
+	<!-- 회원의 은행 계좌정보를 가져옴  -->
+	<select id="selectMemberBankAccountInfo" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+        SELECT
+            EXCHANGE_ID, USER_ID, REC_SEQ_NO, USE_START_DT, USE_END_DT, USE_YN, BANK_CD,
+            AES_DECRYPT( BANK_ACCNT_NO, SHA2(SHA2( CONCAT( #{USER_ID, jdbcType=VARCHAR}, (SELECT REG_DT FROM TB_MEMBER_INFO WHERE EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR} AND USER_ID = #{USER_ID, jdbcType=VARCHAR})), 512), 512)) AS BANK_ACCNT_NO,
+            AES_DECRYPT( ACCNT_HOLDER_NM, SHA2(SHA2( CONCAT( #{USER_ID, jdbcType=VARCHAR}, (SELECT REG_DT FROM TB_MEMBER_INFO WHERE EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR} AND USER_ID = #{USER_ID, jdbcType=VARCHAR})), 512), 512)) AS ACCNT_HOLDER_NM,
+            APPROVAL_STAT_CD, APPROVAL_PROC_DT
+        FROM
+            TB_MEMBER_BANK_ACCNT_INFO
+        WHERE 1 = 1
+            AND EXCHANGE_ID         = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND USER_ID             = #{USER_ID, jdbcType=VARCHAR}
+            AND USE_START_DT        <= DATE_FORMAT(NOW(6),  '%Y%m%d%H%i%s')
+            AND USE_END_DT          > DATE_FORMAT(NOW(6),  '%Y%m%d%H%i%s')
+            AND USE_YN              = 1
+	]]>
+	</select>
+
+	<!-- select TB_EXCHANGE_BANK_ACCNT_INFO -->
+	<!-- 거래소의 은행 계좌정보를 가져옴  -->
+	<select id="selectExchangeBankAccountInfo" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+        SELECT
+            EXCHANGE_ID, REC_SEQ_NO, USE_START_DT, USE_END_DT, USE_YN, BANK_CD,
+            AES_DECRYPT( BANK_ACCNT_NO, SHA2(SHA2( CONCAT( EXCHANGE_ID, REG_DT ), 512), 512)) AS BANK_ACCNT_NO,
+            AES_DECRYPT( ACCNT_HOLDER_NM, SHA2(SHA2( CONCAT( EXCHANGE_ID, REG_DT), 512), 512)) AS ACCNT_HOLDER_NM,
+            DW_PG_MID, REG_DT, REG_USER_ID, UPDT_DT, UPDT_USER_ID
+        FROM
+            TB_EXCHANGE_BANK_ACCNT_INFO
+        WHERE 1 = 1
+            AND EXCHANGE_ID         = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND USE_START_DT        <= DATE_FORMAT(NOW(6),  '%Y%m%d%H%i%s')
+            AND USE_END_DT          > DATE_FORMAT(NOW(6),  '%Y%m%d%H%i%s')
+            AND USE_YN              = 1
+	]]>
+	</select>
+
+	<!-- select TB_MKT_ITEM_CODE_INFO And TB_ITEM_CODE_MAST -->
+	<!-- 거래소에 상장된 코인정보를 가져옴  -->
+	<select id="selectCoinInfoByExchangeId" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+        SELECT
+            *
+        FROM TB_MKT_ITEM_CODE_INFO MICI
+        INNER JOIN TB_ITEM_CODE_MAST ICM
+        INNER JOIN TB_COIN_MGT_REF_INFO CMRI
+        INNER JOIN TB_EXCHANGE_MKT_INFO EMI
+        ON  MICI.ITEM_CODE = ICM.ITEM_CODE
+            AND ICM.COIN_NO = CMRI.COIN_NO
+            AND MICI.EXCHANGE_ID  = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND EMI.EXCHANGE_ID = MICI.EXCHANGE_ID
+            AND EMI.MKT_ID = MICI.MKT_ID
+            AND EMI.MKT_STAT_CD = 1
+            AND MICI.TRADE_STAT_CD = 1
+        WHERE
+            EMI.MKT_STAT_CD = 1
+        GROUP BY ICM.COIN_NO
+        ORDER BY ICM.COIN_NO ASC
+	]]>
+	</select>
+
+	<!-- select TB_MKT_ITEM_CODE_INFO And TB_ITEM_CODE_MAST -->
+	<!-- 거래소에 상장된 코인정보를 가져옴 TRADE_STAT_CD 에 종속 -->
+	<select id="selectCoinInfoByTradeStatCd" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+        SELECT
+            *
+        FROM TB_MKT_ITEM_CODE_INFO MICI
+        INNER JOIN TB_ITEM_CODE_MAST ICM
+        INNER JOIN TB_COIN_MGT_REF_INFO CMRI
+        INNER JOIN TB_EXCHANGE_MKT_INFO EMI
+        ON  MICI.ITEM_CODE = ICM.ITEM_CODE
+            AND ICM.COIN_NO = CMRI.COIN_NO
+            AND MICI.EXCHANGE_ID  = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND EMI.EXCHANGE_ID = MICI.EXCHANGE_ID
+            AND EMI.MKT_ID = MICI.MKT_ID
+            AND CMRI.DEPOSIT_PAGE_SHOW_YN = 1
+            AND CMRI.WTDRW_PAGE_SHOW_YN = 1
+            -- AND MICI.TRADE_STAT_CD = 1
+        WHERE
+            EMI.MKT_STAT_CD = 1
+        GROUP BY ICM.COIN_NO
+        ORDER BY ICM.COIN_NO ASC
+	]]>
+	</select>
+
+	<!-- select TB_COIN_BALANCE -->
+	<!-- 사용자의 코인 보유내역을 가져온다. -->
+	<select id="selectCoinBalanceByUserId" parameterType="java.util.Map" resultMap="CoinBalanceMap">
+	<![CDATA[
+        SELECT
+            *
+        FROM TB_COIN_BALANCE
+        WHERE
+                USER_ID         = #{USER_ID, jdbcType=VARCHAR}
+            AND EXCHANGE_ID     = #{EXCHANGE_ID, jdbcType=VARCHAR}
+        ORDER BY COIN_NO ASC
+	]]>
+	</select>
+
+	<!-- select TB_COIN_MGT_REF_INFO -->
+	<!-- 코인관리 기준정보에서 코인 정보 리스트를 가져온다. (출금수수료는 TB_COIN_WITHDRAW_FEE 테이블에서 가져온다.) -->
+	<select id="selectCoinMgtRefInfoList" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+        SELECT
+            A.COIN_NO, A.COIN_SYMBOLIC_NM, A.WTDRW_DECIMAL_PNT, A.CONFIRMATIONS, A.CONFIRM_DELAY_TM,
+            A.DEPOSIT_PAGE_SHOW_YN, A.WTDRW_PAGE_SHOW_YN, A.AUTO_DEPOSIT_YN, A.AUTO_WTDRW_YN, A.SYSTEM_AUTO_WITHDRAW_YN,
+            IFNULL(B.WTDRW_FEE, A.WTDRW_FEE) AS WTDRW_FEE,
+            A.MIN_WTDRW_QTY, A.MIN_DEPOSIT_QTY, A.MAX_ONCE_WTHRW_QTY, A.COIN_ADDR_CNT,
+            A.COIN_DEPOSIT_ADDR_CNT, A.COIN_WTDRW_ADDR_CNT, A.ADDR_ETC1_NM, A.ADDR_ETC2_NM, A.TRADE_STAT_CD,
+            A.COIN_ADDR_CHECK_YN, A.COIN_ADDR_LEN, A.COIN_ADDR_CHECK_STR
+        FROM TB_COIN_MGT_REF_INFO A
+        LEFT OUTER JOIN TB_COIN_WITHDRAW_FEE B
+        ON 1 = 1
+            AND A.COIN_NO       = B.COIN_NO
+            AND B.EXCHANGE_ID   = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND B.USER_ID       = #{USER_ID, jdbcType=VARCHAR}
+	]]>
+	</select>
+
+	<!-- select TB_COIN_MGT_REF_INFO -->
+	<!-- 코인관리 기준정보에서 특정코인 정보를 가져온다. -->
+	<select id="selectCoinMgtRefInfoByCoinNo" parameterType="java.lang.Integer" resultMap="CoinMgtRefInfoMap">
+	<![CDATA[
+        SELECT
+            *
+        FROM TB_COIN_MGT_REF_INFO
+        WHERE
+            COIN_NO         = #{COIN_NO, jdbcType=NUMERIC}
+        LIMIT 1
+	]]>
+	</select>
+
+	<!-- select TB_COIN_DEPOSIT_WALLET_INFO -->
+	<!-- 회원의 코인 지갑주소를 가져온다. -->
+	<select id="selectCoinDepositWalletInfoByUserIdAndCoinNo" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+        SELECT
+            CDWI.EXCHANGE_ID, CDWI.USER_ID, CDWI.COIN_NO, CDWI.ISSUE_SEQ_NO, CDWI.DEPOSIT_WALLET_ADDR, CDWI.ADDR_ETC1, CDWI.ADDR_ETC2, CDWI.REG_DT, CDWI.USE_YN,
+            CMRI.COIN_SYMBOLIC_NM, CMRI.WTDRW_DECIMAL_PNT, CMRI.CONFIRMATIONS, CMRI.CONFIRM_DELAY_TM, CMRI.DEPOSIT_PAGE_SHOW_YN, CMRI.WTDRW_PAGE_SHOW_YN, CMRI.AUTO_DEPOSIT_YN,
+            CMRI.AUTO_WTDRW_YN, CMRI.SYSTEM_AUTO_WITHDRAW_YN, CMRI.WTDRW_FEE, CMRI.MIN_WTDRW_QTY, CMRI.MIN_DEPOSIT_QTY, CMRI.MAX_ONCE_WTHRW_QTY, CMRI.COIN_ADDR_CNT,
+            CMRI.COIN_DEPOSIT_ADDR_CNT, CMRI.COIN_WTDRW_ADDR_CNT, CMRI.ADDR_ETC1_NM, CMRI.ADDR_ETC2_NM, CMRI.TRADE_STAT_CD, CMRI.COIN_ADDR_CHECK_YN, CMRI.COIN_ADDR_LEN,
+            CMRI.COIN_ADDR_CHECK_STR
+        FROM TB_COIN_DEPOSIT_WALLET_INFO CDWI
+        INNER JOIN TB_COIN_MGT_REF_INFO CMRI
+        ON
+                CDWI.COIN_NO             = CMRI.COIN_NO
+            AND CDWI.EXCHANGE_ID         = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND CDWI.USER_ID             = #{USER_ID, jdbcType=VARCHAR}
+            AND CDWI.COIN_NO             = #{COIN_NO, jdbcType=NUMERIC}
+            AND CDWI.USE_YN              = 1
+        LIMIT 1
+	]]>
+	</select>
+
+	<!-- select TB_DEPOSIT_WITHDRAW_MGR -->
+	<!-- 회원의 입출금 기록 리스트 갯수를 가져온다. -->
+	<select id="selectDepositWithdrawListCount" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            Count(*) AS size
+        FROM TB_DEPOSIT_WITHDRAW_MGR  DWM
+        LEFT OUTER JOIN TB_DW_TRANSACTION_HIST DWTH
+        ON
+            DWTH.TRANSACTION_IDX        = DWM.TRANSACTION_IDX
+        WHERE
+                DWM.USER_ID             = #{USER_ID, jdbcType=VARCHAR}
+            AND DWM.EXCHANGE_ID         = #{EXCHANGE_ID, jdbcType=VARCHAR}
+        <if test="COIN_NO != 9999">
+            AND DWM.COIN_NO             = #{COIN_NO, jdbcType=NUMERIC}
+		</if>
+        <if test="DW_REQ_TYPE_CD == 1">
+            AND ( DWM.DW_REQ_TYPE_CD = 1 OR DWM.DW_REQ_TYPE_CD = 3)
+		</if>
+        <if test="DW_REQ_TYPE_CD == 2">
+            AND ( DWM.DW_REQ_TYPE_CD = 2 OR DWM.DW_REQ_TYPE_CD = 4)
+		</if>
+        <if test="START_DT != null">
+			AND DWM.REQ_DT 	&gt;= CONCAT(#{START_DT, jdbcType=VARCHAR}, '000000000000')
+		</if>
+        <if test="END_DT != null">
+			AND DWM.REQ_DT 	&lt;= CONCAT(#{END_DT, jdbcType=VARCHAR}, '235959999999')
+		</if>
+		<trim prefix="AND (" prefixOverrides="OR" suffix=")">
+	        <if test="REQUEST != null">
+				( DWM.REQ_STAT_PROC_CD = 1 OR DWM.REQ_STAT_PROC_CD = 2 OR DWM.REQ_STAT_PROC_CD = 5 )
+			</if>
+	        <if test="WAIT != null">
+				OR ( DWM.REQ_STAT_PROC_CD = 3 OR (DWM.REQ_STAT_PROC_CD = 4 AND DWM.DW_PROC_STAT_CD &lt;&gt; 1) )
+			</if>
+	        <if test="FINISH != null">
+				OR ( DWM.REQ_STAT_PROC_CD = 4 AND DWM.DW_PROC_STAT_CD = 1 )
+			</if>
+		</trim>
+        ORDER BY DWM.REQ_DT ASC
+	</select>
+	<!-- select TB_DEPOSIT_WITHDRAW_MGR -->
+	<!-- 회원의 입출금 기록 리스트를 가져온다. -->
+	<select id="selectDepositWithdrawList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            *
+        FROM TB_DEPOSIT_WITHDRAW_MGR  DWM
+        LEFT OUTER JOIN TB_DW_TRANSACTION_HIST DWTH
+        ON
+            DWTH.TRANSACTION_IDX        = DWM.TRANSACTION_IDX
+        WHERE
+                DWM.USER_ID             = #{USER_ID, jdbcType=VARCHAR}
+            AND DWM.EXCHANGE_ID         = #{EXCHANGE_ID, jdbcType=VARCHAR}
+        <if test="COIN_NO != 9999">
+            AND DWM.COIN_NO             = #{COIN_NO, jdbcType=NUMERIC}
+		</if>
+        <if test="DW_REQ_TYPE_CD == 1">
+            AND ( DWM.DW_REQ_TYPE_CD = 1 OR DWM.DW_REQ_TYPE_CD = 3)
+		</if>
+        <if test="DW_REQ_TYPE_CD == 2">
+            AND ( DWM.DW_REQ_TYPE_CD = 2 OR DWM.DW_REQ_TYPE_CD = 4)
+		</if>
+        <if test="START_DT != null">
+			AND DWM.REQ_DT 	&gt;= CONCAT(#{START_DT, jdbcType=VARCHAR}, '000000000000')
+		</if>
+        <if test="END_DT != null">
+			AND DWM.REQ_DT 	&lt;= CONCAT(#{END_DT, jdbcType=VARCHAR}, '235959999999')
+		</if>
+		<trim prefix="AND (" prefixOverrides="OR" suffix=")">
+	        <if test="REQUEST != null">
+				( DWM.REQ_STAT_PROC_CD = 1 OR DWM.REQ_STAT_PROC_CD = 2 OR DWM.REQ_STAT_PROC_CD = 5 )
+			</if>
+	        <if test="WAIT != null">
+				OR ( DWM.REQ_STAT_PROC_CD = 3 OR (DWM.REQ_STAT_PROC_CD = 4 AND DWM.DW_PROC_STAT_CD &lt;&gt; 1) )
+			</if>
+	        <if test="FINISH != null">
+				OR ( DWM.REQ_STAT_PROC_CD = 4 AND DWM.DW_PROC_STAT_CD = 1 )
+			</if>
+		</trim>
+
+        ORDER BY DWM.REQ_DT DESC
+        LIMIT #{PAGE_INDEX, jdbcType=NUMERIC}, #{PAGE_CONT_NUM, jdbcType=NUMERIC}
+	</select>
+
+	<!-- 회원 정보를 가져온다. -->
+	<select id="selectMemberInfo" parameterType="java.util.Map" resultMap="MemberInfoMap">
+        SELECT
+            EXCHANGE_ID, USER_ID, LOGIN_PASSWD, LOGIN_PASSWD_CHG_DT, AUTH_LEVEL,
+            AUTH_MEANS_CD, OTP_YN,
+            AES_DECRYPT(OTP_KEY_VAL,   SHA2(SHA2( CONCAT(USER_ID, REG_DT), 512), 512)) AS OTP_KEY_VAL,
+            OTP_SET_DT, SMS_USE_YN, TEL_CD,
+            AES_DECRYPT(MOBILE,   SHA2(SHA2( CONCAT(USER_ID, REG_DT), 512), 512)) AS MOBILE,
+            SMS_SET_DT, FISH_ANTI_CODE_YN, FISH_ANTI_CODE_VAL, LAST_LOGIN_IPADDR,
+            LAST_LOGIN_APP_VER, LAST_LOGIN_DT, BLACK_LIST_YN, AUTO_WTDRW_BLOCK_YN,
+            MRKT_AGREE_YN, JOIN_DT, MEMBER_STAT_CD, UNSUBSCRIBE_DT, UNSUBSCRIBE_REAS_CD,
+            UNSUBSCRIBE_REAS_CONT, RECOMMENDER_CD, REG_DT, UPDT_DT
+        FROM
+            TB_MEMBER_INFO
+        WHERE
+                USER_ID             = #{USER_ID, jdbcType=VARCHAR}
+            AND EXCHANGE_ID         = #{EXCHANGE_ID, jdbcType=VARCHAR}
+        LIMIT 1
+	</select>
+
+	<!-- select TB_MEMBER_AUTH_MGR -->
+	<!-- 사용자 출금신청 인증 키값을 가져온다.-->
+	<select id="selectMemberAuthMgrTxKeyBal" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+        SELECT
+            TRANSACTION_KEY_VAL
+        FROM
+            TB_MEMBER_AUTH_MGR
+        WHERE
+                USER_ID             = #{USER_ID, jdbcType=VARCHAR}
+            AND EXCHANGE_ID         = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND AUTH_PURPOSE_CD     = #{AUTH_PURPOSE_CD, jdbcType=NUMERIC}
+            AND AUTH_MEANS_CD       = #{AUTH_MEANS_CD, jdbcType=NUMERIC}
+            AND AUTH_MEANS_KEY_VAL  = SHA2(#{AUTH_MEANS_KEY_VAL, jdbcType=VARCHAR}, 512)
+        LIMIT 1
+	]]>
+	</select>
+
+	<!-- select TB_MEMBER_AUTH_MGR -->
+	<!-- 사용자의 최초 KRW 입금내역을 가져온다. (72시간 출금제한 관련)-->
+	<select id="getFirstDepositDateTime" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+        SELECT
+            *
+        FROM
+            TB_DEPOSIT_WITHDRAW_MGR
+        WHERE
+                USER_ID             = #{USER_ID, jdbcType=VARCHAR}
+            AND EXCHANGE_ID         = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND DW_REQ_TYPE_CD     	= #{DW_REQ_TYPE_CD, jdbcType=NUMERIC}
+            AND APPROVAL_STAT_CD	= 1		-- 승인상태 >> 승인
+            AND DW_PROC_STAT_CD  	= 1		-- 입출금처리상태 >> 완료
+		ORDER BY REQ_SEQ_NO ASC
+		LIMIT 1
+	]]>
+	</select>
+
+	<!-- select TB_COIN_MGT_REF_INFO -->
+	<!-- 코인별 1회최대출금수량을 가져온다.  -->
+	<select id="checkOnceWthrwQty" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			MAX_ONCE_WTHRW_QTY
+		FROM
+			TB_COIN_MGT_REF_INFO
+		WHERE
+			COIN_NO			    = #{COIN_NO, mode=IN, jdbcType=NUMERIC}
+	</select>
+
+    <!-- ==================================================================================== -->
+    <!-- 1.1 Procedure Call -->
+    <!-- ==================================================================================== -->
+	<!-- 사용자 회원 은행계좌정보 저장 프로시저 -->
+	<update id="call_PR_WAS_INSERT_BANK_ACCNT_INFO" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_INSERT_BANK_ACCNT_INFO
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_BANK_CD, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_BANK_ACCNT_NO, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_ACCNT_HOLDER_NM, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_KEY1, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_KEY2, mode=IN, jdbcType=VARCHAR}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				)
+		}
+	</update>
+
+	<!-- 사용자 출금 가능수량 체크 프로시저 -->
+	<update id="call_PR_WAS_CHECK_WITHDRAW" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_CHECK_WITHDRAW
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_COIN_NO, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_REQ_QTY, mode=IN, jdbcType=NUMERIC}
+					, #{V_WTDRW_POSS_QTY, mode=OUT, jdbcType=NUMERIC}
+					, #{V_DAILIY_LIMIT_MAX_QTY, mode=OUT, jdbcType=NUMERIC}
+					, #{V_DAILIY_LIMIT_LEFT_QTY, mode=OUT, jdbcType=NUMERIC}
+					, #{V_MONTHLY_LIMIT_LEFT_QTY, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				)
+		}
+	</update>
+
+	<!-- WAS서버 인증코드 저장처리 프로시저 -->
+	<update id="call_PR_WAS_INSERT_AUTH_CODE" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_INSERT_AUTH_CODE
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_AUTH_PURPOSE_CD, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_AUTH_MEANS_CD, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_AUTH_MEANS_KEY_VAL, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_EXPIRE_SEC, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_TRANSACTION_KEY_VAL, mode=IN, jdbcType=NUMERIC}
+					, #{V_ENCRYPT_AUTH_CODE, mode=OUT, jdbcType=VARCHAR}
+					, #{V_AUTH_CODE, mode=OUT, jdbcType=VARCHAR}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				)
+		}
+	</update>
+
+	<!-- WALLET서버 코인입출금트랜잭션이력 저장 프로시저 -->
+	<update id="call_PR_WAS_INSERT_DW_TRANSACTION_HIST" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_INSERT_DW_TRANSACTION_HIST
+				(
+					  #{ARG_COIN_NO, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_DW_REQ_TYPE_CD, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_FROM_ADDR, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_TARGET_ADDR, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_DW_COIN_QTY, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_NW_FEE_AMT, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_CONFIRMATIONS, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_BLOCK_HASH_VAL, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_BLOCK_TM, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_TXID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_TRANSACTION_TM, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_BLOCK_RCV_TM, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_COMMENT_TXT, mode=IN, jdbcType=VARCHAR}
+					, #{V_TRANSACTION_IDX, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				)
+		}
+	</update>
+
+	<!-- WAS서버 코인출금요청 저장 프로시저 -->
+	<update id="call_PR_WAS_INSERT_WITHDRAW_REQUEST" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_INSERT_WITHDRAW_REQUEST
+				(
+					  #{ARG_REQ_IP, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_REQ_CHNL_CD, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_FROM_ADDR, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_TARGET_ADDR, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_TARGET_ADDR_ETC1, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_TARGET_ADDR_ETC2, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_COIN_NO, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_REQ_QTY, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_REQ_MEMO, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_REQ_STAT_PROC_CD, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_APPROVAL_STAT_CD, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_DW_PROC_STAT_CD, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_TRANSACTION_IDX, mode=IN, jdbcType=NUMERIC}
+					, #{V_REQ_SEQ_NO, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				)
+		}
+	</update>
+
+	<!-- WAS서버 인증코드 체크 프로시저 -->
+	<update id="call_PR_WAS_CHECK_AUTH_CODE" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_CHECK_AUTH_CODE
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_AUTH_PURPOSE_CD, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_AUTH_MEANS_CD, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_AUTH_MEANS_KEY_VAL, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_AUTH_CODE, mode=IN, jdbcType=VARCHAR}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				)
+		}
+	</update>
+
+	<!-- WAS서버 회원 코인입출금 요청상태코드 설정 프로시저 -->
+	<update id="call_PR_WAS_SET_DW_REQ_STAT_PROC_CD" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_SET_DW_REQ_STAT_PROC_CD
+				(
+					  #{ARG_REQ_SEQ_NO, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_REQ_STAT_PROC_CD, mode=IN, jdbcType=NUMERIC}
+					, #{V_AUTO_DEPOSIT_YN, mode=OUT, jdbcType=NUMERIC}
+					, #{V_AUTO_WTDRW_YN, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				)
+		}
+	</update>
+
+	<!-- WAS서버 회원 코인입출금 요청상태코드 설정 프로시저 -->
+	<update id="call_PR_WLL_INSERT_DEPOSIT_REQUEST" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WLL_INSERT_DEPOSIT_REQUEST
+				(
+					  #{ARG_REQ_IP, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_REQ_CHNL_CD, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_FROM_ADDR, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_FIN_CD, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_TARGET_ADDR, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_TARGET_ADDR_ETC1, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_TARGET_ADDR_ETC2, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_COIN_NO, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_REQ_QTY, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_REQ_MEMO, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_REQ_STAT_PROC_CD, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_APPROVAL_STAT_CD, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_DW_PROC_STAT_CD, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_TRANSACTION_IDX, mode=IN, jdbcType=NUMERIC}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				)
+		}
+	</update>
+	
+	
+	<!--지갑 입금 설정 프로시저 for hexlant-->
+	<update id="call_PR_WLL_INSERT_DEPOSIT_REQUEST2" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WLL_INSERT_DEPOSIT_REQUEST2
+				(	  #{ARG_REQ_IP, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_REQ_CHNL_CD, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_FROM, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_TO, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_TAG, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_INFO, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_COIN_NO, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_REQ_QTY, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_TXID, mode=IN, jdbcType=VARCHAR}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				)
+		}
+	</update>
+	
+
+    <!-- ==================================================================================== -->
+    <!-- 2. Delete Statement -->
+    <!-- ==================================================================================== -->
+	<!-- delete TB_MEMBER_AUTH_MGR -->
+	<!-- 사용자가 출금신청 취소를 했을때 인증번호를 삭제한다. -->
+	<delete id="deleteMemberAuthMgrByTxKeyBal" parameterType="java.util.Map" >
+	<![CDATA[
+        DELETE FROM TB_MEMBER_AUTH_MGR
+        WHERE
+                USER_ID             = #{USER_ID, jdbcType=VARCHAR}
+            AND EXCHANGE_ID         = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND TRANSACTION_KEY_VAL = #{TRANSACTION_KEY_VAL, jdbcType=NUMERIC}
+	]]>
+	</delete>
+
+    <!-- ==================================================================================== -->
+    <!-- 3. Insert Statement -->
+    <!-- ==================================================================================== -->
+	<!-- insert TB_DEPOSIT_WITHDRAW_MGR -->
+	<!-- 입출금관리 테이블 수동 입력 (## 원화 입금일때 사용) -->
+	<insert id="insertDepositWithdrawManager" parameterMap="DepositWithdrawMgrMap" >
+	<![CDATA[
+		INSERT INTO TB_DEPOSIT_WITHDRAW_MGR
+		(
+		        REQ_DAY,
+		        REQ_DT,
+		        REQ_IP,
+		        REQ_CHNL_CD,
+		        EXCHANGE_ID,
+		        USER_ID,
+		        DW_REQ_TYPE_CD,
+		        FROM_ADDR,
+		        PIN_CD,
+		        TARGET_ADDR,
+		        TARGET_ADDR_ETC1,
+		        TARGET_ADDR_ETC2,
+		        COIN_NO,
+		        PRICE_BY_BC,
+		        REQ_QTY,
+		        REQ_MEMO,
+		        REQ_STAT_PROC_CD,
+		        REQ_STAT_PROC_DT,
+		        APPROVAL_STAT_CD,
+		        APPROVAL_PROC_DT,
+		        DW_PROC_STAT_CD,
+		        DW_PROC_DT,
+		        WTDRW_FEE,
+		        IS_WITHDRAWING_YN,
+		        TRANSACTION_IDX
+		)
+		SELECT
+		        SUBSTR(DATE_FORMAT(NOW(6),  '%Y%m%d%H%i%s%f'), 1, 8),
+		        DATE_FORMAT(NOW(6),  '%Y%m%d%H%i%s%f'),
+		        #{REQ_IP},
+		        #{REQ_CHNL_CD},
+		        #{EXCHANGE_ID},
+		        #{USER_ID},
+		        #{DW_REQ_TYPE_CD},
+		        #{FROM_ADDR},
+		        #{PIN_CD},
+		        #{TARGET_ADDR},
+		        #{TARGET_ADDR_ETC1},
+		        #{TARGET_ADDR_ETC2},
+		        #{COIN_NO},
+		        FN_WAS_GET_PRICE_BY_BC(#{COIN_NO}, (SELECT BC_COIN_NO FROM  TB_EXCHANGE_INFO WHERE EXCHANGE_ID = #{EXCHANGE_ID}) , #{EXCHANGE_ID}),
+		        #{REQ_QTY},
+		        #{REQ_MEMO},
+		        #{REQ_STAT_PROC_CD},
+		        DATE_FORMAT(NOW(6),  '%Y%m%d%H%i%s%f'),
+		        #{APPROVAL_STAT_CD},
+		        IF(#{APPROVAL_STAT_CD}!= 0, DATE_FORMAT(NOW(6),  '%Y%m%d%H%i%s%f'), NULL),
+		        #{DW_PROC_STAT_CD},
+		        IF(#{DW_PROC_STAT_CD}!= 0, DATE_FORMAT(NOW(6),  '%Y%m%d%H%i%s%f'), NULL),
+		        IFNULL(B.WTDRW_FEE, A.WTDRW_FEE),
+		        0,
+		        #{TRANSACTION_IDX}
+		FROM TB_COIN_MGT_REF_INFO  A LEFT OUTER JOIN
+		         TB_COIN_WITHDRAW_FEE B
+		ON     A.COIN_NO = B.COIN_NO
+		AND   B.EXCHANGE_ID = #{EXCHANGE_ID}
+		AND   B.USER_ID = #{USER_ID}
+		AND   B.APPLY_START_DT <= DATE_FORMAT(NOW(6),  '%Y%m%d%H%i%s')
+		AND   B.APPLY_END_DT >= DATE_FORMAT(NOW(6),  '%Y%m%d%H%i%s')
+		WHERE A.COIN_NO = #{COIN_NO}
+	]]>
+	</insert>
+
+</mapper>
+

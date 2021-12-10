@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.coinis.mypage.mpg002.dao.PwChangeDAO">
+	
+	<!-- 비밀번호 매칭 확인 -->
+	<select id="PwMatch" resultType="integer">
+		SELECT 
+			COUNT(*) CNT
+		FROM 
+			TB_MEMBER_INFO 
+		WHERE 
+			USER_ID = #{userID}
+		AND 
+			LOGIN_PASSWD = SHA2(#{currentPW, jdbcType=VARCHAR}, 512)
+		AND 
+			EXCHANGE_ID = #{exchangeId}
+	</select>
+	
+	<!-- 비밀번호 변경 -->	
+	<update id="PwChange" statementType="CALLABLE">
+		{
+			CALL PR_WAS_CHANGE_PASSWORD(
+				#{exchangeId,	mode=IN,	jdbcType=VARCHAR},
+				#{userID,		mode=IN,	jdbcType=VARCHAR},
+				#{newPW,		mode=IN,	jdbcType=VARCHAR},
+				#{rtnCd,		mode=OUT,	jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg,		mode=OUT,	jdbcType=VARCHAR, javaType=string}
+			)
+		}
+	</update>	
+</mapper>
+

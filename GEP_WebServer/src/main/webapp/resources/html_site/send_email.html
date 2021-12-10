@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Forgot Password</title>
+
+    <link rel="icon" href="../path/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="../css/uiStyle.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+
+
+    <script src="../js/jquery/jquery-3.3.1.js"></script>
+    <script src="../js/jquery/jquery-ui.js"></script>
+    <script src="../js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="../js/jquery/slick.js"></script>
+
+    <script type="text/javascript">
+
+    </script>
+
+</head>
+
+<body>
+    <!-- HEADER : Start -->
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>
+                    <a href="home.html"><img src="../img/yaho/logo.png" alt="logo"></a>
+                </h1>
+            </div>
+            <div class="gnb-menu">
+                <ul>
+                    <li><a href="YAHOBIT-WEB--MKT-M001.html">거래소</a></li>
+                    <li><a href="YAHOBIT-WEB--WLT-M001.html">입출금</a></li>
+                    <li><a href="YAHOBIT-WEB--INV-M001.html">투자내역</a></li>
+                    <li><a href="YAHOBIT-WEB--YEP-M001.html">YEP RP</a></li>
+                    <li><a href="YAHOBIT-WEB--CRS-M001.html">IEO</a></li>
+                    <li><a href="YAHOBIT-WEB--ANAL-M001.html">시장동향</a></li>
+                    <li><a href="YAHOBIT-WEB--CST-M001.html">고객지원</a></li>
+                </ul>
+            </div>
+
+            <div class="gnb-link">
+                <ul>
+                    <li onclick="window.open('YAHOBIT-WEB--MBR-M002.html','_parent')">로그인</li>
+                    <li class="on" onclick="window.open('YAHOBIT-WEB--MYP-M001.html','_parent')">마이페이지</li>
+                    <li onclick="window.open('YAHOBIT-WEB--MBR-M001.html','_parent')">회원가입</li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- //HEADER : End -->
+
+
+    <!--컨텐츠 내용 영역 시작-->
+    <section class="main">
+
+        <div class="joinWrap">
+            <h1>비밀번호 재설정</h1>
+
+            <p class="txt-gray mgt20">보안 목적을 위해 보안 방법 수정 후 24 시간 동안 인출을 허용하지 않습니다.</p>
+
+            <form name="login">
+                <div>
+                    <input type="text" name="id" id="id" required="" placeholder="Email">
+                </div>
+                <button class="join">인증메일 발송하기</button>
+            </form>
+
+
+        </div>
+
+    </section>
+    <!--컨텐츠 내용 영역 끝-->
+
+   <!-- FOOTER : Start -->
+    <footer>
+        <div class="footer-menu-wrap">
+            <div class="footer-menu">
+                <a href="YAHOBIT-WEB--ABOUT-M001.html">회사소개</a>
+                <a href="YAHOBIT-WEB--ABOUT-M001.html">이용약관</a>
+                <a href="YAHOBIT-WEB--ABOUT-M001.html">개인정보처리방침</a>
+                <a href="YAHOBIT-WEB--ABOUT-M001.html">자주하는질문</a>
+                <a href="YAHOBIT-WEB--ABOUT-M001.html">1:1문의</a>
+                <a href="YAHOBIT-WEB--ABOUT-M001.html">상장안내</a>
+            </div>
+        </div>
+
+        <div class="footer-wrap">
+
+            <div class="footer-group">
+                <span class="footer-logo">
+                    <a href="#">yahobit</a>
+                    
+                </span>
+                <ul>
+                    <li>㈜프로슈머랩 ㅣ 대표 박남현 ㅣ 사업자등록번호 652-86-00391</li>
+                    <li>서울특별시 구로구 디지털로 33길 28, 1405호</li>
+                    
+                    <li>Copyright&copy; 2019 ProsumerLab All rights Reserved</li>
+                </ul>
+            </div>
+
+
+            <div class="footer-snb">
+                <ul>
+                    <li>
+                        <p>고객지원</p>
+                        <p>1661-7573</p>
+                        <p>평일 09:00 ~ 18:00</p>
+                        <p>(토,일 공휴일 제외)</p>
+                        <p>이용 및 장애, 상장 및 제휴문의는 1:1 문의 이용</p>
+                    </li>
+                    <li class="kakao_link">
+                        <a href="">
+                            <p><img src="../img/yaho/kakao2.png"></p>
+                            카카오톡 <br>상담(24시간)
+                        </a>
+                    </li>
+                    <li class="kakao_link">
+                        <a href="">
+                            <p><img src="../img/yaho/kakao2.png"></p>
+                            카카오톡 <br>공식 채팅방
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </footer>
+    <!-- FOOTER : End -->
+    <script>
+        //마켓별 전체보기
+        $(document).ready(function() {
+            $('.btn-folding').click(function() {
+                $('.folding').toggleClass('more');
+            });
+            $('.btn-folding1').click(function() {
+                $('.folding1').toggleClass('more');
+            });
+            $('.btn-folding2').click(function() {
+                $('.folding2').toggleClass('more');
+            });
+        });
+
+        /*북마크*/
+        $('.bookmark').click(function() {
+            $(this).toggleClass('mark-on');
+        });
+
+        /*슬릭스 슬라이더*/
+        $(".regular").slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            autoplay: false,
+            autoplaySpeed: 4000
+        });
+
+        //팝업 열고 닫기   
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

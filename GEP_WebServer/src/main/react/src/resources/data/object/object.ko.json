@@ -1,0 +1,234 @@
+{
+    "shared.markets": ["KRW", "BTC", "TRX", "USDT"],
+    "coin.market.titles": [{"tit": "코인명", "class": "alLeft"},{"tit": "현재가치", "class": "alLeft"},{"tit": "거래량", "class": "alCenter"}, {"tit": "등락률", "class": "alRight"}],
+    "coin.names": { 
+        "BTC": "비트코인", "ETH": "이더리움", "AMC": "에이엠씨", "LTC": "라이트코인", "EOS": "EOS", 
+        "MC" : "엠씨", "AMB" : "에이엠비", "BCS" : "비씨에스", "BCH" : "Bitcoincash", "BTG" : "Bitcoingold", 
+        "DASH" : "대시", "ABAG" : "아바", "HDN" : "Hidden", "BTH" : "Bithidden", "AIDAO" : "AIDAO", 
+        "YOC" : "요코인", "CWC" : "CWCoin", "EBH" : "EBlackHole", "MXR" : "MaxVRcoin", "APL" : "Aplcash", 
+        "ICZ" : "Increz", "GBC" : "Goldenbay", "COS" : "Coinstar", "SCOR" : "스코코인", "CIM" : "COINMAN", 
+        "RIZ" : "RIZ Token", "TAMSG" : "TAMSGOLD", "OSN" : "Official Signature", "DWC" : "도원", "XRP" : "리플", 
+        "RVN" : "레이븐", "BIZT" : "BIZ Token", "STRO" : "Super Tron", "ETG" : "ETG TOKEN", "XET" : "ETERNAL TOKEN", 
+        "TORUS": "토루스", "MAVL": "Marvel Token", "TCG": "TCG coin", "GIGC": "GIGCoin", "DCMC": "디씨엠씨", 
+        "RET": "알이티", "LANX": "랑스", "TRX": "TRON", "ABZC": "asiabizcion", "WCC": "월드첵코인", 
+        "DIOT": "DREAMIOTCOIN", "STC": "STC Coin", "UMX": "유엠엑스", "LCGC": "엘씨지씨", "GTT": "GOLDENTIME",
+        "AMBX": "에이엠비", "CON": "크라운글로벌","WRD":"WRD", "SMILE":"스마일", "HGN":"황금마루", "ER":"이레코인"
+    },
+    "menu.list": [
+        { "title": "거래소", "path": "/site/exchange?coin=WRDKRW" },
+        { "title": "입출금", "path": "/site/wallet" },
+        { "title": "자산내역", "path": "/site/invest" },
+        { "title": "상품*서비스", "path": "/site/product" },
+        { "title": "고객지원", "path": "/site/support" }
+    ],
+    "intro.visuals": [
+        { "title": "안전하고 간편한", "explain": "디지털 자산 거래플랫폼" }
+    ],
+    "intro.newcoins": [
+        { "image": "/resources/img/newbita/banner01_po.png", "path": "/site/support", "alt": "#"},
+        { "image": "/resources/img/newbita/banner02_po.png", "path": "/site/support", "alt": "#"},
+        { "image": "/resources/img/newbita/banner03_po.png", "path": "/site/support", "alt": "#"},
+        { "image": "/resources/img/newbita/banner04_po.png", "path": "/site/support", "alt": "#"},
+        { "image": "/resources/img/newbita/banner05_po.png", "path": "/site/support", "alt": "#"}
+    ],
+    "events.new": [
+        { "image": "event_banner6_ko.png", "path": "https://holdport.com/frontend/build/index.html#/support/notice?post=5803", "alt": "#" }
+    ],
+    "exchange.technology.list": [
+        { "image": "icon_exwallet.png", "alt": "wallet","title": "강화된 월렛보안", "explain": "핫월렛과 콜드월렛 분리하여 사용하며 멀티시그를\n제공하여 보안의핵심인 private-key를 암호화관리\n콜드월렛에 90% 이상의 자산을 안전하게 보관" },
+        { "image": "icon_excenter.png", "alt": "center","title": "", "explain": "" },
+        { "image": "icon_exuser.png", "alt": "user","title": "계정정보보안", "explain": "이메일/휴대폰인증/OTP인증\nKYC인증 4중 인증 보안으로\n최적화된 인증시스템" }
+    ],
+    "list.system.list":[
+        { "image": "icon_system01.png", "alt": "system 1","title": "최상의 보안 솔루션", "explain": "최고 수준의 업계 보안 전문가\n파트너들와 함께 가장 안전한 보안\n시스템을 구축하여\n외부 해킹과 공격을 탐지하고 방어하며\n더욱 안전하게 거래할 수 있도록 최상의\n보안 솔루션을 제공합니다." },
+        { "image": "icon_system02.png", "alt": "system 2","title": "탈중앙화된 거래소의 장.단점.", "explain": "최고의 개발팀 구성, 신뢰할 수 있는\n기술력으로 보다 안정적인 서버운영과\n최고의 보안 시스템을 지원하여 보다.\n빠르고 안정적으로 거래 할 수 있도록\n합니다." },
+        { "image": "icon_system03.png", "alt": "system 3","title": "엄선된 디지털 가상자산", "explain": "디지털 가상자산에 대하여 기술력\n안정성, 투자 가치성을 고려하여 검증이\n확인된 가상자산들을 엄격한 기준을\n통해서 상장합니다." },
+        { "image": "icon_system04.png", "alt": "system 4","title": "친절하고 신속한 고객서비스", "explain":"거래 플랫폼을 이용하는 도중 생기는\n불편사항, 문의사항을 빠르고, 정확하게\n응대하여 이용하시는 회원님들의 편의와\n만족도를 충족시키기 위해 회원님들의\n입장에서 나아가겠습니다."}
+    ],
+    "cold.wallet.list": [
+            { "title": "월렛 보안", "explain": "콜드월렛에 안전하게 분리보관\n최고 수준의 보안시스템을 기반으로\n다양한 디지털 자산 지갑을 안전하게운영" },
+            { "title": "계정 보안", "explain": "OTP보다 간편하고 안전한 Bita500만의 Know How SMS\n간편인증으로 2채널 추가인증\n체계적으로 고안된 보안시스템으로 24시간 모니터링" }
+    ],
+    "intro.asideBanners": [
+        { "path": "https://krwcworld.com", "image": "aside_krwc.en.png", "alt": "krwc world" },
+        { "path": "https://www.blockchain.com/ko/explorer", "image": "aside_banner1.png", "alt": "blockchain" },
+        { "path": "https://etherscan.io", "image": "aside_banner2.png", "alt": "etherscan" },
+        { "path": "https://xrpscan.com", "image": "aside_banner4.png", "alt": "xrpcharts" },
+        { "path": "https://tronscan.io/#/", "image": "aside_banner8.png", "alt": "tronscan" },
+        { "path": "http://smilescan.co.kr/", "image": "aside_banner9.png", "alt": "smilescan" },
+        { "path": "http://gdcscan.com/", "image": "aside_banner10.png", "alt": "gdcscan" }
+    ],
+    "intro.features": [
+        { "image": "#", "title": "최상의 보안 솔루션", 
+          "desc": "우리는 최고 보안 회사와 개발자 간의 지속적인 토론과 디자인을 통해 외부 해킹 공격을 탐지하고 방어 할 수있는 최상의 솔루션과 보안 시스템을 구축하여 자산을 더욱 안전하게 보호합니다." },
+        { "image": "#", "title": "신뢰할 수있는 기술력", 
+          "desc": "저희 거래소 개발팀은 프로그램 개발 및 운영 분야에서 20년 이상의 경험을 보유하고 있으며 안정적인 서버 운영과 최고의 능력과 경험을 갖춘 최고의 보안 시스템을 지원합니다." },
+        { "image": "#", "title": "안전한 자산 관리", 
+          "desc": "우리 거래소에서는 비상상황에 대비하여 콜드웰렛과 핫웰렛을 분리하여 사용합니다. 회원님들의 자산의 90% 이상을 콜드웰렛 지갑에 별도로 저장하여 회원님들의 자산을 최대한 안전하게 보관합니다." }
+    ],
+    "intro.partners": [
+        { "path": "#", "image": "main_partner_amazon.png", "alt": "amazon" },
+        { "path": "#", "image": "main_partner_fntoday.png", "alt": "fntoday" },
+        { "path": "#", "image": "main_partner_qubit.png", "alt": "qubit security" },
+        { "path": "#", "image": "main_partner_daily.png", "alt": "daily coin news" },
+        { "path": "#", "image": "main_partner_camon.png", "alt": "comonpay" }
+    ],
+    "intro.shortcuts": [
+        { "title": "거래소", "to": "/exchange", "className": "exchange" },
+        { "title": "거래내역", "to": "/order/tradehistory", "className": "trade_h" },
+        { "title": "나의자산", "to": "/account/assets", "className": "asset" },
+        { "title": "입금내역", "to": "/wallet/history?type=deposit", "className": "deposit_h" },
+        { "title": "출금내역", "to": "/wallet/history?type=withdraw", "className": "withdrawal_h" },
+        { "title": "인증센터", "to": "/account/levelset", "className": "certificate" },
+        { "title": "수수료정보", "to": "/support/feeinfo", "className": "fee" },
+        { "title": "로그인 내역", "to": "/account/loginhistory", "className": "login_h" }
+    ],
+    "wallet.notices": {  
+        "deposit":{  
+           "account.register":[
+               "KRW(원화) 입출금 계좌를 등록 합니다",
+               "반드시 본인 명의의 계좌를 등록 하여야 사용 가능 합니다",
+               "입출금 계좌 변경은 고객센터를 통해 본인 확인후 가능 하오니, 주의해서 입력해 주세요.",
+               "평생계좌번호는 등록하실 수 없습니다."
+            ],
+           "address":[
+               "입금 주소 잘 못 입력 시에 저희 거래소에서 찾아드릴 수가 없습니다.",
+               "최소 입금 수량: deposit_minimum_limit symbol"
+            ],
+           "newaddress":[
+                "아래 주소로 coin_name 입금을 해 주세요",
+                "coin_name 입금 주소가 없으신 경우에는 [입금 주소 생성하기] 클릭하여 고유 coin_name 주소를 발급 받으세요"
+            ],
+           "warning":[
+                "위의 고유 coin_name 주소로 coin_name 을 전송하면 회원님의 coin_name 지갑에 입금 처리 됩니다",
+                "입금에 소요되는 시간은 10~30분 소요되나 coin_name 네트워크 상태에 따라 지연 처리될 수 있습니다",
+                "입금 처리 결과는 입출금-입출금내역 화면에서 확인 하실 수 있습니다",
+                "입금 시 지갑 주소를 꼭 확인 하십시오",
+                "※ 암호화폐 이름 및 주소를 반드시 확인하시기 바랍니다.",
+                "※ 오입금시 복구에 수수료가 청구될 수 있으며, 복구가 되지 않을 수도 있습니다."
+            ],
+           "banking":[
+                "*자동입금 방법으로 하시면 실시간으로 입금 처리가 가능합니다.실시간 처리가 안됐을 경우 수동으로 한번 더 요청을 부탁드립니다.",
+                "*수동입금처리를 할 경우 5분~30분 정도 소요가 될 수 있습니다. 입금 요청을 하시면 관리자가 확인 후 입금반영됩니다.",
+                "*100만원 이상 입금 시 이체결과확인증을 보내주셔야 입금처리 가능합니다.",
+                "*입금자명을 다르게 입금할 경우 입금 적용어렵습니다.",
+                "*입금 요청 시 일정 시간이 지나면, 데이터가 삭제되므로 요청 후 최대한 빨리 입금 부탁드립니다."
+           ],
+           "banking.desc":[
+                "송금자명을 본인 이름으로 하지 말고",
+                "위의 나의원화자동코드를 송금자 이름 대신 입력합니다.",
+                "회원님의 통장에서 본사로 송금 시 24시간 실시간으로 입금처리가 가능합니다.",
+                "다른 사람 원화자동코드(송금자이름)로 입력 했을 경우 본 교환소에서 찾아드릴 수가 없습니다. (동명이인 있을 경우 찾을 수가 없으므로 반드시 본인의 원화자동코드를 입력바랍니다.)"
+           ],
+           "tag":[
+               "입금 주소 잘 못 입력 시에 저희 거래소에서 찾아드릴 수가 없습니다.",
+               "최소 입금 수량: deposit_minimum_limit symbol",
+               "Tag 번호를 입력하지 않으면 입금 처리가 되지 않습니다."
+            ]
+        },
+        "withdraw":{ 
+           "coin.desc":[
+                "회원님의 외부 전자 지갑으로 비트코인을 출금합니다",
+                "관리자 확인 후 출금 처리 됩니다",
+                "출금처리 결과는 입출금-입출금내역 화면에서 확인하실 수 있습니다"
+            ],
+           "coin.warning":[
+                "※ 암호화폐 특성 상 출금 신청이 완료되어 블록체인에 기록되면 취소가 불가능 합니다.",
+                "※ 송금과정은 블록체인 네트워크에서 처리되므로 비타500에서 도움을 드릴수가 없습니다. 반드시 출금 주소를 반복 확인하시고 출금신청 하시기 바랍니다."
+            ],
+           "address":[
+               "최소 출금: withdrawal_minimum_limit symbol", "최대 출금: withdrawal_maximum_limit symbol",
+               "출금 주소 잘못 입력 시에 저희 거래소에서 찾아드릴 수가 없습니다."
+            ],
+           "banking":[
+                "최소 출금: withdrawal_minimum_limit symbol", "최대 출금: withdrawal_maximum_limit symbol",
+                "3레벨 이상부터 출금이 가능합니다.",
+                "통장예금주와 회원명이 일치할 경우에만 지급 됩니다.",
+                "원화입금 후 당일 원화출금 신청 시 24시간 경과 후에 출금이 진행됩니다."
+           ],
+           "tag":[
+            "최소 출금: withdrawal_minimum_limit symbol", "최대 출금: withdrawal_maximum_limit symbol",
+            "출금 주소 잘못 입력 시에 저희 거래소에서 찾아드릴 수가 없습니다.",
+            "시스템상 symbol 내부이동이 어렵습니다.(holdport->holdport)"
+            ]
+        }
+    },
+    "wallet.servicenote": [
+        "코인은 네트워크 확인 후 즉시 입금됩니다.", 
+        "입금 후, 히스토리 페이지에서 진행 상황을 추적 할 수 있습니다."
+    ],
+    "wallet.aside": [
+        "미체결 수량을 제외한 거래 가능한 수량으로 실제 보유수량과 차이가 있습니다.",
+        "실제 보유수량은 투자내역 메뉴에서 확인 가능합니다."
+    ],
+    "wallet.important": [
+        "최소 출금 : withdraw_min_qty 원",
+        "최대 출금: withdraw_max_qty 원 ",
+        "원화 입출금은 본 거래소에 등록되 있는 본인명의 은행 계좌로만 가능합니다."
+    ],
+    "product.pay": {   
+        "menu" : "페이 전송", 
+        "history" : "페이 전송 내역" , 
+        "history_head" : ["상태", "코인", "수량", "날짜"] , 
+        "notice" : ["<전송시 주의사항>", 
+                    "1.페이로 전환된 코인은 다시 원위치가 안됩니다. 주의하시기 바랍니다.", 
+                    "2.코인이 페이로 전환될 경우 코인이 거래소에서 시장가로 판매가 되기 때문에 판매 금액과 일치 하지 않을 수 있습니다"] 
+    } ,
+    "product.coupon": [
+        {   "menu" : "페이 전송", 
+            "history" : "페이 전송 내역" , 
+            "history_head" : ["상태", "코인", "수량", "날짜"] , 
+            "notice" : ["<전송시 주의사항>", 
+                        "1.페이로 전환된 코인은 다시 원위치가 안됩니다. 주의하시기 바랍니다.", 
+                        "2.코인이 페이로 전환될 경우 코인이 거래소에서 시장가로 판매가 되기 때문에 판매 금액과 일치 하지 않을 수 있습니다"] }
+    ],
+    "coupon.list": [
+        { "image": "/resources/img/newbita/discount01.png", "qty": "50000", "bonus": "10"},
+        { "image": "/resources/img/newbita/discount02.png", "qty": "100000", "bonus": "20"},
+        { "image": "/resources/img/newbita/discount03.png", "qty": "300000", "bonus": "30"},
+        { "image": "/resources/img/newbita/discount04.png", "qty": "500000", "bonus": "50"},
+        { "image": "/resources/img/newbita/discount05.png", "qty": "800000", "bonus": "70"},
+        { "image": "/resources/img/newbita/discount06.png", "qty": "1000000", "bonus": "100"},
+        { "image": "/resources/img/newbita/discount07.png", "qty": "1500000", "bonus": "130"},
+        { "image": "/resources/img/newbita/discount08.png", "qty": "2000000", "bonus": "150"},
+        { "image": "/resources/img/newbita/discount09.png", "qty": "2500000", "bonus": "200"}
+    ],
+    "account.levelset.list": [
+        [
+            { "title": "회원가입", "explain": "필수: 이메일 인증" }
+        ],
+        [
+            { "title": "OTP 인증", "explain": "필수: 가상화폐 입금 및 거래가 가능 합니다" }
+        ],
+        [
+            { "title": "신분증", "explain": "필수: 이름 및 사진이 들어있는 정부에서 발급한 기간 내 유효한 증명서(신분증 또는 여권)\n본인의 신분증을 제출해주셔야합니다.(타인의 신분증 제출할 경우 자동삭제됩니다).\n신분증을들고 얼굴사진을 찍은 사진을 올릴 시 자동 삭제됩니다.(신분증만 제출해주세요)\n주민번호 뒷자리는 가리고 올려주세요. (뒷자리 가리지 않고 올릴 시 자동삭제됩니다).\n신분증 스캔 또는 복사본은 승인되지 않으며, 신분증 원본을 찍어 보내주셔야 합니다.\n위 조건 부합하여 미승인시 별도의 연락을 드리지 않습니다.\n입출금한도 : 1일 20,000,000 KRW" }
+        ],
+        [
+            { "title": "본인명으로 된 세금 영수증 제출자", "explain": "필수: 전기세영수증, 수도세영수증, 자동차세, 보험료영수증\n주소가 보이는 3개월 이내 세금 영수증을 제출해주세요\n입출금한도: 1일 50,000,000 KRW" }
+        ],
+        [
+            { "title": "VIP 거래자", "explain": "필수: 1개월 이상 거래를 하고 거래금액 5억원 이상자\n입출금한도: 1일 100,000,000 KRW" }
+        ]
+    ],
+    "account.levelset.modal": [
+        {
+            "explain": "신분증 또는 여권 이름 및 사진이 들어있는 정부에서 발급한 유효한 증명서 (이미지 사이즈 1M 이하)",
+            "body": [{"title": "신분증 이미지 업로드", "type": "file"}]
+        },
+        {
+            "explain": "전기세영수증, 수도세영수증, 자동차세, 보험료영수증 (이미지 사이즈 1M 이하)",
+            "body": [{"title": "주소", "type": "text", "placeholder": "address line" }, {"title": "세금영수증 이미지 업로드", "type": "file"}]
+        },
+        {
+            "explain": "",
+            "body": [{"title": "이미지 업로드", "type": "file"}]
+        }
+    ],
+    "tab.mobile": [
+        { "name": "image1", "title": "거래소","path":"/site/exchange" },
+        { "name": "image2", "title": "투자내역","path":"/site/product" },
+        { "name": "image3", "title": "입출금","path":"/site/wallet" },
+        { "name": "image4", "title": "입출금","path":"/site/invest" },
+        { "name": "image5", "title": "입출금","path":"/site/support" }    
+    ]
+}

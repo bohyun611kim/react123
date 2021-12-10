@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>ALERT POPUP</title>
+
+    <link rel="shortcut icon" href="../path/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../css/uiGlobal.css">
+
+
+    <script src="../js/jquery/jquery-3.3.1.js"></script>
+    <script src="../js/jquery/jquery.js"></script>
+    <script src="../js/jquery/jquery-ui.js"></script>
+    <script>
+        $(function() {
+            $("#draggable").draggable();
+        });
+
+        $(function() {
+            $("#resizable").resizable();
+        });
+
+        $(function() {
+            $("#dialog").dialog();
+        });
+    </script>
+</head>
+
+<body>
+    <div style="position: relative">
+        <!-- ALTER. 기본 : Start -->
+        <div class="popup alert" id="draggable" >
+            <!-- 팝업내용 : Start -->
+            <div class="alert-header">
+                <p class="alert-title">Notice</p><!-- 팝업 타이틀 -->
+                <a class="top-close"><img src="../img/btn-alert-close.png" alt="닫기버튼"></a><!-- 팝업 닫기 버튼 -->
+            </div>
+            <div class="alert-content">
+                <!-- 팝업 메세지 -->
+                <p class="alert-message">Email or Password Error</p>
+            </div>
+            <!-- //팝업내용 : End -->
+            <div class="alert-btn">
+                <button class="small bggray">Confirm </button>
+            </div>
+        </div>
+        <!-- //ALTER. 기본 : End -->
+
+
+        <!--비밀번호찾기 페이지서 -->
+        <div class="popup alert" >
+            <div class="alert-header">
+                <p class="alert-title">Notice</p>
+                <a class="top-close"><img src="../img/btn-alert-close.png" alt="닫기버튼"></a>
+            </div>
+            <div class="alert-content">
+                <p class="alert-message">We have sent a confirmation email to your registered email address. Please follow the instructions in the email to continue.</p>
+            </div>
+            <div class="alert-btn">
+                <button class="small bggray">Confirm </button>
+            </div>
+        </div>
+
+
+        <!-- ALTER. 매수주문 : Start -->
+        <div class="popup alert" >
+            <div class="alert-header">
+                <p class="alert-title">매수주문</p>
+                <a class="top-close"><img src="../img/btn-alert-close.png" alt="닫기버튼"></a>
+            </div>
+            <div class="alert-content">
+                <p class="alert-message">
+                    19,246,000KRW * 1.25 = 24,057,500KRW 총 매수 수량(수수료제외)은 1.24996875BTC 입니다.
+                    주문하시겠습니까?</p>
+            </div>
+            <div class="alert-btn">
+                <button class="small bggray">Cancel</button>
+                <button class="small bggreen">Buy</button>
+            </div>
+
+        </div>
+        <!-- //ALTER. 매수주문 : End -->
+
+
+        <!-- ALTER. 매도주문 : Start -->
+        <div class="popup alert" >
+            <div class="alert-header">
+                <p class="alert-title">매도 주문</p>
+                <a class="top-close"><img src="../img/btn-alert-close.png" alt="닫기버튼"></a>
+            </div>
+            <div class="alert-content">
+                <p class="alert-message">총 주문수량 3 BTC 시장가 매도 주문하시겠습니까?</p>
+            </div>
+            <div class="alert-btn">
+                <button class="small bggray">Cancel</button>
+                <button class="small bgred">Sell</button>
+            </div>
+        </div>
+        <!-- //ALTER. 매도주문 : End -->
+
+
+        <!-- ALTER. 주문취소 : Start -->
+        <div class="popup alert" style="display: block">
+            <div class="alert-header">
+                <p class="alert-title">주문 취소</p>
+                <a class="top-close"><img src="../img/btn-alert-close.png" alt="닫기버튼"></a>
+            </div>
+            <div class="alert-content">
+                <p class="alert-message">
+                    주문번호 100700<br />
+                    종목명 LTCKRW<br />
+                    주문가 334,250KRW<br />
+                    미체결수량 100.34000000<br />
+                    매도주문 취소 하시겠습니까?
+                </p>
+            </div>
+            <div class="alert-btn">
+                <button class="small bggray">No</button>
+                <button class="small bgblue">Yes</button>
+            </div>
+        </div>
+        <!-- //ALTER. 주문취소 : End -->
+
+
+        <!-- ALTER. 이메일 인증 알림 : Start -->
+        <div class="popup alert">
+            <div class="alert-header">
+                <p class="alert-title">이메일 인증확인</p>
+                <a class="top-close"><img src="../img/btn-alert-close.png" alt="닫기버튼"></a>
+            </div>
+            <div class="alert-content">
+                <p class="alert-message">
+                    회원가입 등록이 정상적으로 처리되었습니다<br />
+                    회원가입 시 입력한 이메일 주소로 가입 인증요청 메일이 전송 되었으니 확인 하시고 승인해 주십시오<br />
+                    이메일 승인 후 정상 로그인이 가능합니다
+                </p>
+            </div>
+            <div class="alert-btn">
+                <button class="btn bggray">Confirm</button>
+            </div>
+        </div>
+        <!-- //ALTER. 이메일 인증 알림 : End -->
+    </div>
+
+    <script>
+        //레이어팝업닫기
+
+        $(document).ready(function() {
+            $('.top-close').click(function() {
+                $('.popup-alert').hide();
+            });
+        });
+    </script>
+</body>
+
+</html>

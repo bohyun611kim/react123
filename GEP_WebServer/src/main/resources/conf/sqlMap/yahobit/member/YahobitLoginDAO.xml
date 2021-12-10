@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.yahobit.member.mbr002.dao.YahobitLoginDAO">
+
+	<!-- 비밀번호 매칭 확인 및 추가 인증 정보 조회 -->
+	<resultMap type="kr.co.coinis.webserver.yahobit.member.mbr002.vo.LoginMatchResultVO" id="LoginMatchResultVO">
+		<result property="cnt"			column="CNT"			jdbcType="NUMERIC"/>
+		<result property="memberStatCd"	column="MEMBER_STAT_CD"	jdbcType="NUMERIC"/>
+		<result property="authMeansCd"	column="AUTH_MEANS_CD"	jdbcType="NUMERIC"/>
+		<result property="loginFailCnt"	column="LOGIN_FAIL_CNT"	jdbcType="NUMERIC"/>
+		<result property="otpFailCnt"	column="OTP_FAIL_CNT"	jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<!-- 회원 정보 조회 -->
+	<resultMap type="kr.co.coinis.webserver.common.security.spring.service.CustomUserDetails" id="CustomUserDetails">
+		<result property="exchangeId"	column="EXCHANGE_ID" 	jdbcType="NUMERIC"/>
+		<result property="userId"		column="USER_ID" 		jdbcType="VARCHAR"/>
+		<result property="authLevel"	column="AUTH_LEVEL" 	jdbcType="VARCHAR"/>
+		<result property="authMeansCd"	column="AUTH_MEANS_CD" 	jdbcType="VARCHAR"/>
+		<result property="joinDt"		column="JOIN_DT" 		jdbcType="VARCHAR"/>
+		<result property="userTypeCd"	column="USER_TYPE_CD" 	jdbcType="VARCHAR"/>
+		<result property="loginYn"		column="LOGIN_YN" 		jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<!-- 회원 인증 관련 정보 조회 -->
+	<resultMap type="kr.co.coinis.webserver.yahobit.member.mbr002.vo.AuthInfoVO" id="AuthInfoVO">
+		<result property="authMeansCd"	column="AUTH_MEANS_CD" 	jdbcType="NUMERIC"/>
+		<result property="mobile"		column="MOBILE" 		jdbcType="VARCHAR"/>
+		<result property="otpKeyVal"	column="OTP_KEY_VAL" 	jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 비밀번호 확인 -->
+	<select id="selectLoginMatch" parameterType="java.util.Map" resultMap="LoginMatchResultVO">
+		SELECT COUNT(A.USER_ID) CNT, A.MEMBER_STAT_CD, NVL(A.AUTH_MEANS_CD, 0) AUTH_MEANS_CD
+			   , LOGIN_FAIL_CNT, OTP_FAIL_CNT
+		  FROM TB_MEMBER_INFO A
+    INNER JOIN TB_MEMBER_INFO_EXTRA B
+			ON A.EXCHANGE_ID = B.EXCHANGE_ID
+      	   AND A.USER_ID = B.USER_ID
+		 WHERE A.USER_ID = #{id, jdbcType=VARCHAR}
+		   AND A.LOGIN_PASSWD = SHA2(#{pw, jdbcType=VARCHAR}, 512)
+		   AND A.EXCHANGE_ID = #{exchangeId, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 로그인 실패 횟수 조회 -->
+	<select id="selectFailCnt" resultType="integer">
+		SELECT LOGIN_FAIL_CNT
+		  FROM TB_MEMBER_INFO A
+    INNER JOIN TB_MEMBER_INFO_EXTRA B
+			ON A.EXCHANGE_ID = B.EXCHANGE_ID
+      	   AND A.USER_ID = B.USER_ID
+		 WHERE A.USER_ID = #{userId, jdbcType=VARCHAR}
+		   AND A.EXCHANGE_ID = #{exchangeId, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 로그인 실패 횟수 증가 -->
+	<update id="updateFailCnt">
+		UPDATE TB_MEMBER_INFO
+		   SET LOGIN_FAIL_CNT = LOGIN_FAIL_CNT + 1
+		 WHERE EXCHANGE_ID = TRIM(#{exchangeId})
+		   AND USER_ID = TRIM(#{userId})
+	</update>
+	
+	<!-- 회원 정보 조회 -->
+	<select id="selectMemberInfo" parameterType="java.util.Map" resultMap="CustomUserDetails">
+		SELECT INFO.EXCHANGE_ID, INFO.USER_ID, INFO.AUTH_LEVEL
+			   , NVL(INFO.AUTH_MEANS_CD, 0) AUTH_MEANS_CD
+			   , INFO.JOIN_DT, EXTRA.USER_TYPE_CD
+			   , 1 LOGIN_YN
+		  FROM TB_MEMBER_INFO INFO
+	INNER JOIN TB_MEMBER_INFO_EXTRA EXTRA
+			ON INFO.EXCHANGE_ID = EXTRA.EXCHANGE_ID
+		   AND INFO.USER_ID = EXTRA.USER_ID
+		 WHERE INFO.USER_ID = #{id, jdbcType=VARCHAR}
+		   AND INFO.EXCHANGE_ID = #{exchangeId, jdbcType=VARCHAR}
+		   AND INFO.MEMBER_STAT_CD = 2
+	</select>
+	
+	<!-- 로그인 실패 횟수 초기화 -->
+	<update id="procSetFailCnt" statementType="CALLABLE">
+		{
+			CALL PR_WAS_SET_FAIL_CNT(
+				#{procFlag,		mode=IN, 	jdbcType=VARCHAR},
+				#{exchangeId,	mode=IN, 	jdbcType=VARCHAR},
+				#{userId, 		mode=IN, 	jdbcType=VARCHAR},
+				#{rtnCd, 		mode=OUT, 	jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 		mode=OUT, 	jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<!-- 마지막 로그인 갱신 -->
+	<update id="updateLastLogin" statementType="CALLABLE">
+		{
+			CALL PR_WAS_SET_LAST_LOGIN(
+				#{exchangeId, 	 	mode=IN,  jdbcType=VARCHAR},
+				#{userId, 	 		mode=IN,  jdbcType=VARCHAR},
+				#{lastLoginIpAddr,	mode=IN,  jdbcType=VARCHAR},
+				#{lastLoginAppVer,	mode=IN,  jdbcType=VARCHAR},
+				#{rtnCd, 	 		mode=OUT,  jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 	 		mode=OUT,  jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<!-- 사용자 로그 기록 -->
+	<update id="procInsertUserRequestHist" statementType="CALLABLE">
+		{
+			CALL PR_WAS_INSERT_USER_REQUEST_HIST(
+				#{exchangeId,	mode=IN, 	jdbcType=VARCHAR},
+				#{userId, 		mode=IN, 	jdbcType=VARCHAR},
+				#{reqOperCd, 	mode=IN, 	jdbcType=NUMERIC},
+				#{resultCd, 	mode=IN, 	jdbcType=NUMERIC},
+				#{logContents, 	mode=IN, 	jdbcType=VARCHAR},
+				#{publicIp, 	mode=IN, 	jdbcType=VARCHAR},
+				#{privateIp, 	mode=IN, 	jdbcType=VARCHAR},
+				#{os, 			mode=IN, 	jdbcType=VARCHAR},
+				#{browser, 		mode=IN, 	jdbcType=VARCHAR},
+				#{rtnCd, 		mode=OUT, 	jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 		mode=OUT, 	jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<!-- 유저 인증정보 조회 -->
+	<select id="selectUserAuthInfo" resultMap="AuthInfoVO">
+		SELECT AUTH_MEANS_CD AS AUTH_MEANS_CD
+			   , AES_DECRYPT(MOBILE, SHA2(SHA2( CONCAT(USER_ID, REG_DT), 512), 512)) AS MOBILE
+			   , AES_DECRYPT(OTP_KEY_VAL, SHA2(SHA2( CONCAT(USER_ID, REG_DT), 512), 512)) AS OTP_KEY_VAL
+		  FROM TB_MEMBER_INFO
+    	 WHERE EXCHANGE_ID = #{exchangeId}
+    	   AND USER_ID = #{userId}
+    	   AND MEMBER_STAT_CD = 2
+	</select>
+	
+	<!-- 인증코드 생성 요청 -->
+	<update id="procInsertAuthCode" statementType="CALLABLE">
+		{
+			CALL PR_WAS_INSERT_AUTH_CODE(
+				#{exchangeId, 		mode=IN, jdbcType=VARCHAR},
+				#{userId, 			mode=IN, jdbcType=VARCHAR},
+				#{authPurposeCd, 	mode=IN, jdbcType=NUMERIC},
+				#{authMeansCd, 		mode=IN, jdbcType=NUMERIC},
+				#{authMeansKeyVal, 	mode=IN, jdbcType=VARCHAR},
+				#{expireSec, 		mode=IN, jdbcType=NUMERIC},
+				#{tranKeyVal,		mode=IN, jdbcType=NUMERIC},
+				#{encryptAuthCd, 	mode=OUT, jdbcType=VARCHAR},
+				#{authCd, 			mode=OUT, jdbcType=VARCHAR},
+				#{rtnCd, 			mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg,			mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<!-- 인증코드 일치 여부 확인 -->
+	<update id="procCheckAuthCode" statementType="CALLABLE">
+		{
+			CALL PR_WAS_CHECK_AUTH_CODE(
+				#{exchangeId, 		mode=IN, jdbcType=VARCHAR},
+				#{userId, 			mode=IN, jdbcType=VARCHAR},
+				#{authPurposeCd, 	mode=IN, jdbcType=NUMERIC},
+				#{authMeansCd, 		mode=IN, jdbcType=NUMERIC},
+				#{authMeansKeyVal, 	mode=IN, jdbcType=VARCHAR},
+				#{authCd, 			mode=IN, jdbcType=VARCHAR},
+				#{rtnCd, 			mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg,			mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+</mapper>
+

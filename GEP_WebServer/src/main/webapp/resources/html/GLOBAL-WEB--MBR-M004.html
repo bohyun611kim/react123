@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Reset Password</title>
+
+    <link rel="shortcut icon" href="../path/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../css/uiGlobal.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+
+
+    <script src="../js/jquery/jquery-3.3.1.js"></script>
+    <script src="../js/jquery/jquery-ui.js"></script>
+    <script src="../js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="../js/jquery/slick.js"></script>
+    
+    <script type="text/javascript">
+        //상단 네비게이션
+        $(document).ready(function() {
+
+            $(".topnav").hover(function() { //마우스를 topnav에 오버시
+                $(this).parent().find(".subnav").slideDown('normal').show(); //subnav가 내려옴.
+                $(this).addClass('on');
+                $(this).parent().hover(function() {}, function() {
+                    $(this).parent().find(".subnav").slideUp('fast'); //subnav에서 마우스 벗어났을 시 원위치  
+                    $(".topnav").removeClass('on');
+                });
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <!-- HEADER : Start -->
+    <header>
+        <!--최상단 네비게이션 시작-->
+        <nav>
+            <div class="navi-wrap">
+                <div class="navi-logo">
+                    <h1>
+                        <a href="home.html" target="_parent"><img src="../img/logo.png" alt="logo"></a>
+                    </h1>
+
+                </div>
+                <div class="navi-menu">
+                    <ul class="navi">
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MKT-M001.html','_parent')">Exchange</div>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Wallet</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M001.html','_parent')">Deposit & Withdrawal</li>
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M002.html','_parent')">Transaction</li>
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M003.html','_parent')">Holdings</li>
+                            </ul>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Orders</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--MKT-M002.html','_parent')">Transaction History</li>
+                                <li onclick="window.open('GLOBAL-WEB--MKT-M003.html','_parent')">Outstanding Orders</li>
+                            </ul>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Support</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--CST-M001.html','_parent')">Notice</li>
+                                <li onclick="window.open('GLOBAL-WEB--CST-M002.html','_parent')">FAQ</li>
+                                <li onclick="window.open('GLOBAL-WEB--CST-M003.html','_parent')">1:1 Inquiry</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navi-user">
+                    <ul class="navi">
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MBR-M001.html','_parent')">Register</div>
+                            <!--<div class="topnav" onclick="window.open('GLOBAL-WEB--MYP-M001.html','_parent')">My Page</div>-->
+                        </li>
+                        <li class="navi_set">
+                            <div class="topnav active" onclick="window.open('GLOBAL-WEB--MBR-M002.html','_parent')">Log In</div>
+                            <!--<div class="topnav">Log Out</div>-->
+                        </li>
+                        <li class="navi_set">
+                            <div class="topnav">English</div>
+                            <ul class="subnav">
+                                <li>English</li>
+                                <li>한국어</li>
+                                <li>ภาษาไทย</li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!--최상단 네비게이션 끝-->
+
+    </header>
+    <!-- //HEADER : End -->
+
+    <!--컨텐츠 내용 영역 시작-->
+    <section>
+
+        <div class="joinWrap">
+            <h1>Reset Password</h1>
+            <p class="txt-gray mgt20">For security purposes no withdrawals are permitted for 24 hours after modification of security methods.</p>
+            <form name="login">
+                <div>
+                    <label for="pw"></label>
+                    <input type="password" name="pw" id="pw" required="" placeholder="New Password">
+                </div>
+                <div>
+                    <label for="pw"></label>
+                    <input type="password" name="pw" id="re-pw" required="" placeholder="Confirm Password">
+                </div>
+                <button class="base bgblue">Setting</button>
+            </form>
+
+        </div>
+
+    </section>
+    <!--컨텐츠 내용 영역 끝-->
+
+
+    <!-- FOOTER : Start -->
+    <footer>
+        <div class="footer-menu-wrap">
+            <div class="footer-menu">
+                <a href="GLOBAL-WEB--ETC-M002.html">Terms and Conditions </a>
+                <a href="GLOBAL-WEB--ETC-M003.html">Privacy Statements </a>
+                <a href="GLOBAL-WEB--ETC-M001.html">Fees</a>
+            </div>
+        </div>
+        <div class="footer-wrap">
+            <p class="footer-logo">
+                <a href="#">WAVE STRAING</a>
+            </p>
+            <div class="footer-group">
+                <ul>
+                    <li>주식회사 <span class="orange-bold">웨이브스트링</span></li>
+                    <li>서울특별시 구로구 디지털로 273, 306호(구로동, 에이스트윈타워 2차)</li>
+                    <li>대표이사 : 정명묵</li>
+                </ul>
+                <ul>
+                    <li>사업자등록번호 : 113-86-84751</li>
+                </ul>
+                <ul>
+                    <li>현금입출금 :<span class="white-bold"> 09:00~18:00 (휴일포함)</span></li>
+                    <li>코인입출금 : <span class="white-bold">24시간 (휴일포함)</span></li>
+                </ul>
+                <p class="copyright-area">Copyright&copy; 2012 wavestring All rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+    <!-- FOOTER : End -->
+
+    <div class="popup-box" id="myForm" style="position: fixed; font-size: 15px; top:100px; height: 600px; width: 600px; left: 50%; margin-left: -300px; background-color: beige">
+        이벤트이미지
+        <input type="button" value="닫기" onclick="javascript:closeForm()">
+    </div>
+
+
+    <script>
+        //마켓별 전체보기
+        $(document).ready(function() {
+            $('.btn-folding').click(function() {
+                $('.folding').toggleClass('more');
+            });
+            $('.btn-folding1').click(function() {
+                $('.folding1').toggleClass('more');
+            });
+            $('.btn-folding2').click(function() {
+                $('.folding2').toggleClass('more');
+            });
+        });
+
+        /*북마크*/
+        $('.bookmark').click(function() {
+            $(this).toggleClass('mark-on');
+        });
+
+        /*슬릭스 슬라이더*/
+        $(".regular").slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            autoplay: false,
+            autoplaySpeed: 4000
+        });
+
+        //팝업 열고 닫기   
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

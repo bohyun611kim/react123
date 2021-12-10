@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+		 xmlns:b="http://www.springframework.org/schema/beans"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xmlns:util="http://www.springframework.org/schema/util"
+		 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<!-- ///////////////////////공통 환경설정 Utils ///////////////////////-->
+	<util:map id="config" key-type="java.lang.String" value-type="java.lang.Object">
+		<!-- 로그인 페이지를 포워드할지 리다이렉트할지 설정한다. -->
+		<b:entry key="redirect" value="true" />
+		<b:entry key="loginFormUrl" value="${server.security.contextPath}login"/>
+
+		<!-- 접근 권한 오류페이지 -->
+		<b:entry key="accessDeniedUrl" value="${server.security.contextPath}login/error/accessDenied"/>
+		<b:entry key="accessDeniedRedirect" value="false"/>
+		<b:entry key="usernameParameter" value="id"/>
+		<b:entry key="passwordParameter" value="pw"/>
+		<b:entry key="loginProcessingUrl" value="/login/signin"/>
+
+		<!-- 로그인 실패 오류 페이지 -->
+		<b:entry key="loginFailureUrl" value="${server.security.contextPath}login/error/loginFailure"/>
+
+		<!-- 로그인 후 페이지 이동 설정 -->
+		<b:entry key="alwaysUseDefaultTargetUrl" value="false"/>
+		<b:entry key="defaultTargetUrl" value="${server.security.contextPath}"/>
+		<b:entry key="logoutSuccessUrl" value="/"/>
+		<b:entry key="logoutProcessingUrl" value="${server.security.contextPath}logout"/>
+		<b:entry key="cookiesToClear" value="JSESSIONID"/>
+
+		<!-- 세션이 만료되었을때 이동할 페이지 -->
+		<b:entry key="sessionExpiredUrl" value="/login"/>
+		<!-- <b:entry key="sessionExpiredUrl" value="/login/error/duplicationLogin"/> -->
+
+		<!-- 중복로그인 설정 -->
+		<!--
+		중복로그인 사용여부
+		사용할 경우 maximumSessions = 1, exceptionIfMaximumExceeded = false 설정으로 셋팅된다.
+		-->
+		<b:entry key="duplicationLoginDisable" value="false" />
+
+		<!--
+		세션을 생성할 수 있는 수 -1 무제한으로 생성할 수 있으며 1로 설정할 경우 다음과 같이 처리된다.
+		1) A 계정으로 로그인 -> 세션생성
+		2) 다른 컴퓨터에서 A 계정으로 로그인 -> 새션생성 후 1번 세션은 제거된다. 즉 1번에서 로그인된 사용자는 로그아웃 처리된다.
+		-->
+		<b:entry key="maximumSessions" value="2"/>
+		<!--
+		설정된 세션 수를 넘지 못하게 할 수 있다. maximumSessions = 1 이고 true로 설정한 경우 다음과 같이 처리된다.
+		기존에 로그인 사용자가 있는 경우 더이상 같은 계정으로 로그인할 수 없게 된다. 기존에 로그인 사용자가 로그아웃하거나 세션이 파기되면 로그인할 수 있다.
+		만약 로그아웃하지 않고 브라우저를 닫을 경우(그외 문제로 세션id를 잊어버릴 경우) 로그아웃으로 처리되지 않기 때문에 세션이 파기될때까지 다른 사용자는 로그인 할 수 없다.
+		세션타임아웃이 0이라면 로그인할 수 없게 된다...
+		-->
+		<b:entry key="exceptionIfMaximumExceeded" value="false"/>
+	</util:map>
+	<!-- ///////////////////////공통 환경설정 Utils ///////////////////////-->
+
+
+	<http pattern="${server.security.contextPath}robots.txt" security="none" />
+	<http pattern="${server.security.contextPath}sitemap.xml" security="none" />
+	<http pattern="${server.security.contextPath}naver70d82a16768dc9ae99e212a5be89e402.html" security="none" />
+	<http pattern="${server.security.contextPath}resources/**" security="none" />
+	<http pattern="${server.security.contextPath}site/auth/kcpcert_proc_req.do" security="none" />
+	<http pattern="${server.security.contextPath}site/auth/kcpcert_proc_res.do" security="none" />
+
+	<http auto-config="false" use-expressions="true" entry-point-ref="authenticationEntryPoint">
+		<!-- X-Frame-Options: DENY 해결을 위한 설정 -->
+		<!-- <headers><frame-options policy="ALLOW-FROM https://testcert.kcp.co.kr/" /></headers> -->
+		<!-- <cors /> -->
+		<intercept-url pattern="${server.security.contextPath}" access="permitAll" />
+
+		<access-denied-handler ref="accessDeniedHandler" />
+
+		<custom-filter ref="concurrentSessionFilter" position="CONCURRENT_SESSION_FILTER" />
+		<custom-filter ref="usernamePasswordAuthenticationFilter" position="FORM_LOGIN_FILTER" />
+		<custom-filter ref="logoutFilter" position="LOGOUT_FILTER" />
+
+		<session-management session-authentication-strategy-ref="sessionAuthStrategy" />
+		<csrf disabled="true"/>
+	</http>
+
+	<!-- Session Repository Set -->
+	<b:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+
+	<!-- Spring Security 커스텀 헨들러 적용 -->
+	<b:bean id="authenticationEntryPoint" class="kr.co.coinis.webserver.common.security.spring.security.handler.UnauthorizedAccessHandler">
+		<b:constructor-arg name="loginFormUrl" value="#{config.loginFormUrl}" />
+		<b:property name="redirect" value="#{config.redirect}" />
+	</b:bean>
+
+	<!-- Spring Security 커스텀 헨들러 적용 -->
+	<b:bean id="loginSuccessHandler" class="kr.co.coinis.webserver.common.security.spring.security.handler.SignInSuccessHandler">
+		<b:property name="alwaysUseDefaultTargetUrl" value="#{config.alwaysUseDefaultTargetUrl}" />
+		<b:property name="defaultTargetUrl" value="#{config.defaultTargetUrl}" />
+		<b:property name="redirect" value="#{config.redirect}" />
+	</b:bean>
+
+	<b:bean id="loginFailureHandler" class="kr.co.coinis.webserver.common.security.spring.security.handler.SignInFailureHandler">
+		<b:constructor-arg name="defaultFailureUrl" value="#{config.loginFailureUrl}" />
+	</b:bean>
+
+	<b:bean id="accessDeniedHandler" class="kr.co.coinis.webserver.common.security.spring.security.handler.AccessFailureHandler">
+		<b:constructor-arg name="errorPage" value="#{config.accessDeniedUrl}" />
+		<b:constructor-arg name="loginFormUrl" value="#{config.loginFormUrl}" />
+		<b:property name="redirect" value="#{config.accessDeniedRedirect}" />
+	</b:bean>
+
+	<!-- Spring Security 커스텀 헨들러 적용 -->
+	<b:bean id="usernamePasswordAuthenticationFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+
+		<b:property name="usernameParameter" value="#{config.usernameParameter}" />
+		<b:property name="passwordParameter" value="#{config.passwordParameter}" />
+		<b:property name="filterProcessesUrl" value="#{config.loginProcessingUrl}" />
+
+		<!-- ajax 구현을 위한 커스텀 헨들러 적용 -->
+		<b:property name="authenticationFailureHandler" ref="loginFailureHandler" />
+		<b:property name="authenticationSuccessHandler" ref="loginSuccessHandler" />
+		<b:property name="authenticationManager" ref="authenticationManager" />
+		<b:property name="sessionAuthenticationStrategy" ref="sessionAuthStrategy" />
+
+	</b:bean>
+
+	<!-- 로그아웃 필터 설정커스텀필터를 사용하기 위해 쿠키제거 설정을 직접해햐한다. -->
+	<b:bean id="securityContextLogoutHandler" class="kr.co.coinis.webserver.common.security.spring.security.handler.CustomSecurityContextLogoutHandler">
+		<b:property name="clearAuthentication" value="true" /><!-- 기본값 생략가능 -->
+		<b:property name="invalidateHttpSession" value="true" /><!-- 기본값 생략가능 -->
+	</b:bean>
+
+	<!-- 로그아웃 필터 설정 -->
+	<b:bean id="cookieClearingLogoutHandler" class="org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler">
+		<b:constructor-arg name="cookiesToClear">
+			<b:array>
+				<b:value>#{config.cookiesToClear}</b:value>
+			</b:array>
+		</b:constructor-arg>
+	</b:bean>
+
+	<b:bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<b:constructor-arg name="logoutSuccessHandler" ref="logoutSuccessHandler" />
+		<b:constructor-arg name="handlers">
+			<b:list>
+				<b:ref bean="securityContextLogoutHandler" />
+				<b:ref bean="cookieClearingLogoutHandler"/>
+			</b:list>
+		</b:constructor-arg>
+	</b:bean>
+
+   	<b:bean id="logoutSuccessHandler" class="kr.co.coinis.webserver.common.security.spring.security.handler.SignOutSuccessHandler">
+		<b:property name="alwaysUseDefaultTargetUrl" value="#{config.alwaysUseDefaultTargetUrl}" />
+		<b:property name="defaultTargetUrl" value="#{config.defaultTargetUrl}" />
+	</b:bean>
+	<!-- 로그아웃 필터 설정 -->
+
+	<!-- 스프링 시큐리티에서 기본으로 사용하는 중복로그인 체크 필터 -->
+	<b:bean id="sessionExpiredHandler" class="kr.co.coinis.webserver.common.security.spring.security.handler.SessionExpiredHandler" autowire="default">
+		<b:constructor-arg name="expiredUrl" value="#{config.sessionExpiredUrl}" />
+	</b:bean>
+
+	<b:bean id="concurrentSessionFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+		<!-- <b:constructor-arg name="expiredUrl" value="#{config.sessionExpiredUrl}" /> -->
+		<b:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+		<b:constructor-arg name="sessionInformationExpiredStrategy" ref="sessionExpiredHandler"/>
+		<b:property name="logoutHandlers"> <!-- 세션이 만료된 경우 로그이아웃 처리한다.-->
+			<b:array>
+				<b:ref bean="securityContextLogoutHandler" />
+				<b:ref bean="cookieClearingLogoutHandler"/>
+			</b:array>
+		</b:property>
+	</b:bean>
+
+	<!-- SESSION MANAGEMENT -->
+	<b:bean id="sessionAuthStrategy" class="org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy">
+		<b:constructor-arg>
+			<b:list>
+
+				<!-- 스프링 시큐리티에서 기본으로 사용하는 동시세션전략 -->
+				<!--
+				<b:bean class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">
+					<b:constructor-arg ref="sessionRegistry"/>
+					<b:property name="maximumSessions" value="#{config.maximumSessions}" />
+					<b:property name="exceptionIfMaximumExceeded" value="#{config.exceptionIfMaximumExceeded}" />
+				</b:bean>
+				 -->
+				<b:bean class="kr.co.coinis.webserver.common.security.spring.security.session.ConcurrentSessionControlAuthenticationStrategySupport">
+					<b:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+					<b:constructor-arg name="maximumSessions" value="#{config.maximumSessions}" />
+					<b:constructor-arg name="exceptionIfMaximumExceeded" value="#{config.exceptionIfMaximumExceeded}" />
+					<b:property name="duplicationLoginDisable" value="#{config.duplicationLoginDisable}" />
+				</b:bean>
+
+				<b:bean class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy">
+					<b:property name="migrateSessionAttributes" value="false" />
+				</b:bean>
+
+				<b:bean class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy">
+					<b:constructor-arg name="sessionRegistry" ref="sessionRegistry"/>
+				</b:bean>
+ 			</b:list>
+		</b:constructor-arg>
+	</b:bean>
+	<!-- SESSION MANAGEMENT -->
+
+	<!-- 사용자 정보 관련 데이터 조회  -->
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider ref="customAuthenticationProvider" />
+	</authentication-manager>
+
+	<b:bean id="userService" class="kr.co.coinis.webserver.common.security.spring.service.UserService"/>
+	<b:bean id="customAuthenticationProvider"
+		 class="kr.co.coinis.webserver.common.security.spring.service.CustomAuthenticationProvider"/>
+	<!-- 사용자 정보 관련 데이터 조회  -->
+</b:beans>

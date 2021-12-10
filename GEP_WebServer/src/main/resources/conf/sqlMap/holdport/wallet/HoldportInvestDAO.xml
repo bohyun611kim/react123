@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.coinis.webserver.holdport.wallet.wlt002.dao.HoldportInvestDAO">
+
+	<resultMap id="PossessionInfoVO" type="kr.co.coinis.webserver.coinis.wallet.wlt003.vo.PossessionInfoVO">
+        <result property="POSS_ASSET"				column="POSS_ASSET"					jdbcType="NUMERIC"/>
+        <result property="TOTAL_QTY"				column="TOTAL_QTY"					jdbcType="NUMERIC"/>
+        <result property="USABLE_QTY"				column="USABLE_QTY"					jdbcType="NUMERIC"/>
+        <result property="IN_USE_QTY"				column="IN_USE_QTY"					jdbcType="NUMERIC"/>
+        <result property="TOTAL_BY_BTC"				column="TOTAL_BY_BTC"				jdbcType="NUMERIC"/>
+	</resultMap>
+
+	<resultMap  id="SendOrderCancelMap" type="kr.co.coinis.webserver.common.vo.SendOrderCancelVO">
+		<result property="exchangeId"			    column="EXCHANGE_ID"		        jdbcType="VARCHAR"/>
+		<result property="userId"				    column="USER_ID"			        jdbcType="VARCHAR"/>
+		<result property="mktGrpId"				    column="MKT_GRP_ID"			        jdbcType="VARCHAR"/>
+		<result property="mktId"				    column="MKT_ID"				        jdbcType="VARCHAR"/>
+		<result property="wasSvrNo"				    column="WAS_SVR_NO"			        jdbcType="NUMERIC"/>
+		<result property="itemCode"				    column="ITEM_CODE"			        jdbcType="VARCHAR"/>
+		<result property="ordTypeCd"			    column="ORD_TYPE_CD"		        jdbcType="NUMERIC"/>
+		<result property="orgIfTransactionId"	    column="IF_TRANSACTION_ID"	        jdbcType="VARCHAR"/>
+		<result property="ordsvrOrgOrdNo"		    column="ORDSVR_ORD_NO"		        jdbcType="VARCHAR"/>
+		<result property="exchgsvrOrgOrdNo"		    column="EXCHGSVR_ORD_NO"	        jdbcType="VARCHAR"/>
+		<result property="sellBuyRecogCd"		    column="SELL_BUY_RECOG_CD"	        jdbcType="NUMERIC"/>
+		<result property="ordPrice"				    column="ORD_PRICE"			        jdbcType="NUMERIC"/>
+		<result property="ordQty"				    column="ORD_QTY"			        jdbcType="NUMERIC"/>
+	</resultMap>
+
+    <!-- ==================================================================================== -->
+    <!-- 1. Select Statement -->
+    <!-- ==================================================================================== -->
+
+	<!-- select TB_CODE_MAST -->
+	<!-- 회원의 보유코인 수량을 가져온다.  -->
+	<select id="retrievePossessionInfo" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+                A.COIN_NO AS 'COIN_NO',
+                COIN_SYMBOLIC_NM AS 'POSS_ASSET',
+                IFNULL(BALANCE_QTY, 0.0) AS 'TOTAL_QTY',
+                IFNULL(BALANCE_QTY, 0.0) - IFNULL(USED_QTY,0.0) AS 'USABLE_QTY',
+                IFNULL(USED_QTY, 0.0) AS 'IN_USE_QTY',
+				TRUNCATE((IFNULL(BALANCE_QTY, 0.0) - IFNULL(USED_QTY,0.0)) * FN_WAS_GET_PRICE_BY_BC(A.COIN_NO, (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO WHERE EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}), #{EXCHANGE_ID, jdbcType=VARCHAR}), 8) AS 'TOTAL_USABLE_BY_BC',
+                IFNULL(QTY_BY_BC, 0.0) AS 'TOTAL_BY_BC'
+        FROM
+            (
+                SELECT  A.COIN_NO AS COIN_NO,
+                        B.COIN_SYMBOLIC_NM AS COIN_SYMBOLIC_NM,
+                        A.BALANCE_QTY AS BALANCE_QTY,
+                        TRUNCATE(A.BALANCE_QTY * FN_WAS_GET_PRICE_BY_BC(A.COIN_NO, (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO WHERE EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}), #{EXCHANGE_ID, jdbcType=VARCHAR}), 8) AS QTY_BY_BC
+                FROM   TB_COIN_BALANCE A,
+                        TB_COIN_MAST B
+                WHERE  A.EXCHANGE_ID = #{EXCHANGE_ID, jdbcType=VARCHAR}
+                AND     A.USER_ID = #{USER_ID, jdbcType=VARCHAR}
+                AND     A.COIN_NO = B.COIN_NO
+				AND    B.COIN_NO != 120
+        ) A
+        LEFT OUTER JOIN
+            (
+                SELECT  COIN_NO,
+                        TRUNCATE(SUM(USE_QTY), 8) AS USED_QTY
+                FROM
+                (
+                    SELECT COIN_NO,
+                        SUM(NON_CONTRACT_QTY) AS USE_QTY
+                    FROM  TB_NON_CONTRACT_ORDER A,
+                        TB_ITEM_CODE_MAST B
+                    WHERE A.EXCHANGE_ID = TRIM(#{EXCHANGE_ID, jdbcType=VARCHAR})
+                    AND    A.USER_ID = TRIM(#{USER_ID, jdbcType=VARCHAR})
+                    AND    A.NON_CONTRACT_QTY &gt; 0.0
+                    AND    ORD_TYPE_CD = 1
+                    AND    SELL_BUY_RECOG_CD = 2
+                    AND    A.ITEM_CODE = B.ITEM_CODE
+					AND    B.COIN_NO != 120
+                    GROUP BY COIN_NO
+
+                    UNION ALL
+                    SELECT COIN_NO,
+                        SUM(REQ_QTY + IFNULL(WTDRW_FEE, 0.0)) AS USE_QTY
+                    FROM  TB_DEPOSIT_WITHDRAW_MGR
+                    WHERE EXCHANGE_ID = TRIM(#{EXCHANGE_ID, jdbcType=VARCHAR})
+                    AND     USER_ID = TRIM(#{USER_ID, jdbcType=VARCHAR})
+                    AND     REQ_STAT_PROC_CD != 5
+                    AND     APPROVAL_STAT_CD != -1
+                    AND     DW_PROC_STAT_CD  NOT IN (1, -1)
+                    AND     DW_REQ_TYPE_CD IN (2, 4)
+                    GROUP BY COIN_NO
+
+                    UNION ALL
+                    SELECT BASIC_ASSET_COIN_NO AS COIN_NO,
+                        SUM(NON_CONTRACT_QTY * ORD_PRICE) AS USE_QTY
+                    FROM  TB_NON_CONTRACT_ORDER A,
+                        TB_ITEM_CODE_MAST B
+                    WHERE A.EXCHANGE_ID = TRIM(#{EXCHANGE_ID, jdbcType=VARCHAR})
+                    AND    USER_ID = TRIM(#{USER_ID, jdbcType=VARCHAR})
+                    AND    A.NON_CONTRACT_QTY &gt; 0.0
+                    AND    ORD_TYPE_CD = 1
+                    AND    SELL_BUY_RECOG_CD = 1
+                    AND    A.ITEM_CODE = B.ITEM_CODE
+					AND    B.COIN_NO != 120
+                    GROUP BY BASIC_ASSET_COIN_NO
+                ) A
+                GROUP BY COIN_NO
+            ) B
+
+        ON A.COIN_NO = B.COIN_NO
+	</select>
+
+	<!-- select TB_COIN_BALANCE -->
+	<!-- 회원의 보유코인의 평가금액/평가손익을 계산하여 가져온다. -->
+	<select id="retrieveUserEstimatedPossessionInfo" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+              TB.TOTAL_BUY_AMT
+            , (TB.TOTAL_ESTMATE_AMT - TB.TOTAL_BC_AMT) AS TOTAL_ESTMATE_AMT  -- 총 평가금 - KRW금 : 총 보유암호화폐 평가금
+            , (TB.TOTAL_ESTMATE_AMT - TB.TOTAL_BUY_AMT) AS TOTAL_PROFIT_OR_LOSS_AMT
+            , ((TB.TOTAL_ESTMATE_AMT - TB.TOTAL_BUY_AMT) / TB.TOTAL_BUY_AMT * 100) AS TOTAL_PROFIT_OR_LOSS_PER
+            , TB.TOTAL_BC_AMT
+        FROM
+        (
+            SELECT
+                  SUM(BAL.BALANCE_QTY) AS BALANCE_QTY
+                , SUM(BAL.BALANCE_QTY * BAL.AVG_PRICE_BY_BC) AS TOTAL_BUY_AMT
+                , SUM(BAL.BALANCE_QTY * FN_WAS_GET_PRICE_BY_BC(BAL.COIN_NO, (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO AS T WHERE T.EXCHANGE_ID = EXCI.EXCHANGE_ID), EXCI.EXCHANGE_ID) ) AS TOTAL_ESTMATE_AMT
+                , (SELECT BALANCE_QTY
+                    FROM TB_COIN_BALANCE
+                    WHERE COIN_NO = (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO AS T WHERE T.EXCHANGE_ID = EXCI.EXCHANGE_ID)
+                        AND EXCHANGE_ID = BAL.EXCHANGE_ID AND USER_ID = BAL.USER_ID LIMIT 1
+                  ) AS TOTAL_BC_AMT
+            FROM TB_COIN_BALANCE AS BAL
+            LEFT OUTER JOIN TB_EXCHANGE_INFO EXCI
+            ON 1 = 1
+                AND BAL.EXCHANGE_ID     = EXCI.EXCHANGE_ID
+            WHERE 1 = 1
+                AND BAL.EXCHANGE_ID     = #{EXCHANGE_ID, jdbcType=VARCHAR}
+                AND BAL.USER_ID         = #{USER_ID, jdbcType=VARCHAR}
+				AND BAL.COIN_NO != 120
+        ) AS TB
+	</select>
+
+	<!-- select TB_COIN_BALANCE -->
+	<!-- 회원의 보유코인별 평가금액/평가손익을 계산하여 가져온다. -->
+	<select id="selectUserPossessionCoinList" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+              BAL.COIN_NO
+            , BAL.USER_ID
+            , CM.COIN_SYMBOLIC_NM
+            , CM.COIN_ENG_NM
+            , CM.COIN_KOR_NM
+            , CM.COIN_FULL_NM
+			, MICI.TRADE_STAT_CD
+            , (BAL.AVG_PRICE_BY_BC) AS AVG_PRICE_BY_BC
+            , (BAL.BALANCE_QTY) AS BALANCE_QTY
+            , (BAL.BALANCE_QTY * BAL.AVG_PRICE_BY_BC) AS TOTAL_BUY_AMT
+            , (BAL.BALANCE_QTY * FN_WAS_GET_PRICE_BY_BC(BAL.COIN_NO, (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO AS T WHERE T.EXCHANGE_ID = EXCI.EXCHANGE_ID), EXCI.EXCHANGE_ID) ) AS TOTAL_ESTMATE_AMT
+        FROM TB_COIN_BALANCE AS BAL
+        LEFT OUTER JOIN TB_EXCHANGE_INFO EXCI
+        ON 1 = 1
+            AND BAL.EXCHANGE_ID     = EXCI.EXCHANGE_ID
+        LEFT OUTER JOIN TB_COIN_MAST CM
+        ON 1 = 1
+            AND BAL.COIN_NO         = CM.COIN_NO
+		LEFT OUTER JOIN TB_MKT_ITEM_CODE_INFO MICI
+		ON 1 = 1
+			AND BAL.EXCHANGE_ID = MICI.EXCHANGE_ID
+			AND MICI.ITEM_CODE = CONCAT(CM.COIN_SYMBOLIC_NM, 'KRW')
+        WHERE 1 = 1
+            AND BAL.EXCHANGE_ID     = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND BAL.USER_ID         = #{USER_ID, jdbcType=VARCHAR}
+            AND BAL.COIN_NO         != (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO AS T WHERE T.EXCHANGE_ID = BAL.EXCHANGE_ID)
+			AND BAL.COIN_NO != 120
+        ORDER BY BAL.COIN_NO ASC
+        LIMIT #{PAGE_INDEX, jdbcType=NUMERIC}, #{PAGE_CONT_NUM, jdbcType=NUMERIC}
+	</select>
+
+	<select id="selectUserPossessionCoinListOfNonSmallAsset" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+              BAL.COIN_NO
+            , BAL.USER_ID
+            , CM.COIN_SYMBOLIC_NM
+            , CM.COIN_ENG_NM
+            , CM.COIN_KOR_NM
+            , CM.COIN_FULL_NM
+			, MICI.TRADE_STAT_CD
+            , (BAL.AVG_PRICE_BY_BC) AS AVG_PRICE_BY_BC
+            , (BAL.BALANCE_QTY) AS BALANCE_QTY
+            , (BAL.BALANCE_QTY * BAL.AVG_PRICE_BY_BC) AS TOTAL_BUY_AMT
+            , (BAL.BALANCE_QTY * FN_WAS_GET_PRICE_BY_BC(BAL.COIN_NO, (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO AS T WHERE T.EXCHANGE_ID = EXCI.EXCHANGE_ID), EXCI.EXCHANGE_ID) ) AS TOTAL_ESTMATE_AMT
+        FROM TB_COIN_BALANCE AS BAL
+        LEFT OUTER JOIN TB_EXCHANGE_INFO EXCI
+        ON 1 = 1
+            AND BAL.EXCHANGE_ID     = EXCI.EXCHANGE_ID
+        LEFT OUTER JOIN TB_COIN_MAST CM
+        ON 1 = 1
+            AND BAL.COIN_NO         = CM.COIN_NO
+		LEFT OUTER JOIN TB_MKT_ITEM_CODE_INFO MICI
+		ON 1 = 1
+			AND BAL.EXCHANGE_ID = MICI.EXCHANGE_ID
+			AND MICI.ITEM_CODE = CONCAT(CM.COIN_SYMBOLIC_NM, 'KRW')
+        WHERE 1 = 1
+            AND BAL.EXCHANGE_ID     = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND BAL.USER_ID         = #{USER_ID, jdbcType=VARCHAR}
+            AND BAL.COIN_NO         != (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO AS T WHERE T.EXCHANGE_ID = BAL.EXCHANGE_ID)
+			AND BAL.COIN_NO != 120
+ 			AND (BAL.BALANCE_QTY * FN_WAS_GET_PRICE_BY_BC(BAL.COIN_NO, (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO AS T WHERE T.EXCHANGE_ID = EXCI.EXCHANGE_ID), EXCI.EXCHANGE_ID) ) &gt; 10000.0
+        ORDER BY BAL.COIN_NO ASC
+        LIMIT #{PAGE_INDEX, jdbcType=NUMERIC}, #{PAGE_CONT_NUM, jdbcType=NUMERIC}
+	</select>
+
+	<!-- 회원의 보유코인별 평가금액/평가손익 리스트 갯수를 가져온다. -->
+	<select id="selectUserPossessionCoinListCount" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+            COUNT(COIN_NO) AS size
+        FROM TB_COIN_BALANCE AS BAL
+        WHERE 1 = 1
+            AND BAL.EXCHANGE_ID     = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND BAL.USER_ID         = #{USER_ID, jdbcType=VARCHAR}
+            AND BAL.COIN_NO         != (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO AS T WHERE T.EXCHANGE_ID = BAL.EXCHANGE_ID)
+			AND BAL.COIN_NO != 120
+ 	</select>
+
+	<!-- 회원의 보유코인별 평가금액/평가손익 리스트 갯수를 가져온다. -->
+	<select id="selectUserPossessionCoinListCountOfNonSmallAsset" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+            COUNT(COIN_NO) AS size
+        FROM TB_COIN_BALANCE AS BAL
+        WHERE 1 = 1
+            AND BAL.EXCHANGE_ID     = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND BAL.USER_ID         = #{USER_ID, jdbcType=VARCHAR}
+            AND BAL.COIN_NO         != (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO AS T WHERE T.EXCHANGE_ID = BAL.EXCHANGE_ID)
+			AND (BAL.BALANCE_QTY * FN_WAS_GET_PRICE_BY_BC(BAL.COIN_NO, (SELECT BC_COIN_NO FROM TB_EXCHANGE_INFO AS T WHERE T.EXCHANGE_ID = BAL.EXCHANGE_ID), BAL.EXCHANGE_ID) ) &gt; 10000.0
+			AND BAL.COIN_NO != 120
+ 	</select>
+
+
+	<!-- select TB_ORDER_LIST -->
+	<!-- 회원의 체결내역 리스트를 가져온다. -->
+	<select id="selectUserTradingHistoryList" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT 
+			A.ORD_SEQ_NO, A.HIST_INSERT_DT, A.ORD_DAY, A.EXCHANGE_ID, A.USER_ID,
+			A.MKT_GRP_ID, A.MKT_ID, A.IF_TRANSACTION_ID, A.WAS_SVR_NO, A.ORD_SVR_NO,
+			A.EXCHG_SVR_NO, A.ORDSVR_ORD_NO, A.EXCHGSVR_ORD_NO, A.ORG_IF_TRANSACTION_ID, A.ORDSVR_ORG_ORD_NO,
+			A.EXCHGSVR_ORG_ORD_NO, A.ITEM_CODE, A.ORD_TYPE_CD, A.ORD_PRICE_TYPE_CD, A.SELL_BUY_RECOG_CD,
+			A.ORD_DT, A.ORD_PRICE, A.ORD_QTY, A.ORD_STATUS_CD, A.CONTRACT_NO,
+			A.CONTRACT_PRICE, A.CONTRACT_QTY, A.CONTRACT_DT, A.NON_CONTRACT_QTY, A.BASIC_ASSET_COIN_QTY,
+			A.TRADE_FEE_AMT, FEE_COIN_NO, A.CONTRACT_PRICE_BY_BC, A.TRADE_FEE_BY_BC, A.PUBLIC_IP, ORD_CHNL_CD, A.PAIR_EXCHGSVR_ORD_NO,
+			CM.PRICE_DSP_DECIMAL_PNT, CM.QTY_DSP_DECIMAL_PNT, CM.AMT_DECIMAL_PNT
+        FROM
+		( 
+			SELECT * FROM 
+				TB_ORDER_LIST
+			WHERE 1 = 1
+				AND EXCHANGE_ID	    = #{EXCHANGE_ID, jdbcType=VARCHAR}
+				AND USER_ID		    = #{USER_ID, jdbcType=VARCHAR}
+				AND ORD_STATUS_CD	= 322
+				AND ITEM_CODE       != 'HPCKRW'
+			<if test="SELL_BUY_RECOG_CD != 9999">
+				AND SELL_BUY_RECOG_CD= #{SELL_BUY_RECOG_CD, jdbcType=NUMERIC}
+			</if>
+			<if test="COIN_NO != 9999">
+				AND ITEM_CODE		    LIKE CONCAT(FN_WAS_GET_COIN_SYMBOLIC_NM(#{COIN_NO, jdbcType=VARCHAR}), '%')
+			</if>
+			<if test="START_DT != null">
+				AND ORD_DAY       	&gt;= #{START_DT, jdbcType=VARCHAR}
+			</if>
+			<if test="END_DT != null">
+				AND ORD_DAY          &lt;= #{END_DT, jdbcType=VARCHAR}
+			</if>
+		) A
+        LEFT OUTER JOIN TB_ITEM_CODE_MAST CM
+        ON 1 = 1
+            AND A.ITEM_CODE         = CM.ITEM_CODE
+		ORDER BY ORD_SEQ_NO DESC
+        LIMIT #{PAGE_INDEX, jdbcType=NUMERIC}, #{PAGE_CONT_NUM, jdbcType=NUMERIC}
+	</select>
+	<!-- 회원의 체결내역 리스트 갯수를 가져온다. -->
+	<select id="selectUserTradingHistoryListCount" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT COUNT(ORD_SEQ_NO) AS size FROM
+        (
+            (SELECT
+                ORD_SEQ_NO, HIST_INSERT_DT, ORD_DAY, EXCHANGE_ID, USER_ID,
+                MKT_GRP_ID, MKT_ID, IF_TRANSACTION_ID, WAS_SVR_NO, ORD_SVR_NO,
+                EXCHG_SVR_NO, ORDSVR_ORD_NO, EXCHGSVR_ORD_NO, ORG_IF_TRANSACTION_ID, ORDSVR_ORG_ORD_NO,
+                EXCHGSVR_ORG_ORD_NO, ITEM_CODE, ORD_TYPE_CD, ORD_PRICE_TYPE_CD, SELL_BUY_RECOG_CD,
+                ORD_DT, ORD_PRICE, ORD_QTY, ORD_STATUS_CD, CONTRACT_NO,
+                CONTRACT_PRICE, CONTRACT_QTY, CONTRACT_DT, NON_CONTRACT_QTY, BASIC_ASSET_COIN_QTY,
+                TRADE_FEE_AMT, FEE_COIN_NO, CONTRACT_PRICE_BY_BC, TRADE_FEE_BY_BC, PUBLIC_IP, ORD_CHNL_CD, PAIR_EXCHGSVR_ORD_NO
+            FROM TB_ORDER_LIST)
+        ) AS ORDLST
+        WHERE 1 = 1
+            AND ORDLST.EXCHANGE_ID	    = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND ORDLST.USER_ID		    = #{USER_ID, jdbcType=VARCHAR}
+            AND ORDLST.ORD_STATUS_CD	= 322
+			AND ORDLST.ITEM_CODE      != 'HPCKRW'
+        <if test="SELL_BUY_RECOG_CD != 9999">
+            AND ORDLST.SELL_BUY_RECOG_CD = #{SELL_BUY_RECOG_CD, jdbcType=NUMERIC}
+		</if>
+		<if test="COIN_NO != 9999">
+           AND ORDLST.ITEM_CODE		    LIKE CONCAT(FN_WAS_GET_COIN_SYMBOLIC_NM(#{COIN_NO, jdbcType=VARCHAR}), '%')
+		</if>
+        <if test="START_DT != null">
+			AND ORDLST.ORD_DAY       	&gt;= #{START_DT, jdbcType=VARCHAR}
+		</if>
+        <if test="END_DT != null">
+			AND ORDLST.ORD_DAY          &lt;= #{END_DT, jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<!-- select TB_NON_CONTRACT_ORDER -->
+	<!-- 회원의 미체결내역 리스트를 가져온다. -->
+	<select id="selectUsrNonContractList" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT 
+			A.* 
+			, CM.PRICE_DSP_DECIMAL_PNT
+			, CM.QTY_DSP_DECIMAL_PNT
+		FROM
+		(   SELECT * FROM
+				TB_NON_CONTRACT_ORDER
+			WHERE 1 = 1
+				AND EXCHANGE_ID	    = #{EXCHANGE_ID, jdbcType=VARCHAR}
+				AND USER_ID		    = #{USER_ID, jdbcType=VARCHAR}
+			<if test="SELL_BUY_RECOG_CD != 9999">
+				AND SELL_BUY_RECOG_CD= #{SELL_BUY_RECOG_CD, jdbcType=NUMERIC}
+			</if>
+			<if test="COIN_NO != 9999">
+				AND ITEM_CODE		LIKE CONCAT(FN_WAS_GET_COIN_SYMBOLIC_NM(#{COIN_NO, jdbcType=VARCHAR}), '%')
+			</if>
+		) A
+        LEFT OUTER JOIN TB_ITEM_CODE_MAST CM
+        ON 1 = 1
+            AND A.ITEM_CODE         = CM.ITEM_CODE
+        ORDER BY NON_CONTRACT_ORD_NO DESC
+        LIMIT #{PAGE_INDEX, jdbcType=NUMERIC}, #{PAGE_CONT_NUM, jdbcType=NUMERIC}
+	</select>
+	<!-- 회원의 미체결내역 리스트 갯수를 가져온다. -->
+	<select id="selectUsrNonContractListCount" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT COUNT(NON_CONTRACT_ORD_NO) AS size FROM
+            TB_NON_CONTRACT_ORDER
+        WHERE 1 = 1
+            AND EXCHANGE_ID	    = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND USER_ID		    = #{USER_ID, jdbcType=VARCHAR}
+        <if test="SELL_BUY_RECOG_CD != 9999">
+            AND SELL_BUY_RECOG_CD= #{SELL_BUY_RECOG_CD, jdbcType=NUMERIC}
+		</if>
+		<if test="COIN_NO != 9999">
+           AND ITEM_CODE		LIKE CONCAT(FN_WAS_GET_COIN_SYMBOLIC_NM(#{COIN_NO, jdbcType=VARCHAR}), '%')
+		</if>
+	</select>
+
+	<!-- select TB_COIN_BALANCE_CHG_HIST -->
+	<!-- 사용자의 잔고 변경 이력을 가져온다.-->
+	<select id="selectCoinBalanceChangeHistoryList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+	           A.*
+	         , FN_WAS_GET_COIN_SYMBOLIC_NM(COIN_NO) AS COIN_SYMBOLIC_NM
+	         , FN_WAS_GET_COIN_KOR_NM(COIN_NO) AS COIN_KOR_NM
+	         , FN_WAS_GET_COIN_FULL_NM(COIN_NO) AS COIN_FULL_NM
+	         , FN_WAS_GET_CODE_NUM_VAL_NM('C0004', CHG_REAS_CD, 'ko') AS CODE_VAL_NM
+	         , FN_WAS_GET_ITEM_NM(ITEM_CODE) AS ITEM_NM
+	         , FN_WAS_GET_ITEM_DOMESTIC_NM(ITEM_CODE) AS ITEM_DOMESTIC_NM
+	         , FN_WAS_GET_ITEM_ENG_NM(ITEM_CODE) AS ITEM_ENG_NM
+		FROM
+	      (
+	        (
+	         SELECT
+	            EXCHANGE_ID, USER_ID, COIN_NO, TRADE_DT, BALANCE_QTY, AVG_PRICE_BY_BC, IF(CHG_REAS_CD = 11,ROUND(CHG_QTY,3),CHG_QTY) AS CHG_QTY, CHG_REAS_CD, FEE_AMT, IF(CHG_REAS_CD = 11,ROUND(CHG_QTY_WITH_FEE,3),CHG_QTY_WITH_FEE) AS CHG_QTY_WITH_FEE, CHG_DT, TRANSACTION_KEY_VAL, CONTRACT_DT, ITEM_CODE, 0 AS REC_SEQ_NO
+	         FROM TB_COIN_BALANCE
+	         WHERE 1 = 1
+	            AND EXCHANGE_ID   = #{EXCHANGE_ID, jdbcType=VARCHAR}
+	            AND USER_ID      = #{USER_ID, jdbcType=VARCHAR}
+				AND ITEM_CODE   != 'HPCKRW'
+			<if test="COIN_NO != 9999">
+				AND COIN_NO		= #{COIN_NO, jdbcType=NUMERIC}
+			</if>
+			<if test="CHG_REAS_CD != 9999">
+				AND CHG_REAS_CD = #{CHG_REAS_CD, jdbcType=NUMERIC}
+			</if>
+			<if test="START_DT != null">
+				AND CHG_DT 		&gt;= CONCAT(#{START_DT, jdbcType=VARCHAR}, '000000')
+			</if>
+			<if test="END_DT != null">
+				AND CHG_DT 		&lt;= CONCAT(#{END_DT, jdbcType=VARCHAR}, '235959')
+			</if>
+	        )
+	        UNION ALL
+	        (
+	         SELECT
+	            EXCHANGE_ID, USER_ID, COIN_NO, TRADE_DT, BALANCE_QTY, AVG_PRICE_BY_BC, IF(CHG_REAS_CD = 11,ROUND(CHG_QTY,3),CHG_QTY) AS CHG_QTY, CHG_REAS_CD, FEE_AMT, IF(CHG_REAS_CD = 11,ROUND(CHG_QTY_WITH_FEE,3),IF(CHG_REAS_CD = 12, IFNULL(CHG_QTY_WITH_FEE, CHG_QTY), CHG_QTY_WITH_FEE)) AS CHG_QTY_WITH_FEE, CHG_DT, TRANSACTION_KEY_VAL, CONTRACT_DT, ITEM_CODE, REC_SEQ_NO
+	         FROM TB_COIN_BALANCE_CHG_HIST
+	         WHERE 1 = 1
+	            AND EXCHANGE_ID   = #{EXCHANGE_ID, jdbcType=VARCHAR}
+	            AND USER_ID      = #{USER_ID, jdbcType=VARCHAR}
+				AND ITEM_CODE   != 'HPCKRW'
+			<if test="COIN_NO != 9999">
+				AND COIN_NO		= #{COIN_NO, jdbcType=NUMERIC}
+			</if>
+			<if test="CHG_REAS_CD != 9999">
+				AND CHG_REAS_CD = #{CHG_REAS_CD, jdbcType=NUMERIC}
+			</if>
+			<if test="START_DT != null">
+				AND CHG_DT 		&gt;= CONCAT(#{START_DT, jdbcType=VARCHAR}, '000000')
+			</if>
+			<if test="END_DT != null">
+				AND CHG_DT 		&lt;= CONCAT(#{END_DT, jdbcType=VARCHAR}, '235959')
+			</if>
+			ORDER BY CONTRACT_DT DESC, REC_SEQ_NO ASC
+	        )
+	     ) A
+		ORDER BY A.CONTRACT_DT DESC, REC_SEQ_NO ASC
+        LIMIT #{PAGE_INDEX, jdbcType=NUMERIC}, #{PAGE_CONT_NUM, jdbcType=NUMERIC}
+	</select>
+	<!-- select TB_COIN_BALANCE_CHG_HIST -->
+	<!-- 사용자의 잔고 변경 이력 갯수를 가져온다. -->
+	<select id="selectCoinBalanceChangeHistoryListCount" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			  COUNT(*) AS size
+		FROM
+		(
+		  (
+			SELECT
+				EXCHANGE_ID, USER_ID, COIN_NO, TRADE_DT, BALANCE_QTY, AVG_PRICE_BY_BC, CHG_QTY, CHG_REAS_CD, FEE_AMT, CHG_QTY_WITH_FEE, CHG_DT, TRANSACTION_KEY_VAL, CONTRACT_DT
+			FROM TB_COIN_BALANCE
+			WHERE 1 = 1
+				AND EXCHANGE_ID	= #{EXCHANGE_ID, jdbcType=VARCHAR}
+				AND USER_ID		= #{USER_ID, jdbcType=VARCHAR}
+				AND ITEM_CODE   != 'HPCKRW'
+			<if test="COIN_NO != 9999">
+				AND COIN_NO		= #{COIN_NO, jdbcType=NUMERIC}
+			</if>
+			<if test="CHG_REAS_CD != 9999">
+				AND CHG_REAS_CD = #{CHG_REAS_CD, jdbcType=NUMERIC}
+			</if>
+			<if test="START_DT != null">
+				AND CHG_DT 		&gt;= CONCAT(#{START_DT, jdbcType=VARCHAR}, '000000')
+			</if>
+			<if test="END_DT != null">
+				AND CHG_DT 		&lt;= CONCAT(#{END_DT, jdbcType=VARCHAR}, '235959')
+			</if>
+		  )
+		  UNION ALL
+		  (
+			SELECT
+				EXCHANGE_ID, USER_ID, COIN_NO, TRADE_DT, BALANCE_QTY, AVG_PRICE_BY_BC, CHG_QTY, CHG_REAS_CD, FEE_AMT, CHG_QTY_WITH_FEE, CHG_DT, TRANSACTION_KEY_VAL, CONTRACT_DT
+			FROM TB_COIN_BALANCE_CHG_HIST
+			WHERE 1 = 1
+				AND EXCHANGE_ID	= #{EXCHANGE_ID, jdbcType=VARCHAR}
+				AND USER_ID		= #{USER_ID, jdbcType=VARCHAR}
+				AND ITEM_CODE   != 'HPCKRW'
+			<if test="COIN_NO != 9999">
+				AND COIN_NO		= #{COIN_NO, jdbcType=NUMERIC}
+			</if>
+			<if test="CHG_REAS_CD != 9999">
+				AND CHG_REAS_CD = #{CHG_REAS_CD, jdbcType=NUMERIC}
+			</if>
+			<if test="START_DT != null">
+				AND CHG_DT 		&gt;= CONCAT(#{START_DT, jdbcType=VARCHAR}, '000000')
+			</if>
+			<if test="END_DT != null">
+				AND CHG_DT 		&lt;= CONCAT(#{END_DT, jdbcType=VARCHAR}, '235959')
+			</if>
+		  )
+		) A
+	</select>
+
+	<!-- select TB_NON_CONTRACT_ORDER -->
+	<!-- 미체결내역 취소를 위한 정보를 가져온다. -->
+    <select id="selectOrderCancelInfo" resultMap="SendOrderCancelMap" parameterType="java.util.Map">
+        SELECT
+            EXCHANGE_ID, USER_ID, MKT_GRP_ID, MKT_ID, WAS_SVR_NO, ITEM_CODE, 2 AS ORD_TYPE_CD, IF_TRANSACTION_ID
+            , ORDSVR_ORD_NO, EXCHGSVR_ORD_NO, SELL_BUY_RECOG_CD, ORD_PRICE, ORD_QTY
+        FROM TB_NON_CONTRACT_ORDER
+        WHERE 1 = 1
+            AND EXCHANGE_ID             = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND USER_ID                 = #{USER_ID, jdbcType=VARCHAR}
+            AND NON_CONTRACT_ORD_NO     = #{NON_CONTRACT_ORD_NO, jdbcType=NUMERIC}
+	</select>
+
+    <!-- ==================================================================================== -->
+    <!-- 1.1 Procedure Call -->
+    <!-- ==================================================================================== -->
+	<!-- 사용자 출금 가능수량 체크 프로시저 -->
+	<update id="call_PR_WAS_CHECK_WITHDRAW" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_CHECK_WITHDRAW
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_COIN_NO, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_REQ_QTY, mode=IN, jdbcType=NUMERIC}
+					, #{V_WTDRW_POSS_QTY, mode=OUT, jdbcType=NUMERIC}
+					, #{V_DAILIY_LIMIT_MAX_QTY, mode=OUT, jdbcType=NUMERIC}
+					, #{V_DAILIY_LIMIT_LEFT_QTY, mode=OUT, jdbcType=NUMERIC}
+					, #{V_MONTHLY_LIMIT_LEFT_QTY, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				)
+		}
+	</update>
+
+    <!-- ==================================================================================== -->
+    <!-- 2. Delete Statement -->
+    <!-- ==================================================================================== -->
+	<!-- delete TB_MEMBER_AUTH_MGR -->
+	<!-- 사용자가 출금신청 취소를 했을때 인증번호를 삭제한다. -->
+	<select id="deleteMemberAuthMgrByTxKeyBal" parameterType="java.util.Map" >
+	<![CDATA[
+        DELETE FROM TB_MEMBER_AUTH_MGR
+        WHERE
+                USER_ID             = #{USER_ID, jdbcType=VARCHAR}
+            AND EXCHANGE_ID         = #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND TRANSACTION_KEY_VAL = #{TRANSACTION_KEY_VAL, jdbcType=NUMERIC}
+	]]>
+	</select>
+
+</mapper>
+

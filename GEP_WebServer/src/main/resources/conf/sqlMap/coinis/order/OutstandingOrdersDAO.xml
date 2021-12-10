@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.coinis.order.odr002.dao.OutstandingOrdersDAO">
+
+	<resultMap type="kr.co.coinis.webserver.coinis.order.odr002.vo.NonContractVO" id="NonContractVO">
+		<result property="orderDt" 			column="ORD_DT" 				jdbcType="VARCHAR"/>
+		<result property="orderNo" 			column="ORDSVR_ORD_NO" 			jdbcType="VARCHAR"/>
+		<result property="itemCode" 		column="ITEM_CODE" 				jdbcType="VARCHAR"/>
+		<result property="itemName" 		column="ITEM_NM" 				jdbcType="VARCHAR"/>
+		<result property="sellBuyCd" 		column="SELL_BUY_RECOG_CD" 		jdbcType="VARCHAR"/>
+		<result property="orderPrc" 		column="ORD_PRICE" 				jdbcType="NUMERIC"/>
+		<result property="orderQty" 		column="ORD_QTY" 				jdbcType="NUMERIC"/>
+		<result property="contractQty" 		column="CONTRACT_QTY" 			jdbcType="NUMERIC"/>
+		<result property="nonContractQty" 	column="NON_CONTRACT_QTY" 		jdbcType="NUMERIC"/>
+		<result property="prcDecPnt" 		column="PRICE_DSP_DECIMAL_PNT" 	jdbcType="NUMERIC"/>
+		<result property="qtyDecPnt" 		column="QTY_DSP_DECIMAL_PNT" 	jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.common.vo.SendOrderCancelVO" id="SendOrderCancelVO">
+		<result property="exchangeId"			column="EXCHANGE_ID"		jdbcType="VARCHAR"/>
+		<result property="userId"				column="USER_ID"			jdbcType="VARCHAR"/>
+		<result property="mktGrpId"				column="MKT_GRP_ID"			jdbcType="VARCHAR"/>
+		<result property="mktId"				column="MKT_ID"				jdbcType="VARCHAR"/>
+		<result property="wasSvrNo"				column="WAS_SVR_NO"			jdbcType="NUMERIC"/>
+		<result property="itemCode"				column="ITEM_CODE"			jdbcType="VARCHAR"/>
+		<result property="ordTypeCd"			column="ORD_TYPE_CD"		jdbcType="NUMERIC"/>
+		<result property="orgIfTransactionId"	column="IF_TRANSACTION_ID"	jdbcType="VARCHAR"/>
+		<result property="ordsvrOrgOrdNo"		column="ORDSVR_ORD_NO"		jdbcType="VARCHAR"/>
+		<result property="exchgsvrOrgOrdNo"		column="EXCHGSVR_ORD_NO"	jdbcType="VARCHAR"/>
+		<result property="sellBuyRecogCd"		column="SELL_BUY_RECOG_CD"	jdbcType="NUMERIC"/>
+		<result property="ordPrice"				column="ORD_PRICE"			jdbcType="NUMERIC"/>
+		<result property="ordQty"				column="ORD_QTY"			jdbcType="NUMERIC"/>
+	</resultMap>
+
+	<select id="selectNonContractInfo" resultType="integer">
+		SELECT 
+			COUNT(NON_CONTRACT_ORD_NO) CNT
+		FROM
+			TB_NON_CONTRACT_ORDER
+		WHERE 
+			EXCHANGE_ID = #{exchangeId}
+		AND 
+			USER_ID = 'preacher@naver.com'<!-- #{userId} -->
+	</select>
+
+	<select id="selectNonContractList" resultMap="NonContractVO">
+		SELECT 
+			ORD.ORD_DT, ORD.ORDSVR_ORD_NO, ORD.ITEM_CODE, MAST.ITEM_NM
+			, ORD.SELL_BUY_RECOG_CD
+			, ORD.ORD_PRICE
+			, ORD.ORD_QTY
+			, ORD.CONTRACT_QTY
+			, ORD.NON_CONTRACT_QTY
+			, PRICE_DSP_DECIMAL_PNT, QTY_DSP_DECIMAL_PNT
+		FROM 
+			TB_NON_CONTRACT_ORDER ORD
+		INNER JOIN
+			TB_ITEM_CODE_MAST MAST
+		ON
+			ORD.ITEM_CODE = MAST.ITEM_CODE
+		WHERE 
+			EXCHANGE_ID = #{exchangeId}
+		AND 
+			USER_ID = 'preacher@naver.com'<!-- #{userId} -->
+		ORDER BY ORD_DT DESC
+		LIMIT #{pageNum}, 10
+	</select>
+	
+	<select id="selectOrderCancelInfo" resultMap="SendOrderCancelVO">
+		SELECT EXCHANGE_ID, USER_ID, MKT_GRP_ID, MKT_ID, WAS_SVR_NO, ITEM_CODE, 2 AS ORD_TYPE_CD, IF_TRANSACTION_ID
+			   , ORDSVR_ORD_NO, EXCHGSVR_ORD_NO, SELL_BUY_RECOG_CD, ORD_PRICE, ORD_QTY
+		  FROM TB_NON_CONTRACT_ORDER
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND USER_ID = #{userId}
+		   AND ITEM_CODE = #{itemCode}
+		   AND NON_CONTRACT_ORD_NO = #{ordNo}
+	</select>
+	
+</mapper>
+

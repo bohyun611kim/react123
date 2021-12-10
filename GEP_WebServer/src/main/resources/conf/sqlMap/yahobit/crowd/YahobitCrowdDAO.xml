@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.yahobit.crowd.dao.YahobitCrowdDAO">
+
+	<resultMap type="kr.co.coinis.webserver.yahobit.crowd.vo.CrowdSaleVO" id="CrowdSaleVO">
+		<result property="seq" 						column="CRWD_SL_MGT_NO" 				jdbcType="NUMERIC"/>
+		<result property="crwdTypeCd" 				column="CRWD_SL_TYPE_CD" 				jdbcType="NUMERIC"/>
+		<result property="coinSymbolicNm" 			column="COIN_SYMBOLIC_NM" 				jdbcType="VARCHAR"/>
+		<result property="title" 					column="TITLE" 							jdbcType="VARCHAR"/>
+		<result property="coinUsage" 				column="COIN_USAGE" 					jdbcType="VARCHAR"/>
+		<result property="startDt" 					column="SL_START_DT" 					jdbcType="VARCHAR"/>
+		<result property="endDt" 					column="SL_END_DT" 						jdbcType="VARCHAR"/>
+		<result property="txtTarget" 				column="TXT_SL_TARGET" 					jdbcType="VARCHAR"/>
+		<result property="txtPrice" 				column="TXT_SL_PRICE" 					jdbcType="VARCHAR"/>
+		<result property="crowdSchedule" 			column="CROWD_SL_SCHEDULE" 				jdbcType="VARCHAR"/>
+		<result property="homepageUrl" 				column="HOME_PAGE_URL" 					jdbcType="VARCHAR"/>
+		<result property="whitepaperUrl" 			column="WHITEPAPER_URL" 				jdbcType="VARCHAR"/>
+		<result property="videoClipUrl" 			column="VIDEO_CLIP_URL" 				jdbcType="VARCHAR"/>
+		<result property="listedYn" 				column="LISTED_YN" 						jdbcType="NUMERIC"/>
+		<result property="hardCap" 					column="HARD_CAP" 						jdbcType="VARCHAR"/>
+		<result property="slQtyBasisCoinNo" 		column="SL_QTY_BASIS_COIN_NO" 			jdbcType="NUMERIC"/>
+		<result property="slQtyBasisCoinSymbolicNm" column="SL_QTY_BASIS_COIN_SYMBOLIC_NM" 	jdbcType="VARCHAR"/>
+		<result property="slCoinNo" 				column="SL_COIN_NO" 					jdbcType="NUMERIC"/>
+		<result property="slCoinSymbolicNm" 		column="SL_COIN_SYMBOLIC_NM" 			jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.crowd.vo.CrowdSaleInfoVO" id="CrowdSaleInfoVO">
+		<result property="no" 					column="CRWD_SL_MGT_NO" 		jdbcType="NUMERIC"/>
+		<result property="crwdTypeCd"	 		column="CRWD_SL_TYPE_CD" 		jdbcType="NUMERIC"/>
+		<result property="title" 				column="TITLE" 					jdbcType="VARCHAR"/>
+		<result property="coinUsage" 			column="COIN_USAGE" 			jdbcType="VARCHAR"/>
+		<result property="ratio" 				column="RAISED_RATIO" 			jdbcType="NUMERIC"/>
+		<result property="slCoinNo" 			column="SL_COIN_NO" 			jdbcType="NUMERIC"/>
+		<result property="startDt" 				column="SL_START_DT" 			jdbcType="VARCHAR"/>
+		<result property="endDt" 				column="SL_END_DT" 				jdbcType="VARCHAR"/>
+		<result property="txtSlPrc" 			column="TXT_SL_PRICE" 			jdbcType="VARCHAR"/>
+		<result property="txtMin" 				column="TXT_MIN_QTY" 			jdbcType="VARCHAR"/>
+		<result property="txtMax"				column="TXT_MAX_QTY" 			jdbcType="VARCHAR"/>
+		<result property="txtSoft" 				column="TXT_SOFT_CAP" 			jdbcType="VARCHAR"/>
+		<result property="txtHard" 				column="TXT_HARD_CAP" 			jdbcType="VARCHAR"/>
+		<result property="hardCap"	 			column="HARD_CAP" 				jdbcType="NUMERIC"/>
+		<result property="txtDisRatio" 			column="TXT_DISCOUNT_RATIO"		jdbcType="VARCHAR"/>
+		<result property="txtBonus" 			column="TXT_BONUS" 				jdbcType="VARCHAR"/>
+		<result property="engNm" 				column="COIN_ENG_NM" 			jdbcType="VARCHAR"/>
+		<result property="korNm" 				column="COIN_KOR_NM" 			jdbcType="VARCHAR"/>
+		<result property="symbol" 				column="COIN_SYMBOLIC_NM" 		jdbcType="VARCHAR"/>
+		<result property="explanation" 			column="COIN_EXPLANATION" 		jdbcType="VARCHAR"/>
+		<result property="decimalPnt" 			column="WTDRW_DECIMAL_PNT" 		jdbcType="NUMERIC"/>
+		<result property="raisedQty" 			column="RAISED_QTY" 			jdbcType="NUMERIC"/>
+		<result property="maxQtyPerUser"		column="MAX_QTY_PER_USER" 		jdbcType="NUMERIC"/>
+		<result property="accRaisedQty" 		column="ACC_RAISED_QTY" 		jdbcType="VARCHAR"/>
+		<result property="remainQtyPer" 		column="REMAIN_QTY_PER" 		jdbcType="VARCHAR"/>
+		<result property="slCoinBasisQtyTxt"	column="SL_COIN_BASIS_QTY_TXT" 	jdbcType="VARCHAR"/>
+		<result property="exhPossQtyTxt"		column="EXH_POSS_QTY_TXT" 		jdbcType="VARCHAR"/>
+		<result property="bonusDstrbtRate"		column="BONUS_DSTRBT_RATE" 		jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.crowd.vo.CrowdSaleOnVO" id="CrowdSaleOnVO">
+		<result property="title"	column="TITLE" 			jdbcType="VARCHAR"/>
+		<result property="no"		column="CRWD_SL_MGT_NO"	jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.crowd.vo.BonusInfoVO" id="BonusInfoVO">
+		<result property="bonusTypeCd" 		column="BONUS_TYPE_CD" 		jdbcType="NUMERIC"/>
+		<result property="applyStartDt" 	column="APPLY_START_DT" 	jdbcType="VARCHAR"/>
+		<result property="applyEndDt" 		column="APPLY_END_DT" 		jdbcType="VARCHAR"/>
+		<result property="bonusDstrbtRate" 	column="BONUS_DSTRBT_RATE" 	jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.crowd.vo.BalanceVO" id="BalanceVO">
+		<result property="coinNo"	column="COIN_NO"			jdbcType="NUMERIC"/>
+		<result property="symbol" 	column="COIN_SYMBOLIC_NM" 	jdbcType="VARCHAR"/>
+		<result property="qty"		column="QTY"				jdbcType="NUMERIC"/>
+		<result property="pnt"		column="WTDRW_DECIMAL_PNT"	jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.crowd.vo.PriceInfoVO" id="PriceInfoVO">
+		<result property="symbol" 			column="COIN_SYMBOLIC_NM" 		jdbcType="NUMERIC"/>
+		<result property="payCoinNo" 		column="PAY_COIN_NO" 			jdbcType="NUMERIC"/>
+		<result property="payCoinBasicQty"	column="PAY_COIN_BASIS_QTY" 	jdbcType="NUMERIC"/>
+		<result property="slCoinBasicQty" 	column="SL_COIN_BASIS_QTY" 		jdbcType="NUMERIC"/>
+		<result property="payCoinUnitQty" 	column="PAY_COIN_ORD_UNIT_QTY" 	jdbcType="NUMERIC"/>
+		<result property="payCoinMinQty" 	column="PAY_COIN_MIN_QTY" 		jdbcType="NUMERIC"/>
+		<result property="payCoinMaxQty" 	column="PAY_COIN_MAX_QTY" 		jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.crowd.vo.PriceInfoByNoVO" id="PriceInfoByNoVO">
+		<result property="payBascicQty" 	column="PAY_COIN_BASIS_QTY" 	jdbcType="NUMERIC"/>
+		<result property="slBasicQty" 		column="SL_COIN_BASIS_QTY" 		jdbcType="NUMERIC"/>
+		<result property="payOrdUnitQty"	column="PAY_COIN_ORD_UNIT_QTY" 	jdbcType="NUMERIC"/>
+		<result property="payMinQty" 		column="PAY_COIN_MIN_QTY" 		jdbcType="NUMERIC"/>
+		<result property="payMaxQty" 		column="PAY_COIN_MAX_QTY" 		jdbcType="NUMERIC"/>
+		<result property="bouns" 			column="BONUS" 					jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	
+	<!-- 클라우드 세일 전체 리스트 조회 -->
+	<select id="selectCrowdSaleList" resultMap="CrowdSaleVO">
+		SELECT B.CRWD_SL_MGT_NO, B.CRWD_SL_TYPE_CD, C.COIN_SYMBOLIC_NM
+			   , B.TITLE, B.COIN_USAGE
+			   , B.SL_START_DT, B.SL_END_DT
+			   , B.TXT_SL_TARGET, B.TXT_SL_PRICE
+			   , B.CROWD_SL_SCHEDULE, B.HOME_PAGE_URL, B.WHITEPAPER_URL
+			   , B.VIDEO_CLIP_URL, B.LISTED_YN, FORMAT(B.HARD_CAP , 0) AS HARD_CAP
+			   , B.SL_QTY_BASIS_COIN_NO, FN_WAS_GET_COIN_SYMBOLIC_NM(B.SL_QTY_BASIS_COIN_NO) SL_QTY_BASIS_COIN_SYMBOLIC_NM
+               , B.SL_COIN_NO, FN_WAS_GET_COIN_SYMBOLIC_NM(B.SL_COIN_NO) SL_COIN_SYMBOLIC_NM
+		  FROM TB_CROWD_SALE_EXCHANGE_INFO A,
+		  	   TB_CROWD_SALE_BASIC_INFO B,
+			   TB_COIN_MAST C
+		 WHERE A.EXCHANGE_ID = #{exchangeId}
+		 --  AND B.USE_YN = 1
+		   AND A.CRWD_SL_MGT_NO = B.CRWD_SL_MGT_NO
+		   AND B.SL_COIN_NO = C.COIN_NO
+           AND (
+					(A.APPLY_START_DAY <![CDATA[ <= ]]> DATE_FORMAT(B.SL_START_DT, '%Y%m%d') AND A.APPLY_END_DAY >= DATE_FORMAT(B.SL_START_DT, '%Y%m%d'))
+					OR
+					(A.APPLY_START_DAY <![CDATA[ <= ]]> DATE_FORMAT(B.SL_END_DT, '%Y%m%d') AND A.APPLY_END_DAY >= DATE_FORMAT(B.SL_END_DT, '%Y%m%d'))
+			   )
+	</select>
+	
+	<!-- 클라우드 세일 정보 조회(1건) -->
+	<select id="selectCrowdSaleInfo" resultMap="CrowdSaleInfoVO">
+	<!-- 	SELECT B.TITLE, B.COIN_USAGE, TRUNCATE(B.RAISED_RATIO, 2) AS RAISED_RATIO, B.CRWD_SL_TYPE_CD, B.CRWD_SL_MGT_NO, B.SL_COIN_NO
+			   , B.SL_START_DT, B.SL_END_DT, B.TXT_SL_PRICE, B.TXT_MIN_QTY, B.TXT_MAX_QTY, B.TXT_SOFT_CAP, B.TXT_HARD_CAP, B.HARD_CAP, B.TXT_DISCOUNT_RATIO, B.TXT_BONUS
+			   , C.COIN_ENG_NM, C.COIN_KOR_NM, C.COIN_SYMBOLIC_NM, C.COIN_EXPLANATION, D.WTDRW_DECIMAL_PNT, IFNULL(B.RAISED_QTY,0) AS RAISED_QTY, B.MAX_QTY_PER_USER
+         	   , CONCAT(FORMAT(IFNULL(B.RAISED_QTY,0) , 0),' ' ,FN_WAS_GET_COIN_SYMBOLIC_NM(B.SL_QTY_BASIS_COIN_NO)) AS ACC_RAISED_QTY
+         	   , CONCAT(FORMAT(B.HARD_CAP - IFNULL(B.RAISED_QTY,0), 0),' ' ,FN_WAS_GET_COIN_SYMBOLIC_NM(B.SL_QTY_BASIS_COIN_NO)) AS REMAIN_QTY_PER
+		  FROM TB_CROWD_SALE_EXCHANGE_INFO A,
+			   TB_CROWD_SALE_BASIC_INFO B,
+			   TB_COIN_MAST C,
+			   TB_COIN_MGT_REF_INFO D
+		 WHERE A.EXCHANGE_ID = #{exchangeId}
+		   AND B.USE_YN = 1
+		   AND B.CRWD_SL_MGT_NO = #{no}
+		   AND A.CRWD_SL_MGT_NO = B.CRWD_SL_MGT_NO
+		   AND B.SL_COIN_NO = C.COIN_NO
+		   AND C.COIN_NO = D.COIN_NO
+		   AND (
+		   			(A.APPLY_START_DAY <![CDATA[ <= ]]> DATE_FORMAT(B.SL_START_DT, '%Y%m%d') AND A.APPLY_END_DAY >= DATE_FORMAT(B.SL_START_DT, '%Y%m%d'))
+			   		OR
+			   		(A.APPLY_START_DAY <![CDATA[ <= ]]> DATE_FORMAT(B.SL_END_DT, '%Y%m%d') AND A.APPLY_END_DAY >= DATE_FORMAT(B.SL_END_DT, '%Y%m%d'))
+			   )
+		   AND B.SL_START_DT <![CDATA[ <= ]]> DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s')
+           AND B.SL_END_DT <![CDATA[ >= ]]> DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s') -->
+           
+			SELECT * 
+				, FORMAT(B.SL_COIN_QTY / (B.BONUS_DSTRBT_RATE / 100 + 1) , 0) AS SL_COIN_BASIS_QTY_TXT
+				, FORMAT(A.MAX_QTY_PER_USER - B.SL_COIN_QTY / (B.BONUS_DSTRBT_RATE / 100 + 1) , 0) AS EXH_POSS_QTY_TXT 
+			FROM 
+			(
+			SELECT B.TITLE, B.COIN_USAGE, TRUNCATE(B.RAISED_RATIO, 2) AS RAISED_RATIO, B.CRWD_SL_TYPE_CD, B.CRWD_SL_MGT_NO, B.SL_COIN_NO
+				, B.SL_START_DT, B.SL_END_DT, B.TXT_SL_PRICE, B.TXT_MIN_QTY, B.TXT_MAX_QTY, B.TXT_SOFT_CAP, B.TXT_HARD_CAP, B.HARD_CAP, B.TXT_DISCOUNT_RATIO, B.TXT_BONUS
+				, C.COIN_ENG_NM, C.COIN_KOR_NM, C.COIN_SYMBOLIC_NM, C.COIN_EXPLANATION, D.WTDRW_DECIMAL_PNT, IFNULL(B.RAISED_QTY,0) AS RAISED_QTY, B.MAX_QTY_PER_USER
+				, CONCAT(FORMAT(IFNULL(B.RAISED_QTY,0) , 0),' ' ,FN_WAS_GET_COIN_SYMBOLIC_NM(B.SL_COIN_NO)) AS ACC_RAISED_QTY
+				, CONCAT(FORMAT(B.HARD_CAP - IFNULL(B.RAISED_QTY,0), 0),' ' ,FN_WAS_GET_COIN_SYMBOLIC_NM(B.SL_COIN_NO)) AS REMAIN_QTY_PER
+			FROM TB_CROWD_SALE_EXCHANGE_INFO A,
+				TB_CROWD_SALE_BASIC_INFO B,
+				TB_COIN_MAST C,
+				TB_COIN_MGT_REF_INFO D
+			WHERE A.EXCHANGE_ID = #{exchangeId}
+				AND B.USE_YN = 1
+				AND B.CRWD_SL_MGT_NO = #{no}
+				AND A.CRWD_SL_MGT_NO = B.CRWD_SL_MGT_NO
+				AND B.SL_COIN_NO = C.COIN_NO
+				AND C.COIN_NO = D.COIN_NO
+				AND (
+		   			(A.APPLY_START_DAY <![CDATA[ <= ]]> DATE_FORMAT(B.SL_START_DT, '%Y%m%d') AND A.APPLY_END_DAY >= DATE_FORMAT(B.SL_START_DT, '%Y%m%d'))
+			   		OR
+			   		(A.APPLY_START_DAY <![CDATA[ <= ]]> DATE_FORMAT(B.SL_END_DT, '%Y%m%d') AND A.APPLY_END_DAY >= DATE_FORMAT(B.SL_END_DT, '%Y%m%d'))
+			   	)
+			   	AND B.SL_START_DT <![CDATA[ <= ]]> DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s')
+	           	AND B.SL_END_DT <![CDATA[ >= ]]> DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s')
+			) A 
+			INNER JOIN
+			(	
+				SELECT A.CRWD_SL_MGT_NO AS MGT_NO
+		          , IFNULL(SUM(B.SL_COIN_QTY) , 0) AS SL_COIN_QTY
+		          , IFNULL(B.BONUS_DSTRBT_RATE, 0) AS BONUS_DSTRBT_RATE
+				FROM TB_CROWD_SALE_BASIC_INFO A
+				LEFT OUTER JOIN TB_CROWD_SALE_ORDER_HIST B
+				ON A.CRWD_SL_MGT_NO = B.CRWD_SL_MGT_NO
+					AND B.EXCHANGE_ID = #{exchangeId}
+					AND B.USER_ID = #{userId}
+				WHERE A.CRWD_SL_MGT_NO = #{no}
+				GROUP BY A.CRWD_SL_MGT_NO
+			) B
+			ON A.CRWD_SL_MGT_NO = B.MGT_NO;
+	</select>
+	
+	<!-- 진행중인 클라우드 세일 리스트 조회 -->
+	<select id="selectCrowdSaleOnList" resultMap="CrowdSaleOnVO">
+		SELECT B.TITLE, B.CRWD_SL_MGT_NO
+		  FROM TB_CROWD_SALE_EXCHANGE_INFO A,
+			   TB_CROWD_SALE_BASIC_INFO B
+		 WHERE A.EXCHANGE_ID = #{exchangeId}
+		   AND B.USE_YN = 1
+		   AND A.CRWD_SL_MGT_NO = B.CRWD_SL_MGT_NO
+		   AND (
+		   			(A.APPLY_START_DAY <![CDATA[ <= ]]> DATE_FORMAT(B.SL_START_DT, '%Y%m%d') AND A.APPLY_END_DAY >= DATE_FORMAT(B.SL_START_DT, '%Y%m%d'))
+			   		OR
+			   		(A.APPLY_START_DAY <![CDATA[ <= ]]> DATE_FORMAT(B.SL_END_DT, '%Y%m%d') AND A.APPLY_END_DAY >= DATE_FORMAT(B.SL_END_DT, '%Y%m%d'))
+			   )
+		   AND B.SL_START_DT <![CDATA[ <= ]]> DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s')
+           AND B.SL_END_DT <![CDATA[ >= ]]> DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s')
+	</select>
+	
+	<!-- 클라우드 세일 보너스 정보 조회 -->
+	<select id="selectBonusList" resultMap="BonusInfoVO">
+		SELECT C.BONUS_TYPE_CD, C.APPLY_START_DT, C.APPLY_END_DT, C.BONUS_DSTRBT_RATE
+		  FROM TB_CROWD_SALE_EXCHANGE_INFO A,
+			   TB_CROWD_SALE_BASIC_INFO B,
+			   TB_CROWD_SALE_BONUS_INFO C
+		 WHERE A.EXCHANGE_ID = #{exchangeId}
+		   AND B.USE_YN = 1
+		   AND B.CRWD_SL_MGT_NO = #{no}
+		   AND A.CRWD_SL_MGT_NO = B.CRWD_SL_MGT_NO
+		   AND B.CRWD_SL_MGT_NO = C.CRWD_SL_MGT_NO
+		   AND C.APPLY_START_DT <![CDATA[ <= ]]> DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s')
+           AND C.APPLY_END_DT <![CDATA[ >= ]]> DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s')
+	</select>
+	
+	<!-- 참여 가능 수량 조회 -->
+	<select id="selectBalance" resultMap="BalanceVO">
+		SELECT A.COIN_NO, A.COIN_SYMBOLIC_NM, A.WTDRW_DECIMAL_PNT
+			   , IFNULL(A.BALANCE_QTY,0.0) - (IFNULL(B.NON_CONTRACT_QTY,0.0) + IFNULL(C.DW_REQ_QTY,0.0) + IFNULL(D.NON_CONTRACT_QTY,0.0)) AS QTY
+          FROM (
+					SELECT SUM(A.BALANCE_QTY ) AS  BALANCE_QTY, A.COIN_NO, B.COIN_SYMBOLIC_NM, C.WTDRW_DECIMAL_PNT
+					  FROM TB_COIN_BALANCE A,
+            			   TB_COIN_MAST B,
+            			   TB_COIN_MGT_REF_INFO C
+                     WHERE A.EXCHANGE_ID = TRIM(#{exchangeId})
+                       AND A.USER_ID = TRIM(#{userId})
+                       AND A.COIN_NO = B.COIN_NO
+                       AND B.COIN_NO = C.COIN_NO
+                     GROUP BY A.COIN_NO
+                ) A
+	 LEFT JOIN 
+                (
+					SELECT SUM(NON_CONTRACT_QTY) AS NON_CONTRACT_QTY, B.COIN_NO
+                      FROM TB_NON_CONTRACT_ORDER A
+                           , TB_ITEM_CODE_MAST B  
+                     WHERE A.EXCHANGE_ID = TRIM(#{exchangeId})
+                       AND A.USER_ID = TRIM(#{userId})
+                       AND A.NON_CONTRACT_QTY > 0.0
+                       AND ORD_TYPE_CD = 1  -- 신규주문
+                       AND SELL_BUY_RECOG_CD = 2 -- 매도
+                       AND A.ITEM_CODE = B.ITEM_CODE
+                       GROUP BY B.COIN_NO
+                ) B
+			ON A.COIN_NO = B.COIN_NO
+	 LEFT JOIN
+                (
+					SELECT SUM(REQ_QTY + IFNULL(WTDRW_FEE, 0.0)) AS DW_REQ_QTY, COIN_NO
+                      FROM TB_DEPOSIT_WITHDRAW_MGR
+                     WHERE EXCHANGE_ID = TRIM(#{exchangeId})
+                       AND USER_ID = TRIM(#{userId})
+                       AND DW_REQ_TYPE_CD IN (2, 4)
+                       AND REQ_STAT_PROC_CD != 5
+                       AND APPROVAL_STAT_CD != -1
+                       AND DW_PROC_STAT_CD  NOT IN (1, -1)
+                       GROUP BY COIN_NO
+                ) C
+			ON  A.COIN_NO = C.COIN_NO
+	 LEFT JOIN
+                (
+					SELECT SUM(NON_CONTRACT_QTY * ORD_PRICE) AS NON_CONTRACT_QTY, B.BASIC_ASSET_COIN_NO
+                      FROM TB_NON_CONTRACT_ORDER A
+                           , TB_ITEM_CODE_MAST B  
+                     WHERE A.EXCHANGE_ID = TRIM(#{exchangeId})
+                       AND A.USER_ID = TRIM(#{userId})
+                       AND A.NON_CONTRACT_QTY > 0.0
+                       AND ORD_TYPE_CD = 1
+                       AND SELL_BUY_RECOG_CD = 1
+                       AND A.ITEM_CODE = B.ITEM_CODE
+                       GROUP BY B.BASIC_ASSET_COIN_NO
+                ) D
+			ON A.COIN_NO = D.BASIC_ASSET_COIN_NO
+	</select>
+	
+	<!-- 클라우드 세일 가격 정보 조회 -->
+	<select id="selectPriceInfo" resultMap="PriceInfoVO">
+		SELECT A.PAY_COIN_NO, A.PAY_COIN_BASIS_QTY, A.SL_COIN_BASIS_QTY, A.PAY_COIN_ORD_UNIT_QTY, A.PAY_COIN_MIN_QTY, A.PAY_COIN_MAX_QTY
+			   , B.COIN_SYMBOLIC_NM
+		  FROM TB_CROWD_SALE_PRICE_INFO A,
+			   TB_COIN_MAST B
+		 WHERE A.CRWD_SL_MGT_NO = #{no}
+		   AND A.APPLY_START_DT <![CDATA[ <= ]]> DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s')
+           AND A.APPLY_END_DT <![CDATA[ >= ]]> DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s')
+           AND A.PAY_COIN_NO = B.COIN_NO
+	  ORDER BY A.PAY_COIN_NO ASC
+	</select>
+	
+	<!-- kyc 인증 여부 조회 -->
+	<!-- <select id="selectKycYn" resultType="integer">
+		SELECT COUNT(*)
+		  FROM TB_CROWD_SALE_KYC_INFO
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND USER_ID = #{userId}
+	</select> -->
+	
+	<!-- kyc 인증 여부 조회 -->
+	<select id="selectKycYn" resultType="integer">
+		SELECT APPROVAL_STAT_CD
+		  FROM TB_CROWD_SALE_KYC_INFO
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND USER_ID = #{userId}
+	</select>
+	
+	<!-- 인증 수단 식별 코드 조회 -->
+	<select id="selectAuthMeansCd" resultType="integer">
+		SELECT IFNULL(AUTH_MEANS_CD, 0) AS AUTH_MEANS_CD
+		  FROM TB_MEMBER_INFO
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND USER_ID = #{userId}
+	</select>
+	
+	<!-- 유저 인증 정보 가져오기(mobile) -->
+	<select id="selectUserAuthInfo" resultType="string">
+		SELECT AES_DECRYPT(MOBILE, SHA2(SHA2( CONCAT(USER_ID, REG_DT), 512), 512)) AS MOBILE
+		  FROM TB_MEMBER_INFO
+    	 WHERE EXCHANGE_ID = #{exchangeId}
+    	   AND USER_ID = #{userId}
+    	   AND MEMBER_STAT_CD = 2
+    	   AND SMS_USE_YN = 1
+	</select>
+	
+	<!-- 유저 인증 정보 가져오기(otp) -->
+	<select id="selectOtpKey" resultType="string">
+		SELECT AES_DECRYPT(OTP_KEY_VAL, SHA2(SHA2( CONCAT(USER_ID, REG_DT), 512), 512)) AS OTP_KEY_VAL
+		  FROM TB_MEMBER_INFO
+    	 WHERE EXCHANGE_ID = #{exchangeId}
+    	   AND USER_ID = #{userId}
+    	   AND MEMBER_STAT_CD = 2
+	</select>
+	
+	<!-- KYC 인증자료 저장 -->
+	<update id="procInsertCrowdSaleKycInfo" statementType="CALLABLE">
+		{
+			CALL PR_WAS_INSERT_CROWD_SALE_KYC_INFO(
+				#{exchangeId, 	mode=IN,  jdbcType=VARCHAR},
+				#{userId, 		mode=IN,  jdbcType=VARCHAR},
+				#{purpose, 		mode=IN,  jdbcType=NUMERIC},
+				#{income1, 		mode=IN,  jdbcType=NUMERIC},
+				#{income2, 		mode=IN,  jdbcType=NUMERIC},
+				#{income3, 		mode=IN,  jdbcType=NUMERIC},
+				#{income4, 		mode=IN,  jdbcType=NUMERIC},
+				#{income5, 		mode=IN,  jdbcType=NUMERIC},
+				#{income6, 		mode=IN,  jdbcType=NUMERIC},
+				#{income7, 		mode=IN,  jdbcType=NUMERIC},
+				#{income8, 		mode=IN,  jdbcType=NUMERIC},
+				#{ownerYn, 		mode=IN,  jdbcType=NUMERIC},
+				#{liabilityCd, 	mode=IN,  jdbcType=NUMERIC},
+				#{reasonCont, 	mode=IN,  jdbcType=VARCHAR},
+				#{rtnCd, 		mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 		mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<!-- KYC 인증용 이미지 저장 -->
+	<update id="procInsertCrowdSaleKycPhoto" statementType="CALLABLE">
+		{
+			CALL PR_WAS_INSERT_CROWD_SALE_KYC_PHOTO(
+				#{exchangeId, 	mode=IN,  jdbcType=VARCHAR},
+				#{userId, 		mode=IN,  jdbcType=VARCHAR},
+				#{fileNm, 		mode=IN,  jdbcType=VARCHAR},
+				#{rtnCd, 		mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 		mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<!-- sms 인증번호 요청 -->
+	<update id="procInsertAuthCode" statementType="CALLABLE">
+		{
+			CALL PR_WAS_INSERT_AUTH_CODE(
+				#{exchangeId, 		mode=IN, jdbcType=VARCHAR},
+				#{userId, 			mode=IN, jdbcType=VARCHAR},
+				#{authPurposeCd, 	mode=IN, jdbcType=NUMERIC},
+				#{authMeansCd, 		mode=IN, jdbcType=NUMERIC},
+				#{authMeansKeyVal, 	mode=IN, jdbcType=VARCHAR},
+				#{expireSec, 		mode=IN, jdbcType=NUMERIC},
+				#{tranKeyVal,		mode=IN, jdbcType=NUMERIC},
+				#{encryptAuthCd, 	mode=OUT, jdbcType=VARCHAR},
+				#{authCd, 			mode=OUT, jdbcType=VARCHAR},
+				#{rtnCd, 			mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg,			mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<!-- 인증번호 검사 -->
+	<update id="procCheckAuthCode" statementType="CALLABLE">
+		{
+			CALL PR_WAS_CHECK_AUTH_CODE(
+				#{exchangeId, 		mode=IN, jdbcType=VARCHAR},
+				#{userId, 			mode=IN, jdbcType=VARCHAR},
+				#{authPurposeCd, 	mode=IN, jdbcType=NUMERIC},
+				#{authMeansCd, 		mode=IN, jdbcType=NUMERIC},
+				#{authMeansKeyVal, 	mode=IN, jdbcType=VARCHAR},
+				#{authCd, 			mode=IN, jdbcType=VARCHAR},
+				#{rtnCd, 			mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg,			mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<!-- 참여 수량 계산을 위한 조회 -->
+	<select id="selectPriceInfoByNo" resultMap="PriceInfoByNoVO">
+		SELECT PAY_COIN_BASIS_QTY, SL_COIN_BASIS_QTY
+			   , PAY_COIN_ORD_UNIT_QTY, PAY_COIN_MIN_QTY, PAY_COIN_MAX_QTY
+			   , (
+			   		SELECT IFNULL(BONUS_DSTRBT_RATE, 0) 
+					  FROM TB_CROWD_SALE_BONUS_INFO
+					 WHERE CRWD_SL_MGT_NO = #{no}
+					   AND APPLY_START_DT <![CDATA[ <= ]]> DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s')
+					   AND APPLY_END_DT <![CDATA[ >= ]]> DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s')
+				  ORDER BY REC_SEQ_NO DESC
+					 LIMIT 1
+				) AS BONUS
+		  FROM TB_CROWD_SALE_PRICE_INFO
+		 WHERE CRWD_SL_MGT_NO = #{no}
+		   AND APPLY_START_DT <![CDATA[ <= ]]> DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s')
+           AND APPLY_END_DT <![CDATA[ >= ]]> DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s')
+           AND PAY_COIN_NO = #{type}
+      ORDER BY REC_SEQ_NO DESC
+      	 LIMIT 1
+	</select>
+	
+	<update id="procInsertCrowdSaleOrderHist" statementType="CALLABLE">
+		{
+			CALL PR_WAS_INSERT_CROWD_SALE_ORDER_HIST(
+				#{no, 			mode=IN, jdbcType=NUMERIC},
+				#{exchangeId, 	mode=IN, jdbcType=VARCHAR},
+				#{userId, 		mode=IN, jdbcType=VARCHAR},
+				#{type, 		mode=IN, jdbcType=NUMERIC},
+				#{qty, 			mode=IN, jdbcType=NUMERIC},
+				#{slType, 		mode=IN, jdbcType=NUMERIC},
+				#{slQty, 		mode=IN, jdbcType=NUMERIC},
+				#{rtnCd, 		mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg,		mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<!-- 승인상태처리메모 조회 -->
+	<select id="selectApprovalProcMemo" resultType="string">
+		SELECT APPROVAL_PROC_MEMO
+		  FROM TB_CROWD_SALE_KYC_INFO
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND USER_ID = #{userId}
+	</select>
+	
+	<!-- Hard Cap 수량이 넘지않게 체크 -->
+	<select id="posibleCrowdSale" resultType="double">
+		SELECT
+			DISTINCT IFNULL(BASIC.HARD_CAP - SUM(HIST.SL_COIN_QTY) - (((100 + BONUS.BONUS_DSTRBT_RATE) / 100) * #{slQty}), 0.0)
+		FROM
+			TB_CROWD_SALE_BASIC_INFO BASIC
+		LEFT JOIN
+			TB_CROWD_SALE_BONUS_INFO BONUS
+		ON
+			BASIC.CRWD_SL_MGT_NO = BONUS.CRWD_SL_MGT_NO
+		LEFT JOIN
+			TB_CROWD_SALE_ORDER_HIST HIST
+		ON
+			BONUS.CRWD_SL_MGT_NO = HIST.CRWD_SL_MGT_NO
+		WHERE
+			BASIC.CRWD_SL_MGT_NO = #{no}
+	</select>
+	
+	<!--  크라우드세일  회원별 참여누적수량 조회 -->
+	<select id="reqQtyMax" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT IFNULL(SUM(B.SL_COIN_QTY), 0) AS SL_COIN_BASIS_QTY
+		FROM TB_CROWD_SALE_BASIC_INFO A
+      	LEFT OUTER JOIN TB_CROWD_SALE_ORDER_HIST B
+      	ON A.CRWD_SL_MGT_NO = B.CRWD_SL_MGT_NO
+        	AND B.EXCHANGE_ID = #{exchange_id}
+			AND B.USER_ID = #{user_id}
+		WHERE A.CRWD_SL_MGT_NO = #{crwd_sl_mgt_no}
+		GROUP BY A.CRWD_SL_MGT_NO
+	</select>
+	
+	<!-- 쿠라우드세일 보너스 조회 -->
+	<select id="reqBonus" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT SUM(BONUS_DSTRBT_RATE) AS BONUS_DSTRBT_RATE
+		FROM TB_CROWD_SALE_BONUS_INFO
+		WHERE CRWD_SL_MGT_NO = #{crwd_sl_mgt_no}
+	</select>
+	
+</mapper>
+
+
+

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:s="http://www.springframework.org/schema/security"
+	xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd
+		http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring
+		https://raw.githubusercontent.com/agentgt/ehcache-spring-annotations/master/core/src/main/resources/com/googlecode/ehcache/annotations/ehcache-spring-1.1.xsd">
+
+	<!-- Controller 를 찾을 Base Package 명 -->
+	<context:component-scan base-package="kr.co.coinis.webserver,org.springframework.data.redis" /> 
+    <context:annotation-config />
+	<mvc:annotation-driven />
+	<aop:aspectj-autoproxy />
+	
+	<mvc:resources location="file:${event.img.path}" mapping="/resources/res-event/**"/>
+	<mvc:resources location="/resources/" mapping="/resources/**"/>
+	<mvc:resources location="/resources/robots.txt" mapping="/robots.txt" />
+	<mvc:resources location="/resources/sitemap.xml" mapping="/sitemap.xml" />
+	<mvc:resources location="/resources/naver70d82a16768dc9ae99e212a5be89e402.html" mapping="/naver70d82a16768dc9ae99e212a5be89e402.html" />
+	
+	<!-- Spring MVC ViewResolver -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	<bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+		<property name="contentType" value="application/json;charset=UTF-8" />
+	</bean> 	
+	<!-- Spring MVC ViewResolver --> 
+	
+	<!-- 공통코드 ehcache 설정 -->
+	<ehcache:annotation-driven/>
+	<ehcache:config cache-manager="cacheManager">
+		<ehcache:evict-expired-elements interval="300" />
+	</ehcache:config>
+ 
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="/WEB-INF/cache/ehcache/ehcache.xml" />
+	</bean> 
+	<!-- 공통코드 ehcache 설정 -->
+
+	<!-- Spring 환경 설정  Loading -->
+	<import resource="classpath:conf/spring/context-*.xml" />
+	
+	<!-- spring security settings -->
+	<bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler" />
+	<s:global-method-security pre-post-annotations="enabled">
+		<s:expression-handler ref="expressionHandler"/>
+	</s:global-method-security>
+	<!-- spring security settings -->
+	
+	<!-- Max Upload size -> 50MB로 상향 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
+		<property name="maxUploadSize" value="52428800000" />
+	</bean>
+ 
+	<mvc:cors>
+		<!-- <mvc:mapping path="/common/auth/**"
+			allowed-origins="https://testcert.kcp.co.kr, https://www.kcp.co.kr"
+			allowed-methods="GET, PUT, POST"
+			allowed-headers="*"
+			allow-credentials="false"
+			max-age="123" /> -->
+		<mvc:mapping path="/common/auth/**" 
+			allowed-origins="*"
+			allowed-methods="GET, POST, PUT, DELETE, OPTIONS"
+			allowed-headers="*"
+			max-age = "3600"
+		/>
+	</mvc:cors>
+
+</beans>

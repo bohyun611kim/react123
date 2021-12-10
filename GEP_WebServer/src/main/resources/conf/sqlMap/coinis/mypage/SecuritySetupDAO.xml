@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.coinis.mypage.mpg003.dao.SecuritySetupDAO">
+
+	<resultMap type="kr.co.coinis.webserver.coinis.mypage.mpg003.vo.SecuritySetStatusVO" 	id="SecuritySetStatusVO">
+		<result property="tel_cd" 					column="TEL_CD" 					jdbcType="VARCHAR"/>
+		<result property="sms_use_yn" 				column="SMS_USE_YN" 				jdbcType="INTEGER"/>
+		<result property="otp_yn" 					column="OTP_YN" 					jdbcType="INTEGER"/>
+		<result property="reg_dt" 					column="REG_DT" 					jdbcType="CHAR"/>
+		<result property="mobile"					column="MOBILE"						jdbcType="VARCHAR"/>
+		<result property="otp_key_val"				column="OTP_KEY_VAL"				jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.coinis.mypage.mpg003.vo.CountryInfoVO" 			id="CountryInfoVO">
+		<result property="eng_nm" 					column="ENG_NM" 					jdbcType="VARCHAR"/>
+		<result property="tel_cd" 					column="TEL_CD" 					jdbcType="VARCHAR"/>
+	</resultMap>
+	
+<!-- 	<resultMap type="java.util.Map" id="updateSMSUseYNResult">
+		
+		<collection 
+			property="SecuritySetStatusVO"
+			column="{marketName=MKT_NM, exchangeID=EXCHANGE_ID}"
+			javaType="java.util.ArrayList"
+			ofType="kr.co.coinis.webserver.coinis.mypage.mpg003.vo.SecuritySetStatusVO"
+			select="SecuritySetStatusVO"
+		>
+		</collection>
+	</resultMap> -->
+
+	<select id="selectSecuritySetStatus" parameterType="kr.co.coinis.webserver.common.vo.ExchangeIDUserIDPairVO" resultMap="SecuritySetStatusVO">
+		SELECT CONCAT('+', C.TEL_CD) AS TEL_CD
+				, A.SMS_USE_YN
+				, A.OTP_YN
+				, A.REG_DT
+				, AES_DECRYPT(MOBILE, SHA2(SHA2( CONCAT(A.USER_ID, A.REG_DT), 512), 512)) AS MOBILE
+				, AES_DECRYPT(OTP_KEY_VAL, SHA2(SHA2( CONCAT(A.USER_ID, A.REG_DT), 512), 512)) AS OTP_KEY_VAL
+		FROM TB_MEMBER_INFO A
+			, TB_MEMBER_INFO_EXTRA B
+			, TB_COUNTRY_INFO C
+		WHERE A.USER_ID = TRIM(#{user_id})
+		AND	  B.EXCHANGE_ID = TRIM(#{exchange_id})
+		AND	  A.USER_ID = B.USER_ID
+		AND   A.EXCHANGE_ID = B.EXCHANGE_ID
+		AND   B.COUNTRY_CD = C.COUNTRY_CD
+	</select>
+	
+	<select id="selectCountryInfo" resultMap="CountryInfoVO">
+		SELECT ENG_NM
+      		   , TEL_CD
+		FROM TB_COUNTRY_INFO
+		WHERE USE_YN != 0
+		ORDER BY ENG_NM
+	</select>
+	
+	<!-- WAS서버 인증코드 저장처리 프로시저 -->
+	<update id="call_PR_WAS_INSERT_AUTH_CODE" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_INSERT_AUTH_CODE
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_AUTH_PURPOSE_CD, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_AUTH_MEANS_CD, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_AUTH_MEANS_KEY_VAL, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_EXPIRE_SEC, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_TRANSACTION_KEY_VAL, mode=IN, jdbcType=NUMERIC}
+					, #{V_ENCRYPT_AUTH_CODE, mode=OUT, jdbcType=VARCHAR}
+					, #{V_AUTH_CODE, mode=OUT, jdbcType=VARCHAR}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				) 
+		}
+	</update>
+	
+	<!-- WAS서버 인증코드 체크 프로시저 -->
+	<update id="call_PR_WAS_CHECK_AUTH_CODE" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_CHECK_AUTH_CODE
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_AUTH_PURPOSE_CD, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_AUTH_MEANS_CD, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_AUTH_MEANS_KEY_VAL, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_AUTH_CODE, mode=IN, jdbcType=VARCHAR}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				) 
+		}
+	</update>
+	
+	<!-- WAS 서버 SMS 인증상태 변경 프로시저 -->
+	<update id="call_PR_WAS_SET_SMS_AUTH" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_SET_SMS_AUTH
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_SMS_USE_YN, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_TEL_CD, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_MOBILE, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_KEY1, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_KEY2, mode=IN, jdbcType=VARCHAR}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				) 
+		}
+	</update>
+	
+	<!-- WAS 서버 OTP 인증상태 변경 프로시저 -->
+ 	<update id="call_PR_WAS_SET_OTP_AUTH" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_SET_OTP_AUTH
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_OTP_YN, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_OTP_KEY_VAL, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_KEY1, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_KEY2, mode=IN, jdbcType=VARCHAR}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				) 
+		}
+	</update>
+	
+	<!-- 로그인  비밀번호 확인 -->
+	<select id="checkPWMatch" parameterType="java.util.Map" resultType="integer">
+		SELECT 
+			COUNT(*) CNT
+		FROM 
+			TB_MEMBER_INFO 
+		WHERE 
+			USER_ID = #{user_id}
+		AND 
+			LOGIN_PASSWD = SHA2(#{loginPW, jdbcType=VARCHAR}, 512)
+		AND 
+			EXCHANGE_ID = #{exchange_id}
+	</select>
+	
+</mapper>
+

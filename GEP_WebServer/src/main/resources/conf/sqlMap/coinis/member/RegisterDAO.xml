@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.coinis.member.mbr001.dao.RegisterDAO">
+
+	<resultMap type="kr.co.coinis.webserver.coinis.member.mbr001.vo.CountryCodeVO" id="CountryCodeVO">
+		<result property="countryCd"	column="COUNTRY_CD"	jdbcType="VARCHAR"/>
+		<result property="engNm"		column="ENG_NM"		jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.common.vo.ResultVO" id="resultVo">
+		<result property="rtnCd"	column="V_RTN_CD"	jdbcType="NUMERIC"/>
+		<result property="rtnMsg"	column="V_RTN_MSG"	jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- <parameterMap type="kr.co.coinis.webserver.member.mbr001.vo.ReqInsertMemberInfoVO" id="ReqInsertMemberInfoVO">
+		<parameter property=""/>
+		<parameter property=""/>
+		<parameter property=""/>
+		<parameter property=""/>
+		<parameter property=""/>
+	</parameterMap> -->
+	
+	<select id="selectCountryCode" resultMap="CountryCodeVO">
+		SELECT 
+			COUNTRY_CD, ENG_NM
+		FROM 
+			TB_COUNTRY_INFO
+		WHERE 
+			USE_YN = 1
+	</select>
+
+	<update id="insertMemberInfo" statementType="CALLABLE" parameterType="kr.co.coinis.webserver.coinis.member.mbr001.vo.ReqInsertMemberInfoVO">
+		{
+			CALL PR_WAS_INSERT_MEMBER_INFO(
+				#{exchangeId, mode=IN, jdbcType=VARCHAR},
+				#{userId, mode=IN, jdbcType=VARCHAR},
+				#{password, mode=IN, jdbcType=VARCHAR},
+				#{mktAgree, mode=IN, jdbcType=NUMERIC},
+				#{recommanderId, mode=IN, jdbcType=VARCHAR},
+				#{rtnCd, mode=OUT, jdbcType=NUMERIC, resultMap=resultVo},
+				#{rtnMsg, mode=OUT, jdbcType=VARCHAR, resultMap=resultVo}
+			)
+		}
+	</update>
+	
+	<update id="insertMemberInfoExtra" statementType="CALLABLE" parameterType="kr.co.coinis.webserver.coinis.member.mbr001.vo.ReqInsertMemberInfoVO">
+		{ 
+			CALL PR_WAS_INSERT_MEMBER_INFO_EXTRA(
+				#{exchangeId, mode=IN, jdbcType=VARCHAR},
+				#{userId, mode=IN, jdbcType=VARCHAR},
+				#{userTypeCd, mode=IN, jdbcType=NUMERIC},
+				#{corpRegNo, mode=IN, jdbcType=VARCHAR},
+				#{contryCd, mode=IN, jdbcType=VARCHAR},
+				#{postalCode, mode=IN, jdbcType=VARCHAR},
+				#{address, mode=IN, jdbcType=VARCHAR},
+				#{fullName, mode=IN, jdbcType=VARCHAR},
+				#{birthday, mode=IN, jdbcType=VARCHAR},
+				#{idTypeCd, mode=IN, jdbcType=NUMERIC},
+				#{userId, mode=IN, jdbcType=VARCHAR},
+				#{regDt, mode=IN, jdbcType=VARCHAR},
+				#{rtnCd, mode=OUT, jdbcType=NUMERIC, resultMap=resultVo},
+				#{rtnMsg, mode=OUT, jdbcType=VARCHAR, resultMap=resultVo}
+			)
+		}
+	</update>
+	
+	<select id="selectJoinDt" resultType="string" parameterType="kr.co.coinis.webserver.coinis.member.mbr001.vo.ReqInsertMemberInfoVO">
+		SELECT REG_DT 
+		  FROM TB_MEMBER_INFO 
+		 WHERE EXCHANGE_ID = #{exchangeId, jdbcType=VARCHAR} 
+		   AND USER_ID = #{userId, jdbcType=VARCHAR}
+	</select>
+	
+	<update id="insertMemberCorpInfo" statementType="CALLABLE" parameterType="kr.co.coinis.webserver.coinis.member.mbr001.vo.ReqInsertMemberInfoVO">
+		{ 
+			CALL PR_WAS_INSERT_MEMBER_CORP_INFO(
+				#{corpRegNo, mode=IN, jdbcType=VARCHAR},
+				#{corpName, mode=IN, jdbcType=VARCHAR},
+				#{corpRepr, mode=IN, jdbcType=VARCHAR},
+				#{postalCode, mode=IN, jdbcType=VARCHAR},
+				#{address, mode=IN, jdbcType=VARCHAR},
+				'',
+				#{rtnCd, mode=OUT, jdbcType=NUMERIC, resultMap=resultVo},
+				#{rtnMsg, mode=OUT, jdbcType=VARCHAR, resultMap=resultVo}
+			)
+		}
+	</update>
+	
+</mapper>
+

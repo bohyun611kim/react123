@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.coinis.member.mbr002.dao.LoginDAO">
+
+	<!-- 비밀번호 매칭 확인 및 추가 인증 정보 조회 -->
+	<resultMap type="kr.co.coinis.webserver.coinis.member.mbr002.vo.LoginMatchResultVO" id="LoginMatchResultVO">
+		<result property="cnt"			column="CNT"			jdbcType="NUMERIC"/>
+		<result property="memberStatCd"	column="MEMBER_STAT_CD"	jdbcType="NUMERIC"/>
+		<result property="authMeansCd"	column="AUTH_MEANS_CD"	jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<!-- 회원 정보 조회 -->
+	<resultMap type="kr.co.coinis.webserver.common.security.spring.service.CustomUserDetails" id="CustomUserDetails">
+		<result property="exchangeId"	column="EXCHANGE_ID" 	jdbcType="NUMERIC"/>
+		<result property="userId"		column="USER_ID" 		jdbcType="VARCHAR"/>
+		<result property="authLevel"	column="AUTH_LEVEL" 	jdbcType="VARCHAR"/>
+		<result property="authMeansCd"	column="AUTH_MEANS_CD" 	jdbcType="VARCHAR"/>
+		<result property="joinDt"		column="JOIN_DT" 		jdbcType="VARCHAR"/>
+		<result property="userTypeCd"	column="USER_TYPE_CD" 	jdbcType="VARCHAR"/>
+		<result property="loginYn"		column="LOGIN_YN" 		jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<select id="selectLoginMatch" parameterType="java.util.Map" resultMap="LoginMatchResultVO">
+		SELECT 
+			COUNT(*) CNT, MEMBER_STAT_CD, NVL(AUTH_MEANS_CD, 0) AUTH_MEANS_CD
+		FROM 
+			TB_MEMBER_INFO 
+		WHERE 
+			USER_ID = #{id, jdbcType=VARCHAR}
+		AND 
+			LOGIN_PASSWD = SHA2(#{pw, jdbcType=VARCHAR}, 512)
+		AND 
+			EXCHANGE_ID = #{exchangeId, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectMemberInfo" parameterType="java.util.Map" resultMap="CustomUserDetails">
+		SELECT INFO.EXCHANGE_ID, INFO.USER_ID, INFO.AUTH_LEVEL
+			   , NVL(INFO.AUTH_MEANS_CD, 0) AUTH_MEANS_CD
+			   , INFO.JOIN_DT, EXTRA.USER_TYPE_CD
+			   , 1 LOGIN_YN
+		  FROM TB_MEMBER_INFO INFO
+	INNER JOIN TB_MEMBER_INFO_EXTRA EXTRA
+			ON INFO.EXCHANGE_ID = EXTRA.EXCHANGE_ID
+		   AND INFO.USER_ID = EXTRA.USER_ID
+		 WHERE INFO.USER_ID = #{id, jdbcType=VARCHAR}
+		   AND INFO.EXCHANGE_ID = #{exchangeId, jdbcType=VARCHAR}
+		   AND INFO.MEMBER_STAT_CD = 2
+	</select>
+	
+</mapper>
+

@@ -1,0 +1,134 @@
+{
+    "shared.markets": ["KRWC", "BTC", "TRX", "USDT"],
+    "coin.names": { 
+        "BTC": "Bitcoin", "ETH": "Ethereum", "AMC": "Aircraft Mileage Coin", "LTC": "Litecoin", "EOS": "EOS", 
+        "MC" : "Mostcash", "AMB" : "AMC Blue", "BCS" : "Bitcoinstar", "BCH" : "Bitcoincash", "BTG" : "Bitcoingold", 
+        "DASH" : "DASH", "ABAG" : "ABAG", "HDN" : "Hidden", "BTH" : "Bithidden", "AIDAO" : "AIDAO", 
+        "YOC" : "YOCoin", "CWC" : "CWCoin", "EBH" : "EBlackHole", "MXR" : "MaxVRcoin", "APL" : "Aplcash", 
+        "ICZ" : "Increz", "GBC" : "Goldenbay", "COS" : "Coinstar", "SCOR" : "Scorcoin", "CIM" : "COINMAN", 
+        "RIZ" : "RIZ Token", "TAMSG" : "TAMSGOLD", "OSN" : "Official Signature", "DWC" : "DOWON COIN", "XRP" : "Ripple", 
+        "RVN" : "Ravencoin", "BIZT" : "BIZ Token", "STRO" : "Super Tron", "ETG" : "ETG TOKEN", "XET" : "ETERNAL TOKEN", 
+        "TORUS": "Torus", "MAVL": "Marvel Token", "TCG": "TCG coin", "GIGC": "GIGCoin", "DCMC": "DCMC", 
+        "RET": "Raise Entertainment Token", "LANX": "LANX Coin", "TRX": "TRON", "ABZC": "asiabizcion", "WCC": "World Check Coin", 
+        "DIOT": "DREAMIOTCOIN", "STC": "STC Coin", "UMX": "UMX Coin", "LCGC": "Life Care Global COIN", "GTT": "GOLDENTIME",
+        "AMBX" : "AMC Blue","WRD":"WRD", "SMILE":"SMILE", "HGN":"HGN"
+    },
+    "intro.visuals": [
+        { "title": "快速安全的交换HOLDPORT", 
+            "explain": "Fast and Safe Cryptocurrency" }
+    ],
+    "intro.newcoins": [
+        { "image": "event_banner1_en.png", "path": "/support/feeinfo", "alt": "#" },
+        { "image": "event_banner3_en.png", "path": "/support/notice?post=1851", "alt": "#" },
+        { "image": "event_banner4_en.png", "path": "/support/faq?post=1517", "alt": "#" },
+        { "image": "event_banner3_en.png", "path": "/support/notice?post=1851", "alt": "#" },
+        { "image": "event_banner4_en.png", "path": "/support/faq?post=1517", "alt": "#" }
+    ],
+    "events.new": [
+        { "image": "event_banner6_ko.png", "path": "https://holdport.com/frontend/build/index.html#/support/notice?post=5803", "alt": "#" }
+    ],
+    "intro.asideBanners": [
+        { "path": "https://krwcworld.com", "image": "aside_krwc.en.png", "alt": "krwc world" },
+        { "path": "https://www.blockchain.com/zh/explorer", "image": "aside_banner1.png", "alt": "blockchain" },
+        { "path": "https://etherscan.io", "image": "aside_banner2.png", "alt": "etherscan" },
+        { "path": "https://xrpscan.com", "image": "aside_banner4.png", "alt": "xrpcharts" },
+        { "path": "https://tronscan.io/#/", "image": "aside_banner8.png", "alt": "tronscan" },
+        { "path": "http://smilescan.co.kr/", "image": "aside_banner9.png", "alt": "smilescan" },
+        { "path": "http://gdcscan.com/", "image": "aside_banner10.png", "alt": "gdcscan" }
+    ],
+    "intro.features": [
+        { "image": "#", "title": "最佳安全解决方案", 
+          "desc": "我们通过构建最佳解决方案和安全系统来保护我们的资产更加安全，通过顶级安全公司和开发人员之间的持续讨论和设计来检测和抵御外部黑客攻击." },
+        { "image": "#", "title": "值得信赖的技术", 
+          "desc": "我们的Exchange开发团队在程序开发和运营方面拥有20多年的经验，并通过可靠的服务器操作和最佳功能和经验为最安全的系统提供支持." },
+        { "image": "#", "title": "安全资产管理", 
+          "desc": "我们的交易所分别使用冷井和热井来应对紧急情况。 超过90％的资产将单独存储在您的Caldwell钱包中，以确保您的资产尽可能安全." }
+    ],
+    "intro.partners": [
+        { "path": "#", "image": "main_partner_amazon.png", "alt": "amazon" },
+        { "path": "#", "image": "main_partner_fntoday.png", "alt": "fntoday" },
+        { "path": "#", "image": "main_partner_qubit.png", "alt": "qubit security" },
+        { "path": "#", "image": "main_partner_daily.png", "alt": "daily coin news" },
+        { "path": "#", "image": "main_partner_camon.png", "alt": "comonpay" }
+    ],
+    "intro.shortcuts": [
+        { "title": "交换", "to": "/exchange", "className": "exchange" },
+        { "title": "交易记录", "to": "/order/tradehistory", "className": "trade_h" },
+        { "title": "我的资产", "to": "/account/assets", "className": "asset" },
+        { "title": "存款记录", "to": "/wallet/history?type=deposit", "className": "deposit_h" },
+        { "title": "提款历史", "to": "/wallet/history?type=withdraw", "className": "withdrawal_h" },
+        { "title": "安全评级", "to": "/account/levelset", "className": "certificate" },
+        { "title": "费用信息", "to": "/support/feeinfo", "className": "fee" },
+        { "title": "登录历史", "to": "/account/loginhistory", "className": "login_h" }
+    ],
+    "wallet.notices": {  
+        "deposit":{  
+           "address":[
+               "如果您未输入付款地址，我们无法在兑换处找到您.",
+                "Minimum deposit: deposit_minimum_limit symbol"
+            ],
+           "banking":[
+                "symbol 申请押金要求后，押金时间可能需要5~30分钟.",
+                "当您提出存款请求时，管理员将手动付款。 （没有实时存款",
+                "如果您存款，您可能会被延误.",
+                "请求付款后，数据将在一定时间后删除，因此请在收到请求后尽快存款."
+           ],  
+           "tag":[
+               "如果您未输入付款地址，我们无法在兑换处找到您.",
+                "Minimum deposit: deposit_minimum_limit symbol",
+                "Deposit will not be processed unless Tag number is entered."
+            ]
+        },
+        "withdraw":{ 
+           "address":[
+               "最低提款: withdrawal_minimum_limit symbol", "最大提款: withdrawal_maximum_limit symbol",
+               "我们无法在交易所找到我的提款地址." 
+            ],
+           "banking":[
+                "最低提款: withdrawal_minimum_limit symbol", "最大提款: withdrawal_maximum_limit symbol",
+                "symbol 只有获得此交易所授权的银行账户才能提款.",
+                "symbol 提款限额因认证级别而异."
+           ], 
+           "tag":[
+               "最低提款: withdrawal_minimum_limit symbol", "最大提款: withdrawal_maximum_limit symbol",
+               "我们无法在交易所找到我的提款地址.",
+               "很难在系统的“symbol”内部移动（holdport-> holdport)"
+            ]
+        }
+    },
+    "wallet.servicenote": [
+        "检查网络后将存入硬币.", 
+        "存款后，您可以在历史记录页面上跟踪您的进度."
+    ],
+    "account.levelset.list": [
+        [
+            { "title": "注册", "explain": "要求: 需要电子邮件验证" }
+        ],
+        [
+            { "title": "OTP认证", "explain": "要求: 加密货币存款和交易可用" }
+        ],
+        [
+            { "title": "身份验证", "explain": "要求: 政府颁发的有效证书，包含姓名和照片（身份证或护照）\n存款/取款限额: 每日限额20,000美元" }
+        ],
+        [
+            { "title": "您自己名下的税收收据", "explain": "要求: 电子税收，水税收据，汽车税收，保险收据\n存款/取款限额: 每日限额50,000美元" }
+        ],
+        [
+            { "title": "高级加密交易者", "explain": "要求: 交易超过一个月，交易金额超过500,000美元\n存款/取款限额: 每日限额100,000美元" }
+        ]
+    ],
+    "account.levelset.modal": [
+        {
+            "explain": " 政府颁发的有效证书，包含您的姓名和照片 (图像大小不超过1M)",
+            "body": [{"title": "上传ID图像", "type": "file"}]
+        },
+        {
+            "explain": "电费收据，水税收据，汽车税，保险收据 (图像大小不超过1M)",
+            "body": [{"title": "地址", "type": "text", "placeholder": "address line" }, {"title": "上传您的税单图像", "type": "file"}]
+        },
+        {
+            "explain": "",
+            "body": [{"title": "上传图片", "type": "file"}]
+        }
+    ]
+}

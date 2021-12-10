@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.yahobit.anal.dao.YahobitAnalDAO">
+
+	<resultMap type="kr.co.coinis.webserver.yahobit.anal.vo.TodayTopDaebiVO" id="TodayTopDaebiVO">
+		<result property="daebiRecogCd"	column="DAEBI_RECOG_CD"	jdbcType="NUMERIC"/>
+		<result property="priceDevRate" column="PRICE_DEV_RATE" jdbcType="NUMERIC"/>
+		<result property="itemKorNm" 	column="ITEM_KOR_NM" 	jdbcType="VARCHAR"/>
+		<result property="itemEngNm" 	column="ITEM_ENG_NM" 	jdbcType="VARCHAR"/>
+		<result property="itemNm"		column="ITEM_NM" 		jdbcType="VARCHAR"/>
+		<result property="closePrice" 	column="CLOSE_PRICE" 	jdbcType="NUMERIC"/>
+		<result property="pnt" 			column="DECIMAL_POINT" 	jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.anal.vo.TodayTopAmtVO" id="TodayTopAmtVO">
+		<result property="daebiRecogCd"		column="DAEBI_RECOG_CD"		jdbcType="NUMERIC"/>
+		<result property="priceDevRate" 	column="PRICE_DEV_RATE" 	jdbcType="NUMERIC"/>
+		<result property="itemKorNm" 		column="ITEM_KOR_NM" 		jdbcType="VARCHAR"/>
+		<result property="itemEngNm" 		column="ITEM_ENG_NM" 		jdbcType="VARCHAR"/>
+		<result property="itemNm"			column="ITEM_NM" 			jdbcType="VARCHAR"/>
+		<result property="pnt" 				column="DECIMAL_POINT" 		jdbcType="NUMERIC"/>
+		<result property="tradeAmtKrw" 		column="TRADE_AMT_KRW" 		jdbcType="NUMERIC"/>
+		<result property="tradeAmtKrwYes" 	column="TRADE_AMT_KRW_YES" 	jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.anal.vo.TopDaebiRankVO" id="TopDaebiRankVO">
+		<result property="itemKorNm" 	column="ITEM_KOR_NM" 	jdbcType="VARCHAR"/>
+		<result property="itemEngNm" 	column="ITEM_ENG_NM" 	jdbcType="VARCHAR"/>
+		<result property="itemNm" 		column="ITEM_NM" 		jdbcType="VARCHAR"/>
+		<result property="rate" 		column="RATE" 			jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.anal.vo.CoinMarketCapVO" id="CoinMarketCapVO">
+		<result property="rank" 			column="RANK" 				jdbcType="NUMERIC"/>
+		<result property="symbol"			column="COIN_SYMBOLIC_NM" 	jdbcType="VARCHAR"/>
+		<result property="coinNm" 			column="COIN_NM" 			jdbcType="VARCHAR"/>
+		<result property="marketCapital" 	column="MARKET_CAPITAL" 	jdbcType="NUMERIC"/>
+		<result property="closePrice" 		column="CLOSE_PRICE" 		jdbcType="NUMERIC"/>
+		<result property="tradeAmount" 		column="TRADE_AMOUNT" 		jdbcType="NUMERIC"/>
+		<result property="avaulableSupply" 	column="AVAILABLE_SUPPLY"	jdbcType="NUMERIC"/>
+		<result property="tradeDaebuRate" 	column="TRADE_DAEBI_RATE"	jdbcType="NUMERIC"/>
+		<result property="itemCode" 		column="ITEM_CODE" 			jdbcType="VARCHAR"/>
+		<result property="updateDt" 		column="UPDATE_DT" 			jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.anal.vo.CoinNewsVO" id="CoinNewsVO">
+		<result property="itemCode" column="ITEM_CODE" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<!-- 오늘 상승률 TOP 10 -->
+	<select id="selectTodayTopDaebi" resultMap="TodayTopDaebiVO">
+		SELECT D.DAEBI_RECOG_CD, D.PRICE_DEV_RATE
+			   , E.ITEM_KOR_NM, E.ITEM_ENG_NM, E.ITEM_NM
+			   , (FN_WAS_GET_PRICE_BY_BC(E.COIN_NO, E.BASIC_ASSET_COIN_NO, 'YAHOBIT') * FN_WAS_GET_PRICE_BY_BC(E.BASIC_ASSET_COIN_NO, A.BC_COIN_NO, 'YAHOBIT')) AS CLOSE_PRICE
+			   , (SELECT PRICE_DSP_DECIMAL_PNT FROM TB_COIN_MGT_REF_INFO WHERE COIN_NO = A.BC_COIN_NO) AS DECIMAL_POINT
+		  FROM TB_EXCHANGE_INFO A
+	INNER JOIN TB_EXCHANGE_MKT_INFO B
+			ON A.EXCHANGE_ID = B.EXCHANGE_ID
+	INNER JOIN TB_MKT_ITEM_CODE_INFO C
+			ON B.EXCHANGE_ID = C.EXCHANGE_ID
+		   AND B.MKT_ID = C.MKT_ID
+	INNER JOIN TB_EXCHANGE_MKT_GRP_SISE D
+			ON B.MKT_GRP_ID = D.MKT_GRP_ID
+		   AND C.ITEM_CODE = D.ITEM_CODE
+	INNER JOIN TB_ITEM_CODE_MAST E
+			ON D.ITEM_CODE = E.ITEM_CODE
+		 WHERE A.EXCHANGE_ID = #{exchangeId}
+		   AND B.MKT_STAT_CD = 1
+		   AND C.TRADE_STAT_CD = 1
+		   AND D.DAEBI_RECOG_CD = 1
+	  ORDER BY PRICE_DEV_RATE DESC
+		 LIMIT 10
+	</select>
+	
+	<!-- 오늘 거래대금 TOP 10 -->
+	<select id="selectTodayTopAmt" resultMap="TodayTopAmtVO">
+		SELECT D.DAEBI_RECOG_CD, D.PRICE_DEV_RATE
+			   , E.ITEM_KOR_NM, E.ITEM_ENG_NM, E.ITEM_NM
+			   , (SELECT PRICE_DSP_DECIMAL_PNT FROM TB_COIN_MGT_REF_INFO WHERE COIN_NO = A.BC_COIN_NO) AS DECIMAL_POINT
+			   , (F.TRADE_AMT * FN_WAS_GET_PRICE_BY_BC(E.BASIC_ASSET_COIN_NO, A.BC_COIN_NO, #{exchangeId})) AS TRADE_AMT_KRW
+			   , IFNULL(((SELECT TRADE_AMT 
+					  FROM TB_SISE_DAILY_DATA
+               		 WHERE MKT_GRP_ID = F.MKT_GRP_ID
+		               AND ITEM_CODE = F.ITEM_CODE
+                 	   AND TRADE_DAY = DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 DAY), '%Y%m%d')) * FN_WAS_GET_PRICE_BY_BC(E.BASIC_ASSET_COIN_NO, A.BC_COIN_NO, #{exchangeId})), 0) AS TRADE_AMT_KRW_YES
+		  FROM TB_EXCHANGE_INFO A
+	INNER JOIN TB_EXCHANGE_MKT_INFO B
+			ON A.EXCHANGE_ID = B.EXCHANGE_ID
+	INNER JOIN TB_MKT_ITEM_CODE_INFO C
+			ON B.EXCHANGE_ID = C.EXCHANGE_ID
+		   AND B.MKT_ID = C.MKT_ID
+	INNER JOIN TB_EXCHANGE_MKT_GRP_SISE D
+			ON B.MKT_GRP_ID = D.MKT_GRP_ID
+		   AND C.ITEM_CODE = D.ITEM_CODE
+	INNER JOIN TB_ITEM_CODE_MAST E
+			ON D.ITEM_CODE = E.ITEM_CODE
+	INNER JOIN TB_SISE_DAILY_DATA F
+			ON B.MKT_GRP_ID = F.MKT_GRP_ID
+		   AND C.ITEM_CODE = F.ITEM_CODE
+		 WHERE A.EXCHANGE_ID = #{exchangeId}
+		   AND B.MKT_STAT_CD = 1
+		   AND C.TRADE_STAT_CD = 1
+		   AND F.TRADE_DAY = DATE_FORMAT(NOW(), '%Y%m%d')
+		   AND F.TRADE_AMT <![CDATA[ > ]]> 0
+	  ORDER BY TRADE_AMT_KRW DESC
+		 LIMIT 10
+	</select>
+	
+	<!-- 기간별 상승률 상위 -->
+	<select id="selectTopDaebiRank" resultMap="TopDaebiRankVO">
+		SELECT *
+		  FROM (
+					SELECT C.ITEM_KOR_NM, C.ITEM_ENG_NM, C.ITEM_NM
+						   , FN_WAS_GET_ITEM_CODE_RATE(C.ITEM_CODE, A.MKT_GRP_ID, #{fromDt}) AS RATE
+					  FROM TB_EXCHANGE_MKT_INFO A,
+						   TB_MKT_ITEM_CODE_INFO B,
+						   TB_ITEM_CODE_MAST C
+					 WHERE A.EXCHANGE_ID = #{exchangeId} 
+					   AND A.MKT_STAT_CD = 1
+					   AND B.TRADE_STAT_CD = 1
+					   AND A.EXCHANGE_ID = B.EXCHANGE_ID
+					   AND A.MKT_ID = B.MKT_ID
+					   AND B.ITEM_CODE = C.ITEM_CODE
+			   ) A
+		 WHERE A.RATE > 0
+	  ORDER BY RATE DESC
+		 LIMIT 10
+	</select>
+	
+	<!-- 암호화폐 시가총액 -->
+	<select id="selectCoinMarketCap" resultMap="CoinMarketCapVO">
+		(
+			SELECT A.RANK, A.COIN_SYMBOLIC_NM, B.COIN_KOR_NM AS COIN_NM
+				   , A.MARKET_CAPITAL, A.CLOSE_PRICE, A.TRADE_AMOUNT, A.AVAILABLE_SUPPLY, A.TRADE_DAEBI_RATE
+				   , FN_WAS_GET_ITEM_CODE_BY_COIN_SYMBOLIC_NM(A.COIN_SYMBOLIC_NM, 'YAHOBIT') AS ITEM_CODE, 1 AS SORT
+				   , A.UPDATE_DT
+			  FROM (
+			  			SELECT @ROWNUM:=@ROWNUM+1 AS RANK, A.COIN_ID, A.MARKET_CAPITAL, A.CLOSE_PRICE
+			  				   , A.TRADE_AMOUNT, A.AVAILABLE_SUPPLY, A.TRADE_DAEBI_RATE, A.COIN_SYMBOLIC_NM
+			  				   , A.UPDATE_DT
+  					  	  FROM TB_COINMARKETCAP_DAILY A,
+							   (SELECT @ROWNUM := 0) AS R
+					 	 WHERE A.CURRENCY_CODE = 'KRW' AND A.TRADE_DATE = (SELECT MAX(TRADE_DATE) FROM TB_COINMARKETCAP_DAILY )
+  				  	  ORDER BY MARKET_CAPITAL DESC
+				   ) A,
+				   (
+						SELECT DISTINCT D.COIN_SYMBOLIC_NM, D.COIN_KOR_NM
+					  	  FROM TB_EXCHANGE_MKT_INFO A,
+							   TB_MKT_ITEM_CODE_INFO B,
+							   TB_ITEM_CODE_MAST C,
+							   TB_COIN_MAST D
+					 	 WHERE A.EXCHANGE_ID = 'YAHOBIT'
+					   	   AND A.MKT_STAT_CD = 1
+					   	   AND B.TRADE_STAT_CD = 1
+					   	   AND A.EXCHANGE_ID = B.EXCHANGE_ID
+					   	   AND A.MKT_ID = B.MKT_ID
+					   	   AND B.ITEM_CODE = C.ITEM_CODE
+             		   	   AND C.COIN_NO = D.COIN_NO
+				   ) B
+		     WHERE A.COIN_SYMBOLIC_NM = B.COIN_SYMBOLIC_NM
+		)
+		UNION ALL
+		(
+			SELECT A.RANK, A.COIN_SYMBOLIC_NM, B.COIN_ENG_NM AS COIN_NM, A.MARKET_CAPITAL, A.CLOSE_PRICE
+				   , A.TRADE_AMOUNT, A.AVAILABLE_SUPPLY, A.TRADE_DAEBI_RATE, '' AS ITEM_CODE, 0 AS SORT
+				   , A.UPDATE_DT
+			  FROM (
+  						SELECT @ROWNUM2:=@ROWNUM2+1 AS RANK, A.COIN_SYMBOLIC_NM, A.MARKET_CAPITAL
+  						       , A.CLOSE_PRICE, A.TRADE_AMOUNT, A.AVAILABLE_SUPPLY, A.TRADE_DAEBI_RATE, A.COIN_ID
+  						       , A.UPDATE_DT
+  						  FROM TB_COINMARKETCAP_DAILY A,
+       						   (SELECT @ROWNUM2 := 0) AS R
+  						 WHERE A.CURRENCY_CODE = 'KRW' AND A.TRADE_DATE = (SELECT MAX(TRADE_DATE) FROM TB_COINMARKETCAP_DAILY )
+  					  ORDER BY MARKET_CAPITAL DESC
+  						 LIMIT 100
+				   ) A,
+  				   TB_COINMARKETCAP_MAST B
+			 WHERE A.COIN_SYMBOLIC_NM NOT IN (
+			 									SELECT DISTINCT D.COIN_SYMBOLIC_NM
+												  FROM TB_EXCHANGE_MKT_INFO A,
+													   TB_MKT_ITEM_CODE_INFO B,
+													   TB_ITEM_CODE_MAST C,
+							               			   TB_COIN_MAST D
+												 WHERE A.EXCHANGE_ID = 'YAHOBIT'
+												   AND A.MKT_STAT_CD = 1
+												   AND B.TRADE_STAT_CD = 1
+												   AND A.EXCHANGE_ID = B.EXCHANGE_ID
+												   AND A.MKT_ID = B.MKT_ID
+												   AND B.ITEM_CODE = C.ITEM_CODE
+							             		   AND C.COIN_NO = D.COIN_NO
+											 )
+			   AND A.COIN_ID = B.COIN_ID
+		)
+		ORDER BY SORT DESC, RANK ASC
+	</select>
+	
+	<select id="selectCoinNewsSize">
+		SELECT 0
+	</select>
+	
+	<select id="selectCoinNewsList" resultMap="CoinNewsVO">
+		SELECT 1
+	</select>
+	
+</mapper>
+

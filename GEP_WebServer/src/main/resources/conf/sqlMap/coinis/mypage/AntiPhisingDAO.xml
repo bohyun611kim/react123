@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.coinis.mypage.mpg005.dao.AntiPhisingDAO">
+	
+	<!-- WAS서버 피싱방지코드 설정처리 프로시저 -->
+	<update id="call_PR_WAS_SET_FISH_ANTI_CODE" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_SET_FISH_ANTI_CODE
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_FISH_ANTI_CODE_VAL, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_KEY1, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_KEY2, mode=IN, jdbcType=VARCHAR}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				) 
+		}
+	</update>
+	
+	<select id="selectUserRegisterDT" parameterType="kr.co.coinis.webserver.common.vo.ExchangeIDUserIDPairVO" resultType="string">
+		SELECT REG_DT
+		FROM TB_MEMBER_INFO
+		WHERE EXCHANGE_ID = TRIM(#{exchange_id})
+		AND USER_ID = TRIM(#{user_id})
+	</select>
+</mapper>
+

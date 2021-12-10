@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>REGISTER</title>
+
+    <link rel="shortcut icon" href="../path/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../css/uiGlobal.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+
+
+    <script src="../js/jquery/jquery-3.3.1.js"></script>
+    <script src="../js/jquery/jquery-ui.js"></script>
+    <script src="../js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="../js/jquery/slick.js"></script>
+
+    
+
+    <script type="text/javascript">
+        //상단 네비게이션
+        $(document).ready(function() {
+
+            $(".topnav").hover(function() { //마우스를 topnav에 오버시
+                $(this).parent().find(".subnav").slideDown('normal').show(); //subnav가 내려옴.
+                $(this).addClass('on');
+                $(this).parent().hover(function() {}, function() {
+                    $(this).parent().find(".subnav").slideUp('fast'); //subnav에서 마우스 벗어났을 시 원위치  
+                    $(".topnav").removeClass('on');
+                });
+            });
+        });
+
+        //label을 사용한 셀렉트
+        $(document).ready(function() {
+            var selectTarget = $('.select-box select');
+            selectTarget.change(function() {
+                var select_name = $(this).children('option:selected').text();
+                $(this).siblings('label').text(select_name);
+                $(this).siblings('label').addClass('on');
+				/*$('label').addClass('on');*/
+				$(this).parent('.select-box').css('background-image','none');
+            });
+        });
+        //달력
+        $(function() {
+            $("#Date").datepicker();
+        });
+    </script>
+</head>
+
+<body>
+    <!-- HEADER : Start -->
+    <header>
+        <!--최상단 네비게이션 시작-->
+        <nav>
+            <div class="navi-wrap">
+                <div class="navi-logo">
+                    <h1>
+                        <a href="home.html" target="_parent"><img src="../img/logo.png" alt="logo"></a>
+                    </h1>
+
+                </div>
+                <div class="navi-menu">
+                    <ul class="navi">
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MKT-M001.html','_parent')">Exchange</div>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Wallet</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M001.html','_parent')">Deposit & Withdrawal</li>
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M002.html','_parent')">Transaction</li>
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M003.html','_parent')">Holdings</li>
+                            </ul>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Orders</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--MKT-M002.html','_parent')">Transaction History</li>
+                                <li onclick="window.open('GLOBAL-WEB--MKT-M003.html','_parent')">Outstanding Orders</li>
+                            </ul>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Support</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--CST-M001.html','_parent')">Notice</li>
+                                <li onclick="window.open('GLOBAL-WEB--CST-M002.html','_parent')">FAQ</li>
+                                <li onclick="window.open('GLOBAL-WEB--CST-M003.html','_parent')">1:1 Inquiry</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navi-user">
+                    <ul class="navi">
+                        <li class="navi_set">
+                            <div class="topnav active" onclick="window.open('GLOBAL-WEB--MBR-M001.html','_parent')">Register</div>
+                            <!--<div class="topnav" onclick="window.open('GLOBAL-WEB--MYP-M001.html','_parent')">My Page</div>-->
+                        </li>
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MBR-M002.html','_parent')">Log In</div>
+                            <!--<div class="topnav">Log Out</div>-->
+                        </li>
+                        <li class="navi_set">
+                            <div class="topnav">English</div>
+                            <ul class="subnav">
+                                <li>English</li>
+                                <li>한국어</li>
+                                <li>ภาษาไทย</li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!--최상단 네비게이션 끝-->
+
+    </header>
+    <!-- //HEADER : End -->
+
+    <!--컨텐츠 내용 영역 시작-->
+    <section>
+
+        <div class="joinWrap">
+            <h1>Register</h1>
+            <form name="Register" method="GET">
+                <div>
+                    <label for="email"></label>
+                    <input type="email" name="email" id="email" required="" placeholder="Email">
+                </div>
+                <!--<button class="base bggray">Send Email</button>
+                <div>
+                    <label for="verifi_code"></label>
+                    <input type="text" name="name" id="name" required="" placeholder="Verification Code">
+                </div>-->
+                <div>
+                    <label for="pw"></label>
+                    <input type="password" name="pw" id="pw" required="" placeholder="Password">
+                </div>
+                <div>
+                    <label for="re_pw"></label>
+                    <input type="password" name="re_pw" id="re_pw" required="" placeholder="Confirm Password">
+                </div>
+                <div>
+                    <label for="name"></label>
+                    <input type="text" name="name" id="name" required="" placeholder="Name">
+                </div>
+				<div class="birth-selec">
+					<span class="birth-y">Y</span>
+					<span class="birth-m">M</span>
+					<span class="birth-d">D</span>
+					
+					<input type="text" value="
+Date of birth" class="birth-txt" readonly>
+                    <div class="select-box">
+                        <label for="" class="bir">2001</label>
+                        <select id="ex-select">
+                            <option selected>2001</option>
+                            <option>2000</option>
+                            <option>2000</option>
+                            <option>2000</option>
+                            <option>2000</option>
+                            <option>2000</option>
+                            <option>2000</option>
+							 <option>2000</option>
+                        </select>
+                	</div>
+					
+					<div class="select-box">
+                        <label for="">01</label>
+                        <select id="ex-select">
+                            <option selected>01</option>
+                            <option>02</option>
+                            <option>03</option>
+                            <option>04</option>
+                            <option>05</option>
+                            <option>06</option>
+                            <option>07</option>
+                            <option>08</option>
+                            <option>09</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                        </select>
+                	</div>
+					<div class="select-box">
+                        <label for="">01</label>
+                        <select id="ex-select">
+                            <option selected>01</option>
+                            <option>02</option>
+                            <option>03</option>
+                            <option>04</option>
+                            <option>05</option>
+                            <option>06</option>
+                            <option>07</option>
+                            <option>08</option>
+                            <option>09</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                            <option>13</option>
+                            <option>14</option>
+                            <option>15</option>
+                            <option>16</option>
+                            <option>17</option>
+                            <option>18</option>
+                            <option>19</option>
+                            <option>20</option>
+                            <option>21</option>
+                            <option>22</option>
+                            <option>23</option>
+                            <option>24</option>
+                            <option>25</option>
+                            <option>26</option>
+                            <option>27</option>
+                            <option>28</option>
+                            <option>29</option>
+                            <option>30</option>
+                            <option>31</option>
+                        </select>
+						
+						
+                	</div>
+				
+					
+				</div>
+                <!--<div>
+                    <label for="Date"></label>
+                    <input type="text" name="calendar" id="Date" required="" placeholder="Date of Birth">
+                </div>-->
+                <div>                        
+                    <div class="select-box">
+                        <label for="country">Country</label>
+                        <select id="ex-select">
+                            <option selected>Country</option>
+                            <option>South Korea</option>
+                            <option>United States</option>
+                            <option>Philippines</option>
+                            <option>Vietnam</option>
+                            <option>China</option>
+                            <option>Japan</option>
+                            <option>South Korea</option>
+                            <option>United States</option>
+                            <option>Philippines</option>
+                            <option>Vietnam</option>
+                            <option>China</option>
+                            <option>Japan</option>
+                            <option>South Korea</option>
+                            <option>United States</option>
+                            <option>Philippines</option>
+                            <option>Vietnam</option>
+                            <option>China</option>
+                            <option>Japan</option>
+                            <option>South Korea</option>
+                            <option>United States</option>
+                            <option>Philippines</option>
+                            <option>Vietnam</option>
+                            <option>China</option>
+                            <option>Japan</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label for="address"></label>
+                    <input type="text" name="address" id="address" required="" placeholder="Address">
+                </div>
+
+                <div class="agreeUse">
+
+                    <label>
+                        <input type="checkbox"><em></em>
+                    </label>
+                    I Agree to
+                    <a onclick="openForm1()">Terms of use</a><a onclick="openForm2()">Privacy Policy Consent</a>
+
+
+                </div>
+                <div class="agreeUse">
+
+                    <label>
+                        <input type="checkbox"><em></em>
+                    </label>
+                    I Agree to Receive Marketing
+
+                </div>
+                <button class="large bgblue">Register</button>
+
+            </form>
+            <div class="gotoRegist">
+                <p> Already Registered? <a href="GLOBAL-WEB--MBR-M002.html" target="_parent"> Log in</a></p>
+            </div>
+        </div>
+
+    </section>
+    <!--컨텐츠 내용 영역 끝-->
+
+
+    <!-- FOOTER : Start -->
+    <footer>
+        <div class="footer-menu-wrap">
+            <div class="footer-menu">
+                <a href="GLOBAL-WEB--ETC-M002.html">Terms and Conditions </a>
+                <a href="GLOBAL-WEB--ETC-M003.html">Privacy Statements </a>
+                <a href="GLOBAL-WEB--ETC-M001.html">Fees</a>
+            </div>
+        </div>
+
+        <div class="footer-wrap">
+            <p class="footer-logo">
+                <a href="#">WAVE STRAING</a>
+            </p>
+            <div class="footer-group">
+                <ul>
+                    <li>주식회사 <span class="orange-bold">웨이브스트링</span></li>
+                    <li>서울특별시 구로구 디지털로 273, 306호(구로동, 에이스트윈타워 2차)</li>
+                    <li>대표이사 : 정명묵</li>
+                </ul>
+                <ul>
+                    <li>사업자등록번호 : 113-86-84751</li>
+                </ul>
+                <ul>
+                    <li>현금입출금 :<span class="white-bold"> 09:00~18:00 (휴일포함)</span></li>
+                    <li>코인입출금 : <span class="white-bold">24시간 (휴일포함)</span></li>
+                </ul>
+                <p class="copyright-area">Copyright&copy; 2012 wavestring All rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+    <!-- FOOTER : End -->
+
+
+    <!--이용약관 팝업 시작-->
+    <div class="popup use" id="myForm1">
+        <form action="">
+            <div class="pop-title"><span> Terms of Use </span>
+                <button type="button" class="cancel" onclick="closeForm1()"><img src="../img/btn-alert-close.png" alt="닫기버튼"></button>
+            </div>
+        </form>
+
+        <div class="popup-cont">
+
+            <h3>Terms of Use</h3>
+            <div class="TermsBox">
+                <div>
+                    <h3>DEFINITIONS</h3>
+                    These Terms and Conditions (the “Terms”) gives explicit idea of the conditions under which Bytegarden (hereinafter referred to as, “Bytegarden”) offer you services of the Bytegarden Website at https://Bytegarden.io (the “Site” or “Website”) and grant you access to the Bytegarden Platform (the “Platform”). you will be deemed to agree to become bound by all the terms and conditions of this Agreement once you use and access the services. you shouldn’t be and aren’t permitted to use the Services if you do not agree to all the terms and conditions of this Agreement,
+                    <br>
+                    <br>
+                    “You,” “your,” and “yours”, or “client” refers to customers or users who use our website by accepting the company’s terms and conditions. “Company,” “we,” and “our” refers to Bytegarden. “Party”, “Parties”, or “Us”, refers to both the Client and ourselves, or either the Client or ourselves. All terms refer to the offer, acceptance and consideration of payment or fees necessary to undertake the services provided by Bytegarden and its’ associated Platform.<br>
+                    By downloading or running our mobile application, creating our wallet, or visiting our website, you are agreeing to our Terms.<br>
+                    Should you have any questions or queries related to this Agreement, please do not hesitate to contact us on our website at Bytegarden.io or contact us through any SNS account.
+
+
+                    <h3>ELIGIBILITY</h3>
+                    Your accepting these terms will be regarded as proof that you are at least 18 years old or above and that you have the full capacity to accept these Terms and enter into a transaction using Bytegarden Platform. <br>
+                    That you accept the terms also shows that:<br>
+                    <ol>
+                        <li>1. You agree to only trade with legally obtained funds that belong to you.</li>
+                        <li>2. You agree to take full responsibility for your use of Bytegarden Platform.</li>
+                        <li>3. You agree that the details provided upon registration are true and accurate.</li>
+                        <li>4. You agree to abide by any relevant laws in local jurisdiction, including reporting any trading profits for taxation purposes.</li>
+                    </ol>
+
+                    <h3>TERMS OF USAGE</h3>
+                    You should never and aren’t permitted to use Bytegarden Platform and Bytegarden Wallet in any illegal way against the law, including international law, province, state country of residence and any existing law that binds you and us. By accepting our services, you are deemed to agree not to serve any illegal purposes whether intentionally or not, or not to try any attempt to support any illegal activity, including but not limited to: pornographic, illegal trading, illegal gambling, money laundering, terrorism, human trafficking, etc. If you intentionally or unintentionally breach activities mentioned below, you will be held responsible to the law and Bytegarden is not liable for your action, or any result that comes from your actions
+                    <br>
+                    <br>
+                    Distributing malicious code used to sabotage the Bytegarden Platform as well as Bytegarden system is not allowed in any way. Any action that is detected ensure restriction to your access to Bytegarden system and recorded evidence of such actions will be presented to the local law enforcement.
+
+                    <h3>LIMITATION OF LIABILITY & DISCLAIMER OF WARRANTIES</h3>
+                    Once you use any service of Bytegarden Platform, you understand and agree that we have no obligation to take any action regarding: <br>
+                    Errors, interruptions, errors or delays in transaction processing due to hardware, software, or Internet connectivity, or risk that third parties may have due to unauthorized access to information stored in your Bytegarden Wallet, including but not limited to Bytegarden Wallet, personal keys and memo (backup).
+                    <br>
+                    <br>
+
+                    We are not responsible for any losses or damage related to:
+                    <br>
+                    <br>
+                    Liabilities from users such as forgotten passwords, incorrectly built transactions, or incorrectly entered wallet addresses, server error or data loss, or unauthorized access to the application.; or<br>
+                    Any unauthorized activity by third party, including, but not limited to, the use of viruses, scams, coercion or means of attack against Bytegarden Platform. Any Third Party Content contained in or accessed through our Services are not represented by us, therefore not giving any liability to us. Any terms, conditions, warranties or other representations in connection with such content, are the sole and exclusive relationship between you and such organizations and/or individuals.
+                    <br><br>
+                    With your understanding, be reminded that we cannot and do not guarantee or warrant that files as available for downloading from the internet or Bytegarden Platforms will be free of viruses or other malicious code. It’s your responsibility to implement appropriate and sufficient procedures or means, and checkpoints to meet your particular requirements for anti-virus protection and correctness, or accuracy of data input and output, and for maintaining means outside of our site for any reconstruction of any lost data.
+                    <br><br>
+                    Bytegarden won’t be held liable for any destruction, loss or damage resulted and caused by viruses, attacks, or other technologically harmful material that may corrupt your computer equipment, computer programs, data or other proprietary material due to your use of Bytegarden Platforms or any services or items obtained through Bytegarden Platforms or to downloading of any material posted on it, or on any websites linked to it.
+                    <br><br>
+                    Using Bytegarden Platform, its content and any services or items obtained through Bytegarden Plaform is at client’s own risk. Bytegarden Platform, its content and any services or items obtained through Bytegarden Platforms are provided based on its availability and conditions, without any warranties of any kind, either express or implied. the foundation or any person or its alliances associated with the foundation doesn’t makes any warranty or represent anything with respect to the completeness, security, reliability, quality, accuracy or availability of Bytegarden Platforms. without limiting the foregoing, neither the foundation nor anyone associated with the foundation represents or warrants that Bytegarden Platform, its content or any services or items obtained through Bytegarden Platforms. Bytegarden Platform, its content or any services or items obtained through Bytegarden Platforms as well as the server that makes it available are accurate, reliable, error-free or uninterrupted, or free of viruses or any other harmful components.
+                    <br><br>
+                    IN NO EVENT SHALL WE, OUR PARENT, THE OFFICERS, DIRECTORS, AGENTS, JOINT VENTURERS, EMPLOYEES AND SUPPLIERS OF Bytegarde OR OUR PARENT, AFIILIATES, ALLIANCES, OUR LICENSORS, OR SERVICE PROVIDERS BE LIABLE FOR LOST PROFITS OR ANY SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF OR IN CONNECTION WITH OUR WEBSITE, Bytegarden SERVICES, OR THIS AGREEMENT (HOWEVER ARISING, INCLUDING NEGLIGENCE). Some states do not allow the exclusion or limitation of incidental or consequential damages so the above limitation or exclusion may not apply to you. so the above disclaimer may not apply to you in their entireties, but will apply to the maximum extent permitted by applicable law.
+                    <br><br>
+                    In no event shall we, our parent, the officers, directors, agents, joint venture, employees and suppliers of Bytegarden or our parent, affiliates, alliances, our licensors, or service provider be liable for damages of any kind, under any legal theory, arising out of or in connection with your use, or inability to use, Bytegarden Platform, any websites linked to it, any content on Bytegarden Platforms or such other websites or any services or items obtained through Bytegarden Platforms or such other websites, including any direct, indirect, special, incidental, consequential or punitive damages, including but not limited to, personal injury, pain and suffering, emotional distress, loss of revenue, loss of profits, loss of business or anticipated savings, loss of use, loss of goodwill, loss of data, and whether caused by tort (including negligence), breach of contract or otherwise, even if foreseeable. The foregoing does not affect any liability which cannot be excluded or limited under applicable law which may include fraud.
+
+                    <h3>CHANGES TO THE TERMS OF USE</h3>
+                    Bytegarden may make some improvement or any changes to these Terms of use from time to time in our sole discretion by revising or securing the content. All changes or revise are effective immediately upon being written here.<br>
+                    Please, always check the terms of use here because your continued use of Bytegarden Platform following the updating of revised Terms of Use means that you accept and agree to the changes. It is your responsibility to review the amended Terms. Your continued use of Bytegarden Platform and Platform following the updating of changes will mean that you accept and agree to the changes and you agree that all subsequent transactions by you will be subject to these Terms.
+
+                    <h3>PRIVACY STATEMENT</h3>
+                    We do our best to protect your privacy. Officers in charge of privacy matters are authorized only within company to use any information collected from clients. We will not sell, share, or rent your personal information to any third party or use your e-mail address for unsolicited mail. We constantly review our systems and data to ensure the best possible service to our clients.
+
+                </div>
+            </div>
+            <button type="submit" class="base bggray">Confirm </button>
+        </div>
+
+
+    </div>
+    <!--이용약관 팝업 끝-->
+
+    <!--개인정보취금방침 팝업 시작-->
+    <div class="popup use" id="myForm2">
+        <form action="">
+            <div class="pop-title"><span> Privacy Policy Consent </span>
+                <button type="button" class="cancel" onclick="closeForm2()"><img src="../img/btn-alert-close.png" alt="닫기버튼"></button>
+            </div>
+        </form>
+
+        <div class="popup-cont">
+
+            <h3>Terms of Use</h3>
+            <div class="TermsBox">
+                <div style="height: auto;">
+                    <h3>DEFINITIONS</h3>
+                    These Terms and Conditions (the “Terms”) gives explicit idea of the conditions under which Bytegarden (hereinafter referred to as, “Bytegarden”) offer you services of the Bytegarden Website at https://Bytegarden.io (the “Site” or “Website”) and grant you access to the Bytegarden Platform (the “Platform”). you will be deemed to agree to become bound by all the terms and conditions of this Agreement once you use and access the services. you shouldn’t be and aren’t permitted to use the Services if you do not agree to all the terms and conditions of this Agreement,
+                    <br>
+                    <br>
+                    “You,” “your,” and “yours”, or “client” refers to customers or users who use our website by accepting the company’s terms and conditions. “Company,” “we,” and “our” refers to Bytegarden. “Party”, “Parties”, or “Us”, refers to both the Client and ourselves, or either the Client or ourselves. All terms refer to the offer, acceptance and consideration of payment or fees necessary to undertake the services provided by Bytegarden and its’ associated Platform.<br>
+                    By downloading or running our mobile application, creating our wallet, or visiting our website, you are agreeing to our Terms.<br>
+                    Should you have any questions or queries related to this Agreement, please do not hesitate to contact us on our website at Bytegarden.io or contact us through any SNS account.
+
+
+                    <h3>ELIGIBILITY</h3>
+                    Your accepting these terms will be regarded as proof that you are at least 18 years old or above and that you have the full capacity to accept these Terms and enter into a transaction using Bytegarden Platform. <br>
+                    That you accept the terms also shows that:<br>
+                    <ol>
+                        <li>1. You agree to only trade with legally obtained funds that belong to you.</li>
+                        <li>2. You agree to take full responsibility for your use of Bytegarden Platform.</li>
+                        <li>3. You agree that the details provided upon registration are true and accurate.</li>
+                        <li>4. You agree to abide by any relevant laws in local jurisdiction, including reporting any trading profits for taxation purposes.</li>
+                    </ol>
+
+                    <h3>TERMS OF USAGE</h3>
+                    You should never and aren’t permitted to use Bytegarden Platform and Bytegarden Wallet in any illegal way against the law, including international law, province, state country of residence and any existing law that binds you and us. By accepting our services, you are deemed to agree not to serve any illegal purposes whether intentionally or not, or not to try any attempt to support any illegal activity, including but not limited to: pornographic, illegal trading, illegal gambling, money laundering, terrorism, human trafficking, etc. If you intentionally or unintentionally breach activities mentioned below, you will be held responsible to the law and Bytegarden is not liable for your action, or any result that comes from your actions
+                    <br>
+                    <br>
+                    Distributing malicious code used to sabotage the Bytegarden Platform as well as Bytegarden system is not allowed in any way. Any action that is detected ensure restriction to your access to Bytegarden system and recorded evidence of such actions will be presented to the local law enforcement.
+
+                    <h3>LIMITATION OF LIABILITY & DISCLAIMER OF WARRANTIES</h3>
+                    Once you use any service of Bytegarden Platform, you understand and agree that we have no obligation to take any action regarding: <br>
+                    Errors, interruptions, errors or delays in transaction processing due to hardware, software, or Internet connectivity, or risk that third parties may have due to unauthorized access to information stored in your Bytegarden Wallet, including but not limited to Bytegarden Wallet, personal keys and memo (backup).
+                    <br>
+                    <br>
+
+                    We are not responsible for any losses or damage related to:
+                    <br>
+                    <br>
+                    Liabilities from users such as forgotten passwords, incorrectly built transactions, or incorrectly entered wallet addresses, server error or data loss, or unauthorized access to the application.; or<br>
+                    Any unauthorized activity by third party, including, but not limited to, the use of viruses, scams, coercion or means of attack against Bytegarden Platform. Any Third Party Content contained in or accessed through our Services are not represented by us, therefore not giving any liability to us. Any terms, conditions, warranties or other representations in connection with such content, are the sole and exclusive relationship between you and such organizations and/or individuals.
+                    <br><br>
+                    With your understanding, be reminded that we cannot and do not guarantee or warrant that files as available for downloading from the internet or Bytegarden Platforms will be free of viruses or other malicious code. It’s your responsibility to implement appropriate and sufficient procedures or means, and checkpoints to meet your particular requirements for anti-virus protection and correctness, or accuracy of data input and output, and for maintaining means outside of our site for any reconstruction of any lost data.
+                    <br><br>
+                    Bytegarden won’t be held liable for any destruction, loss or damage resulted and caused by viruses, attacks, or other technologically harmful material that may corrupt your computer equipment, computer programs, data or other proprietary material due to your use of Bytegarden Platforms or any services or items obtained through Bytegarden Platforms or to downloading of any material posted on it, or on any websites linked to it.
+                    <br><br>
+                    Using Bytegarden Platform, its content and any services or items obtained through Bytegarden Plaform is at client’s own risk. Bytegarden Platform, its content and any services or items obtained through Bytegarden Platforms are provided based on its availability and conditions, without any warranties of any kind, either express or implied. the foundation or any person or its alliances associated with the foundation doesn’t makes any warranty or represent anything with respect to the completeness, security, reliability, quality, accuracy or availability of Bytegarden Platforms. without limiting the foregoing, neither the foundation nor anyone associated with the foundation represents or warrants that Bytegarden Platform, its content or any services or items obtained through Bytegarden Platforms. Bytegarden Platform, its content or any services or items obtained through Bytegarden Platforms as well as the server that makes it available are accurate, reliable, error-free or uninterrupted, or free of viruses or any other harmful components.
+                    <br><br>
+                    IN NO EVENT SHALL WE, OUR PARENT, THE OFFICERS, DIRECTORS, AGENTS, JOINT VENTURERS, EMPLOYEES AND SUPPLIERS OF Bytegarde OR OUR PARENT, AFIILIATES, ALLIANCES, OUR LICENSORS, OR SERVICE PROVIDERS BE LIABLE FOR LOST PROFITS OR ANY SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF OR IN CONNECTION WITH OUR WEBSITE, Bytegarden SERVICES, OR THIS AGREEMENT (HOWEVER ARISING, INCLUDING NEGLIGENCE). Some states do not allow the exclusion or limitation of incidental or consequential damages so the above limitation or exclusion may not apply to you. so the above disclaimer may not apply to you in their entireties, but will apply to the maximum extent permitted by applicable law.
+                    <br><br>
+                    In no event shall we, our parent, the officers, directors, agents, joint venture, employees and suppliers of Bytegarden or our parent, affiliates, alliances, our licensors, or service provider be liable for damages of any kind, under any legal theory, arising out of or in connection with your use, or inability to use, Bytegarden Platform, any websites linked to it, any content on Bytegarden Platforms or such other websites or any services or items obtained through Bytegarden Platforms or such other websites, including any direct, indirect, special, incidental, consequential or punitive damages, including but not limited to, personal injury, pain and suffering, emotional distress, loss of revenue, loss of profits, loss of business or anticipated savings, loss of use, loss of goodwill, loss of data, and whether caused by tort (including negligence), breach of contract or otherwise, even if foreseeable. The foregoing does not affect any liability which cannot be excluded or limited under applicable law which may include fraud.
+
+                    <h3>CHANGES TO THE TERMS OF USE</h3>
+                    Bytegarden may make some improvement or any changes to these Terms of use from time to time in our sole discretion by revising or securing the content. All changes or revise are effective immediately upon being written here.<br>
+                    Please, always check the terms of use here because your continued use of Bytegarden Platform following the updating of revised Terms of Use means that you accept and agree to the changes. It is your responsibility to review the amended Terms. Your continued use of Bytegarden Platform and Platform following the updating of changes will mean that you accept and agree to the changes and you agree that all subsequent transactions by you will be subject to these Terms.
+
+                    <h3>PRIVACY STATEMENT</h3>
+                    We do our best to protect your privacy. Officers in charge of privacy matters are authorized only within company to use any information collected from clients. We will not sell, share, or rent your personal information to any third party or use your e-mail address for unsolicited mail. We constantly review our systems and data to ensure the best possible service to our clients.
+
+                </div>
+            </div>
+            <button type="submit" class="base bggray">Confirm </button>
+        </div>
+
+
+    </div>
+    <!--개인정보취급방침 팝업 끝-->
+
+    <!--마케팅이용 팝업 시작-->
+    <div class="popup use" id="myForm3">
+        <form action="">
+            <div class="pop-title"><span> Marketing </span>
+                <button type="button" class="cancel" onclick="closeForm3()"><img src="../img/btn-alert-close.png" alt="닫기버튼"></button>
+            </div>
+        </form>
+
+        <div class="popup-cont">
+
+            <h3>Marketing</h3>
+            <div class="TermsBox">
+                <div style="height: auto;">
+                    <h3>DEFINITIONS</h3>
+
+                </div>
+            </div>
+            <button type="submit" class="base bggray">Confirm </button>
+        </div>
+    </div>
+    <!--마케팅이용 팝업 끝-->
+
+
+
+
+
+    <script>
+        //마켓별 전체보기
+        $(document).ready(function() {
+            $('.btn-folding').click(function() {
+                $('.folding').toggleClass('more');
+            });
+            $('.btn-folding1').click(function() {
+                $('.folding1').toggleClass('more');
+            });
+            $('.btn-folding2').click(function() {
+                $('.folding2').toggleClass('more');
+            });
+        });
+
+        /*북마크*/
+        $('.bookmark').click(function() {
+            $(this).toggleClass('mark-on');
+        });
+
+        /*슬릭스 슬라이더*/
+        $(".regular").slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            autoplay: false,
+            autoplaySpeed: 4000
+        });
+
+        //팝업 열고 닫기   
+        function openForm3() {
+            document.getElementById("myForm3").style.display = "block";
+        }
+
+        function closeForm3() {
+            document.getElementById("myForm3").style.display = "none";
+        }
+
+        function openForm1() {
+            document.getElementById("myForm1").style.display = "block";
+        }
+
+        function closeForm1() {
+            document.getElementById("myForm1").style.display = "none";
+        }
+
+        function openForm2() {
+            document.getElementById("myForm2").style.display = "block";
+        }
+
+        function closeForm2() {
+            document.getElementById("myForm2").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

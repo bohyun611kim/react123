@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+				http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<!-- 
+		- [Rest template 공통 세팅] 
+	    - exception 참조 주소 :http://stackoverflow.com/questions/21429899/rest-template-custom-exception-handling
+	    - timout common check 참조 주소:http://www.bboks.net/384
+	-->
+	 
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+		<property name="errorHandler" ref="myCustomResponseErrorHandler"></property>
+		<constructor-arg>
+			<bean class="org.springframework.http.client.HttpComponentsClientHttpRequestFactory">
+				<!-- 타임아웃 시간 : 30초 -->
+				<property name="readTimeout" value="30000"/>
+				<property name="connectTimeout" value="30000" />
+			</bean>
+		</constructor-arg> 
+	</bean>   
+    
+    <!-- restTemplate error handler -->
+    <bean id="myCustomResponseErrorHandler" class="kr.co.coinis.webserver.common.exception.rest.RestResponseErrorHandler"/> 
+    
+	<!-- restTemplate Client 구현채 -->
+	<bean id="client" class="kr.co.coinis.webserver.common.client.ClientProvider"/> 
+   
+    <!-- Post 메세지 객체 validator --> 
+	<bean id="valiator" class="kr.co.coinis.webserver.framework.core.validator.Validator"/>
+	
+	<!-- restTemplate String(xml/json) direct pass Client 구현채 -->
+	<bean id="clientTrans" class="kr.co.coinis.webserver.common.client.ClientTransformProvider"/> 
+</beans>

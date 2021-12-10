@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<decorators defaultdir="/WEB-INF/decorators">
+
+	<!-- 예외처리 -->
+	<!-- 야호빗 회원 최종가입 처리 -->
+	<excludes>
+      <pattern>/site/emailAuth*</pattern>
+   	</excludes>
+
+   	<excludes>
+      <pattern>/site/auth/*</pattern>
+   	</excludes>
+
+  	<!-- //////////////////////////////          include        ////////////////////////////////////////////////////////////// -->
+  	<!-- coinis -->
+  	<decorator name="coinisHead" 	page="/WEB-INF/views/coinis/common/head.jsp"/>
+	<decorator name="coinisHeader" 	page="/WEB-INF/views/coinis/common/header.jsp"/>
+	<decorator name="coinisFooter"	page="/WEB-INF/views/coinis/common/footer.jsp"/>
+	<decorator name="coinisAlert"   page="/WEB-INF/views/coinis/common/alert.jsp"/>
+	<decorator name="coinisPush"   	page="/WEB-INF/views/coinis/common/push.jsp"/>
+
+	<!-- yahobit -->
+	<decorator name="yahobitHead"	page="/WEB-INF/views/yahobit/common/head.jsp"/>
+	<decorator name="yahobitHeader" page="/WEB-INF/views/yahobit/common/header.jsp"/>
+	<decorator name="yahobitFooter" page="/WEB-INF/views/yahobit/common/footer.jsp"/>
+	<decorator name="yahobitAlert"  page="/WEB-INF/views/yahobit/common/alert.jsp"/>
+	<decorator name="yahobitPush"   page="/WEB-INF/views/yahobit/common/push.jsp"/>
+
+	<!-- holdport -->
+	<decorator name="holdportHead"	page="/WEB-INF/views/holdport/common/head.jsp"/>
+	<decorator name="holdportHeader" page="/WEB-INF/views/holdport/common/header.jsp"/>
+	<decorator name="holdportFooter" page="/WEB-INF/views/holdport/common/footer.jsp"/>
+	<decorator name="holdportAlert"  page="/WEB-INF/views/holdport/common/alert.jsp"/>
+	<decorator name="holdportPush"   page="/WEB-INF/views/holdport/common/push.jsp"/>
+
+
+	<!-- //////////////////////////////          Layout        ////////////////////////////////////////////////////////////// -->
+	<!-- coinis -->
+	<decorator name="default" page="/WEB-INF/views/common/layout/commonLayout.jsp">
+		<pattern>/coinis/*</pattern>
+	</decorator>
+	<decorator name="exchange" page="/WEB-INF/views/common/layout/exchangeLayout.jsp">
+		<pattern>/coinis/exchange</pattern>
+	</decorator>
+	<decorator name="exchange" page="/WEB-INF/views/common/layout/exchangeLayout.jsp">
+		<pattern>/coinis/exchange/*</pattern>
+	</decorator>
+
+	<!-- yahobit -->
+	<decorator name="yahobitDefault" page="/WEB-INF/views/common/layout/yahobitCommonLayout.jsp">
+		<pattern>/alibit/*</pattern>
+	</decorator>
+	<decorator name="yahobitExchange" page="/WEB-INF/views/common/layout/yahobitExchangeLayout.jsp">
+		<pattern>/alibit/exchange*</pattern>
+	</decorator>
+
+	<!-- holdport  -->
+	<decorator name="holdportDefault" page="/WEB-INF/views/common/layout/holdportCommonLayout.jsp">
+		<pattern>/site/*</pattern>
+	</decorator>
+	<decorator name="holdportExchange" page="/WEB-INF/views/common/layout/holdportExchangeLayout.jsp">
+		<pattern>/site/exchange*</pattern>
+	</decorator>
+
+
+</decorators>

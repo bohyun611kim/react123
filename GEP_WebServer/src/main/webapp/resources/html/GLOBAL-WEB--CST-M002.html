@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>FAQ</title>
+
+    <link rel="shortcut icon" href="../path/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../css/uiGlobal.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+
+
+    <script src="../js/jquery/jquery-3.3.1.js"></script>
+    <script src="../js/jquery/jquery-ui.js"></script>
+    <script src="../js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="../js/jquery/slick.js"></script>
+
+
+    <script type="text/javascript">
+        //상단 네비게이션
+        $(document).ready(function() {
+
+            $(".topnav").hover(function() { //마우스를 topnav에 오버시
+                $(this).parent().find(".subnav").slideDown('normal').show(); //subnav가 내려옴.
+                $(this).addClass('on');
+                $(this).parent().hover(function() {}, function() {
+                    $(this).parent().find(".subnav").slideUp('fast'); //subnav에서 마우스 벗어났을 시 원위치  
+                    $(".topnav").removeClass('on');
+                });
+            });
+        });
+
+        //달력
+        $(function() {
+            $("#startDate").datepicker();
+        });
+        $(function() {
+            $("#endDate").datepicker();
+        });
+
+        //label을 사용한 셀렉트
+        $(document).ready(function() {
+            var selectTarget = $('.select-box select');
+            selectTarget.change(function() {
+                var select_name = $(this).children('option:selected').text();
+                $(this).siblings('label').text(select_name);
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <!-- HEADER : Start -->
+    <header>
+        <!--최상단 네비게이션 시작-->
+        <nav>
+            <div class="navi-wrap">
+                <div class="navi-logo">
+                    <h1>
+                        <a href="home.html" target="_parent"><img src="../img/logo.png" alt="logo"></a>
+                    </h1>
+
+                </div>
+                <div class="navi-menu">
+                    <ul class="navi">
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MKT-M001.html','_parent')">Exchange</div>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Wallet</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M001.html','_parent')">Deposit & Withdrawal</li>
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M002.html','_parent')">Transaction</li>
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M003.html','_parent')">Holdings</li>
+                            </ul>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Orders</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--MKT-M002.html','_parent')">Trading Histroy</li>
+                                <li onclick="window.open('GLOBAL-WEB--MKT-M003.html','_parent')">Outstanding Orders</li>
+                            </ul>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav active">Support</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--CST-M001.html','_parent')">Notice</li>
+                                <li onclick="window.open('GLOBAL-WEB--CST-M002.html','_parent')">FAQ</li>
+                                <li onclick="window.open('GLOBAL-WEB--CST-M003.html','_parent')">1:1 Inquiry</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navi-user">
+                    <ul class="navi">
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MBR-M001.html','_parent')">Register</div>
+                            <!--<div class="topnav" onclick="window.open('GLOBAL-WEB--MYP-M001.html','_parent')">My Page</div>-->
+                        </li>
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MBR-M002.html','_parent')">Log In</div>
+                            <!--<div class="topnav">Log Out</div>-->
+                        </li>
+                        <li class="navi_set">
+                            <div class="topnav">English</div>
+                            <ul class="subnav">
+                                <li>English</li>
+                                <li>한국어</li>
+                                <li>ภาษาไทย</li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!--최상단 네비게이션 끝-->
+    </header>
+    <!-- //HEADER : End -->
+
+    <!--컨텐츠 내용 영역 시작-->
+    <section>
+        <!--FAQ 전체 내용 시작-->
+        <article class="bgwhite">
+
+            <h1 class="sub-title">
+                <ul>
+                    <li>FAQ</li>
+                </ul>
+            </h1>
+            <div class="content-item">
+
+                <!-- 페이지 탭 : Start -->
+                <div id="tab-group" class="tab-dark">
+
+                    <ul>
+                        <li><a href="#tabs-1">Whole</a></li>
+                        <li><a href="#tabs-2">Sigh-up</a></li>
+                        <li><a href="#tabs-3">Infomation modification</a></li>
+                        <li><a href="#tabs-4">Deposit/Withdrawal</a></li>
+                        <li><a href="#tabs-5">Trading/Orders</a></li>
+                        <li><a href="#tabs-6">Etc</a></li>
+                    </ul>
+                    <!-- 전체 탭 컨텐츠 : Start -->
+                    <div id="tabs-1" class="mgt10">
+                        <div id="accordion1">
+                           <h3>
+                                <span class="faq-category">Sigh-up</span>
+                                <span>회원가입 방법이 어떻게 되나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">회원 가입은 코인이즈 PC용 웹페이지서 가능합니다. 회원 가입시 본인명의 이메일 계정이 필요 합니다.</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Sigh-up</span>
+                                <span>회원가입 자격이 따로 있나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">네, 있습니다. 미성년자인 경우 가입이 불가합니다</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Sigh-up</span>
+                                <span>법인폰으로 이용 가능한가요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">법인폰으로는 이용이 불가 합니다</span>
+                            </div>
+                            
+                             <h3>
+                                <span class="faq-category">Infomation modification</span>
+                                <span>개인정보를 변경할 수 있나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">마이페이지에서 로그인 비밀번호 변경이 가능하십니다.</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Infomation modification</span>
+                                <span>휴대전화 번호를 변경할 수 있나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">휴대전화 번호변경은 불가합니다.</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Infomation modification</span>
+                                <span>가입 후 인증레벨을 올리고 싶은데 어떻게 하나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">웹사이트 마이페이지에서 보안인증 또는 신분증 인증을 하시면 됩니다.</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Infomation modification</span>
+                                <span> 가입시 이름을 잘못 입력하였습니다.</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">1:1 문의에 남겨 주시면 이름을 변경해 드립니다</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Infomation modification</span>
+                                <span> OTP 설정시 OTP 인증번호가 틀렸다고 표시됩니다</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">구글 OTP 앱에 표시된 6자리 번호가 계속 갱신이 되니 갱신된 번호를 다시 입력해야 합니다</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Infomation modification</span>
+                                <span>휴대폰 번호가 변경이 되었습니다.</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">1:1 문의에 OTP/SMS 초기화 신청을 해주신후 보안인증을 재설정해주시기 바랍니다.</span>
+                            </div>
+                            
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span>코인 지갑 주소는 어디서 확인하나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">지갑관리 입출금페이지에서 입금탭을 클릭하시면 주소확인이 되십니다.</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span>코인 출금 한도는 어떻게</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">인증레벨 별 출금한도이내에서만 가능합니다.</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span>코인 출금수수료는 얼마인가요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">출금수수료는 코인별로 상이하며 각 코인별 출금수수료는 수수료안내 페이지를 참조하시면 됩니다.</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span>코인 입출금 시간이 지연되는 이유가 있나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">코인의 입출금 소요 시간은 코인별로 다를 수 있으며 보통 10분~30분 정도 소요 됩니다. 다만 블록체인 네트워크 상에 일시적으로 과도한 입출금 요청이 발생하는 경우 다소 지연될 수 잇습니다</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span>코인 송금 주소를 잘못 입력한 경우 어떻게 하나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">지갑관리-입출금내역 화면에서 코인 입출금내역 조회 후 해당 건의 트랜잭션ID(TID)를 확인 후 고객센터로 문의 주시면 기술적으로 가능한 범위 내에서 복구 해 드립니다. 다만 담당자의 업무량에 따라 시간이 다소 소요될 수 있습니다</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span>코인 입금시 주소외 추가로 입력해야 하는 정보를 누락하고 전송한 경우는 어떻게 하나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">블록체인 트랜잭션ID 나 해시값을 1:1 문의에 문의구분 코인입출금 선택하고 올려주세요. 다만 이 경우 처리하는데 최장 5일까지 소요 될 수 있습니다. 보내신 사이트에서 전송상세 내역을 캡쳐해서 파일로 올려 주셔야 합니다</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span> 코인 입금이 하루 이상 지났는데도 처리되지 않고 있습니다. 어떻게 하나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">1:1 문의에 문의구분을 코인입출금으로 선태하신 후 제목에
+                                    "코인입금요청합니다 - 입금 후 24시간 경과" 라고 경과 시간을 표시하시면 확인 후 우선 적용 해 드립니다.TXID 또는 Hash 값을 문의 내용에 기입해 주시고 보내신쪽에서 코인 전송내역을 수량이 보이게끔 캡쳐하셔서 파일로 첨부하여 올려 주세요</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span> 보유하고 있는 잔고보다 출금가능 수량이 적게 표시됩니다 왜 그런가요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">현재 코인 매도 주문을 걸어 놓으신게 없는지 확인 하십시오
+                                    미체결 매도 주문이 없는데 그렇다면 1:1 문의에 올려 주세요</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span> 보유하고 있는 잔고보다 출금가능 수량이 적게 표시됩니다 왜 그런가요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">코인을 거래소간에 송금할시 블록체인 네트워크 상에서 코인 송금 내역을 식별하고 추적할 수 있도록 하는 유일한 키 값입니다. 해당 값이 없으면 코인 송금 내역을 찾는것이 불가능 하며 송금측 거래소 사이트의 코인 출금내역 화면에서 조회 및 확인 할 수 있습니다.</span>
+                            </div>
+                            
+                            
+                            <h3>
+                                <span class="faq-category">Trading/Orders</span>
+                                <span>거래수수료는 얼마인가요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">거래수수료는 매수/매도 공히 0.1%를 적용하고 있습니다.</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Trading/Orders</span>
+                                <span>정정주문이 뭔가요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">모바일 앱에서만 가능한 정정주문은 기존 매수 또는 매도 주문 내역 중 주문수량 또는 주문가격을 변경하여 재 주문 하는 경우를 말하며 기존 주문내역을 취소하고 새로운 주문을 신규로 내는 번거로움을 없애고자 제공하는 주문 기능입니다.</span>
+                            </div>
+
+                            <h3>
+                                <span class="faq-category">Trading/Orders</span>
+                                <span>미체결 주문은 어떻게 처리 되나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">주문 취소 전까지는 미체결 상태로 계속 남아 있게 됩니다</span>
+                            </div>
+                             <h3>
+                                <span class="faq-category">Trading/Orders</span>
+                                <span> 웹에서 주문 취소가 되지 않습니다</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">일시적인 화면 갱신 장애로 인한 것일 수 있으니 화면 재조회를 해 보시면 취소결과 확인이 가능합니다. 정상화 될 때까지 불편하시더라도 우선 화면 재조회를 사용 하십시오.</span>
+                            </div>
+                             <h3>
+                                <span class="faq-category">Trading/Orders</span>
+                                <span> 주문 체결이 되었는데 체결 수량이나 금액이 실제 주문 내역과 일치하지 않습니다</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">1:1 문의에 문의내용 분류를 코인매수/매도 로 선택하시고 내용 남겨 주십시오. 확인 후 답변 드리겠습니다.</span>
+                            </div>
+                            
+                            <h3>
+                                <span class="faq-category">Etc</span>
+                                <span>다른 궁금한 사항은 어디에 물어보면 되나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">로그인 하신 후 고객센터-1:1문의하기 화면에서 1:1문의하기 등록 하시면 담당자 확인 후 답변을 드립니다</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Etc</span>
+                                <span> 신분증 제출시 신분증과 신분증 들고 있는 사진 둘다 제출해야 하나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">네, 맞습니다. 둘 다 제출해야 합니다</span>
+                            </div>
+                            
+                            
+
+
+                           
+                        </div>
+                    </div>
+                    <!-- //전체 탭 컨텐츠 : End -->
+                    <!-- 가입 및 탭 컨텐츠 : Start -->
+                    <div id="tabs-2" class="mgt10">
+                        <div id="accordion2">
+                            <h3>
+                                <span class="faq-category">Sigh-up</span>
+                                <span>회원가입 방법이 어떻게 되나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">회원 가입은 코인이즈 PC용 웹페이지서 가능합니다. 회원 가입시 본인명의 이메일 계정이 필요 합니다.</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Sigh-up</span>
+                                <span>회원가입 자격이 따로 있나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">네, 있습니다. 미성년자인 경우 가입이 불가합니다</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Sigh-up</span>
+                                <span>법인폰으로 이용 가능한가요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">법인폰으로는 이용이 불가 합니다</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- //가입 및  탭 컨텐츠 : End -->
+                    <!-- 개인정보 변경 탭 컨텐츠 : Start -->
+                    <div id="tabs-3" class="mgt10">
+                        <div id="accordion3">
+                            <h3>
+                                <span class="faq-category">Infomation modification</span>
+                                <span>개인정보를 변경할 수 있나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">마이페이지에서 로그인 비밀번호 변경이 가능하십니다.</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Infomation modification</span>
+                                <span>휴대전화 번호를 변경할 수 있나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">휴대전화 번호변경은 불가합니다.</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Infomation modification</span>
+                                <span>가입 후 인증레벨을 올리고 싶은데 어떻게 하나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">웹사이트 마이페이지에서 보안인증 또는 신분증 인증을 하시면 됩니다.</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Infomation modification</span>
+                                <span> 가입시 이름을 잘못 입력하였습니다.</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">1:1 문의에 남겨 주시면 이름을 변경해 드립니다</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Infomation modification</span>
+                                <span> OTP 설정시 OTP 인증번호가 틀렸다고 표시됩니다</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">구글 OTP 앱에 표시된 6자리 번호가 계속 갱신이 되니 갱신된 번호를 다시 입력해야 합니다</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Infomation modification</span>
+                                <span>휴대폰 번호가 변경이 되었습니다.</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">1:1 문의에 OTP/SMS 초기화 신청을 해주신후 보안인증을 재설정해주시기 바랍니다.</span>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <!-- //원화 입금/출금 탭 컨텐츠 : End -->
+                    <!-- 코인 입금/출금 탭 컨텐츠 : Start -->
+                    <div id="tabs-4" class="mgt10">
+                        <div id="accordion4">
+                            <!-- FAQ 1개 : Start -->
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span>코인 지갑 주소는 어디서 확인하나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">지갑관리 입출금페이지에서 입금탭을 클릭하시면 주소확인이 되십니다.</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span>코인 출금 한도는 어떻게</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">인증레벨 별 출금한도이내에서만 가능합니다.</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span>코인 출금수수료는 얼마인가요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">출금수수료는 코인별로 상이하며 각 코인별 출금수수료는 수수료안내 페이지를 참조하시면 됩니다.</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span>코인 입출금 시간이 지연되는 이유가 있나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">코인의 입출금 소요 시간은 코인별로 다를 수 있으며 보통 10분~30분 정도 소요 됩니다. 다만 블록체인 네트워크 상에 일시적으로 과도한 입출금 요청이 발생하는 경우 다소 지연될 수 잇습니다</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span>코인 송금 주소를 잘못 입력한 경우 어떻게 하나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">지갑관리-입출금내역 화면에서 코인 입출금내역 조회 후 해당 건의 트랜잭션ID(TID)를 확인 후 고객센터로 문의 주시면 기술적으로 가능한 범위 내에서 복구 해 드립니다. 다만 담당자의 업무량에 따라 시간이 다소 소요될 수 있습니다</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span>코인 입금시 주소외 추가로 입력해야 하는 정보를 누락하고 전송한 경우는 어떻게 하나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">블록체인 트랜잭션ID 나 해시값을 1:1 문의에 문의구분 코인입출금 선택하고 올려주세요. 다만 이 경우 처리하는데 최장 5일까지 소요 될 수 있습니다. 보내신 사이트에서 전송상세 내역을 캡쳐해서 파일로 올려 주셔야 합니다</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span> 코인 입금이 하루 이상 지났는데도 처리되지 않고 있습니다. 어떻게 하나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">1:1 문의에 문의구분을 코인입출금으로 선태하신 후 제목에
+                                    "코인입금요청합니다 - 입금 후 24시간 경과" 라고 경과 시간을 표시하시면 확인 후 우선 적용 해 드립니다.TXID 또는 Hash 값을 문의 내용에 기입해 주시고 보내신쪽에서 코인 전송내역을 수량이 보이게끔 캡쳐하셔서 파일로 첨부하여 올려 주세요</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span> 보유하고 있는 잔고보다 출금가능 수량이 적게 표시됩니다 왜 그런가요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">현재 코인 매도 주문을 걸어 놓으신게 없는지 확인 하십시오
+                                    미체결 매도 주문이 없는데 그렇다면 1:1 문의에 올려 주세요</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Deposit/Withdrawal</span>
+                                <span> 보유하고 있는 잔고보다 출금가능 수량이 적게 표시됩니다 왜 그런가요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">코인을 거래소간에 송금할시 블록체인 네트워크 상에서 코인 송금 내역을 식별하고 추적할 수 있도록 하는 유일한 키 값입니다. 해당 값이 없으면 코인 송금 내역을 찾는것이 불가능 하며 송금측 거래소 사이트의 코인 출금내역 화면에서 조회 및 확인 할 수 있습니다.</span>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <!-- //코인 입금/출금 탭 컨텐츠 : End -->
+                    <!-- 거래,주문 탭 컨텐츠 : Start -->
+                    <div id="tabs-5" class="mgt10">
+                        <div id="accordion5">
+                            <!-- FAQ 1개 : Start -->
+                            <h3>
+                                <span class="faq-category">Trading/Orders</span>
+                                <span>거래수수료는 얼마인가요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">거래수수료는 매수/매도 공히 0.1%를 적용하고 있습니다.</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Trading/Orders</span>
+                                <span>정정주문이 뭔가요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">모바일 앱에서만 가능한 정정주문은 기존 매수 또는 매도 주문 내역 중 주문수량 또는 주문가격을 변경하여 재 주문 하는 경우를 말하며 기존 주문내역을 취소하고 새로운 주문을 신규로 내는 번거로움을 없애고자 제공하는 주문 기능입니다.</span>
+                            </div>
+
+                            <h3>
+                                <span class="faq-category">Trading/Orders</span>
+                                <span>미체결 주문은 어떻게 처리 되나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">주문 취소 전까지는 미체결 상태로 계속 남아 있게 됩니다</span>
+                            </div>
+                             <h3>
+                                <span class="faq-category">Trading/Orders</span>
+                                <span> 웹에서 주문 취소가 되지 않습니다</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">일시적인 화면 갱신 장애로 인한 것일 수 있으니 화면 재조회를 해 보시면 취소결과 확인이 가능합니다. 정상화 될 때까지 불편하시더라도 우선 화면 재조회를 사용 하십시오.</span>
+                            </div>
+                             <h3>
+                                <span class="faq-category">Trading/Orders</span>
+                                <span> 주문 체결이 되었는데 체결 수량이나 금액이 실제 주문 내역과 일치하지 않습니다</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">1:1 문의에 문의내용 분류를 코인매수/매도 로 선택하시고 내용 남겨 주십시오. 확인 후 답변 드리겠습니다.</span>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <!-- //거래주문 탭 컨텐츠 : End -->
+                    <!-- 기타 탭 컨텐츠 : Start -->
+                    <div id="tabs-6" class="mgt10">
+                        <div id="accordion6">
+                            <!-- FAQ 1개 : Start -->
+                            <h3>
+                                <span class="faq-category">Etc</span>
+                                <span>다른 궁금한 사항은 어디에 물어보면 되나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">로그인 하신 후 고객센터-1:1문의하기 화면에서 1:1문의하기 등록 하시면 담당자 확인 후 답변을 드립니다</span>
+                            </div>
+                            <h3>
+                                <span class="faq-category">Etc</span>
+                                <span> 신분증 제출시 신분증과 신분증 들고 있는 사진 둘다 제출해야 하나요?</span>
+                            </h3>
+                            <div>
+                                <span class="answer-mark">A</span>
+                                <span class="answer-content">네, 맞습니다. 둘 다 제출해야 합니다</span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- //기타 탭 컨텐츠 : End -->
+                </div>
+                <!-- 페이지 탭 : Start -->
+            </div>
+            <!-- 페이지 탭 : Start -->
+
+
+        </article>
+        <!--FAQ 전체 내용 끝-->
+    </section>
+    <!--컨텐츠 내용 영역 끝-->
+
+    <!-- FOOTER : Start -->
+    <footer>
+        <div class="footer-menu-wrap">
+            <div class="footer-menu">
+                <a href="GLOBAL-WEB--ETC-M002.html">Terms and Conditions </a>
+                <a href="GLOBAL-WEB--ETC-M003.html">Privacy Statements </a>
+                <a href="GLOBAL-WEB--ETC-M001.html">Fees</a>
+            </div>
+        </div>
+
+        <div class="footer-wrap">
+            <p class="footer-logo">
+                <a href="#">WAVE STRAING</a>
+            </p>
+            <div class="footer-group">
+                <ul>
+                    <li>주식회사 <span class="orange-bold">웨이브스트링</span></li>
+                    <li>서울특별시 구로구 디지털로 273, 306호(구로동, 에이스트윈타워 2차)</li>
+                    <li>대표이사 : 정명묵</li>
+                </ul>
+                <ul>
+                    <li>사업자등록번호 : 113-86-84751</li>
+                </ul>
+                <ul>
+                    <li>현금입출금 :<span class="white-bold"> 09:00~18:00 (휴일포함)</span></li>
+                    <li>코인입출금 : <span class="white-bold">24시간 (휴일포함)</span></li>
+                </ul>
+                <p class="copyright-area">Copyright&copy; 2012 wavestring All rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+    <!-- FOOTER : End -->
+
+
+    <script>
+        //상단 전체메뉴 
+        var zoomx = 100;
+        $(document).ready(function() {
+            $(".gnb-menu").hover(
+                function() {
+                    $(".sub-menu-wrap").stop().slideDown(400);
+                },
+                function() {
+                    $(".sub-menu-wrap").stop().slideUp(200);
+                });
+
+            $(".sub-menu-wrap").hover(
+                function() {
+                    $(".sub-menu-wrap").stop().slideDown(400);
+                },
+                function() {
+                    $(".sub-menu-wrap").stop().slideUp(200);
+                });
+        });
+
+        //마켓별 전체보기
+        $(document).ready(function() {
+            $('.btn-folding').click(function() {
+                $('.folding').toggleClass('more');
+            });
+
+        });
+
+        /*북마크*/
+        $('.bookmark').click(function() {
+            $(this).toggleClass('mark-on');
+        });
+
+        /*슬릭스 슬라이더*/
+        $(".regular").slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            autoplay: false,
+            autoplaySpeed: 4000
+        });
+
+        //팝업 열고 닫기   
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+
+        //jquery 탭 아코딩
+        $(document).ready(function() {
+            $("#tab-group").tabs();
+
+            $("#accordion1").accordion();
+            $("#accordion2").accordion();
+            $("#accordion3").accordion();
+            $("#accordion4").accordion();
+            $("#accordion5").accordion();
+            $("#accordion6").accordion();
+
+            $("#datepicker").datepicker({
+                inline: true
+            });
+        });
+    </script>
+</body>
+
+</html>

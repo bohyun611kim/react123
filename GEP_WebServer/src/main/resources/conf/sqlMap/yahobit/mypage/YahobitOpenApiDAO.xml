@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.yahobit.mypage.mpg003.dao.YahobitOpenApiDAO">
+
+	<resultMap type="kr.co.coinis.webserver.yahobit.mypage.mpg003.vo.OpenApiVO" id="OpenApiVO">
+		<result property="seqNo" 		column="REC_SEQ_NO" jdbcType="VARCHAR"/>
+		<result property="clientId" 	column="CLNT_ID" 	jdbcType="VARCHAR"/>
+		<result property="secretKey" 	column="SCRT_KEY" 	jdbcType="VARCHAR"/>
+		<result property="createDt" 	column="CREATE_DT" 	jdbcType="VARCHAR"/>
+		<result property="activeYn" 	column="USE_YN" 	jdbcType="NUMERIC"/>
+		<result property="userApiNo" 	column="USE_API_NO" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<resultMap type="kr.co.coinis.webserver.yahobit.mypage.mpg003.vo.UserAuthInfoVO" id="UserAuthInfoVO">
+		<result property="authMeansCd" 	column="AUTH_MEANS_CD" 	jdbcType="NUMERIC"/>
+		<result property="mobile" 		column="MOBILE" 		jdbcType="VARCHAR"/>
+		<result property="otpKey" 		column="OTP_KEY_VAL" 	jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- api list 조회 -->
+	<select id="selectApiList" resultMap="OpenApiVO">
+		SELECT CLNT_ID, SCRT_KEY, CREATE_DT, USE_YN, USE_API_NO, REC_SEQ_NO
+		  FROM TB_API_USER_INFO
+		 WHERE EXCHANGE_ID = #{exchangeId}
+    	   AND USER_ID = #{userId}
+		   AND EXPR_DT <![CDATA[ > ]]> DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+	</select>
+	
+	<!-- api 정보 조회 -->
+	<select id="selectApiInfo" resultMap="OpenApiVO">
+		SELECT CLNT_ID, SCRT_KEY, CREATE_DT, USE_YN, USE_API_NO, REC_SEQ_NO
+		  FROM TB_API_USER_INFO
+		 WHERE EXCHANGE_ID = #{exchangeId}
+    	   AND USER_ID = #{userId}
+		   AND CLNT_ID = #{clientId}
+		   AND SCRT_KEY = #{secretKey} 
+	</select>
+
+    <!-- 유저 인증 정보 가져오기(mobile) -->
+	<select id="selectUserAuthInfo" resultMap="UserAuthInfoVO">
+		SELECT AUTH_MEANS_CD
+			   , AES_DECRYPT(MOBILE, SHA2(SHA2( CONCAT(USER_ID, REG_DT), 512), 512)) AS MOBILE
+			   , AES_DECRYPT(OTP_KEY_VAL, SHA2(SHA2( CONCAT(USER_ID, REG_DT), 512), 512)) AS OTP_KEY_VAL
+		  FROM TB_MEMBER_INFO
+    	 WHERE EXCHANGE_ID = #{exchangeId}
+    	   AND USER_ID = #{userId}
+    	   AND MEMBER_STAT_CD = 2
+    	   AND SMS_USE_YN = 1
+	</select>
+	
+	<!-- sms 인증번호 요청 -->
+	<update id="procInsertAuthCode" statementType="CALLABLE">
+		{
+			CALL PR_WAS_INSERT_AUTH_CODE(
+				#{exchangeId, 		mode=IN, jdbcType=VARCHAR},
+				#{userId, 			mode=IN, jdbcType=VARCHAR},
+				#{authPurposeCd, 	mode=IN, jdbcType=NUMERIC},
+				#{authMeansCd, 		mode=IN, jdbcType=NUMERIC},
+				#{authMeansKeyVal, 	mode=IN, jdbcType=VARCHAR},
+				#{expireSec, 		mode=IN, jdbcType=NUMERIC},
+				#{tranKeyVal,		mode=IN, jdbcType=NUMERIC},
+				#{encryptAuthCd, 	mode=OUT, jdbcType=VARCHAR},
+				#{authCd, 			mode=OUT, jdbcType=VARCHAR},
+				#{rtnCd, 			mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg,			mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+	
+	<!-- SMS 인증번호 검사 -->
+	<update id="procCheckAuthCode" statementType="CALLABLE">
+		{
+			CALL PR_WAS_CHECK_AUTH_CODE(
+				#{exchangeId, 		mode=IN, jdbcType=VARCHAR},
+				#{userId, 			mode=IN, jdbcType=VARCHAR},
+				#{authPurposeCd, 	mode=IN, jdbcType=NUMERIC},
+				#{authMeansCd, 		mode=IN, jdbcType=NUMERIC},
+				#{authMeansKeyVal, 	mode=IN, jdbcType=VARCHAR},
+				#{authCd, 			mode=IN, jdbcType=VARCHAR},
+				#{rtnCd, 			mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg,			mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+
+	<!-- api 정보 입력 -->	
+	<insert id="insertApiInfo">
+		INSERT INTO TB_API_USER_INFO(
+			EXCHANGE_ID
+			, USER_ID
+			, USE_API_NO
+			, CREATE_DT
+			, EXPR_DT
+			, USE_YN
+			, ALLOW_IP
+			, CLNT_ID
+			, SCRT_KEY
+			, REG_DT
+			, REG_USER_ID
+		)
+		VALUES(
+			#{exchangeId}
+			, #{userId}
+			, #{apiNo}
+			, DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s')
+			, DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 1 YEAR), '%Y%m%d%H%i%s')
+			, 1
+			, #{accessIp}
+			, #{clientId}
+			, #{secretKey}
+			, DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s')
+			, #{userId}
+		)
+	</insert>
+	
+	<!-- api 사용여부 상태 변경 -->
+	<update id="updateApiInfo">
+		UPDATE TB_API_USER_INFO
+		   SET USE_YN = #{useYn}
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND USER_ID = #{userId}
+		   AND REC_SEQ_NO = #{seqNo}
+		   AND CLNT_ID = #{clientId}
+		   AND SCRT_KEY = #{secretKey}
+	</update>
+	
+	<!-- api 삭제 -->
+	<delete id="deleteApiInfo">
+		DELETE FROM TB_API_USER_INFO
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND USER_ID = #{userId}
+		   AND REC_SEQ_NO = #{seqNo}
+		   AND CLNT_ID = #{clientId}
+		   AND SCRT_KEY = #{secretKey}
+	</delete>
+	
+</mapper>
+

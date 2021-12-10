@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.coinis.mypage.mpg001.dao.InfoDAO">
+
+	<resultMap type="kr.co.coinis.webserver.coinis.mypage.mpg001.vo.MemberProfileInfoVO" 	id="MemberProfileInfoVO">
+		<result property="user_id" 					column="USER_ID" 					jdbcType="VARCHAR"/>
+		<result property="auth_level" 				column="AUTH_LEVEL" 				jdbcType="INTEGER"/>
+		<result property="daily_limit_qty"			column="DAILY_LIMIT_QTY"			jdbcType="DECIMAL"/>
+		<result property="coin_symbolic_nm"			column="coin_symbolic_nm"			jdbcType="VARCHAR"/> 
+		<result property="otp_yn"					column="OTP_YN"						jdbcType="INTEGER"/>
+		<result property="sms_use_yn"				column="SMS_USE_YN"					jdbcType="INTEGER"/>
+		<result property="auth_means_cd"			column="AUTH_MEANS_CD"				jdbcType="INTEGER"/>
+		<result property="mrkt_agree_yn"			column="MRKT_AGREE_YN"				jdbcType="INTEGER"/>
+		<result property="fish_anti_code_yn"		column="FISH_ANTI_CODE_YN"			jdbcType="INTEGER"/>
+		<result property="fish_anti_code_val"		column="FISH_ANTI_CODE_VAL"			jdbcType="VARCHAR"/>
+		<result property="last_login_dt"			column="LAST_LOGIN_DT"				jdbcType="INTEGER"/>
+		<result property="last_login_app_ver"		column="LAST_LOGIN_APP_VER"			jdbcType="VARCHAR"/>
+		<result property="last_login_ipaddr"		column="LAST_LOGIN_IPADDR"			jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<select id="selectMemberProfileInfo" parameterType="java.util.Map" resultMap="MemberProfileInfoVO">
+		SELECT A.USER_ID
+			  , A.AUTH_LEVEL
+		      , TRUNCATE(C.DAILY_LIMIT_QTY, 8) AS DAILY_LIMIT_QTY
+		      , D.COIN_SYMBOLIC_NM
+		      , A.OTP_YN
+		      , A.SMS_USE_YN
+		      , AUTH_MEANS_CD
+		      , A.MRKT_AGREE_YN
+		      , FISH_ANTI_CODE_YN
+		      , AES_DECRYPT(FISH_ANTI_CODE_VAL,  SHA2(SHA2( CONCAT(A.USER_ID, A.REG_DT), 512), 512)) AS FISH_ANTI_CODE_VAL
+		      , DATE_FORMAT(LAST_LOGIN_DT, '%Y-%m-%d %H:%i:%S') AS LAST_LOGIN_DT
+		      , LAST_LOGIN_APP_VER
+		      , LAST_LOGIN_IPADDR
+		      
+		FROM TB_MEMBER_INFO A
+			  , TB_MEMBER_INFO_EXTRA B
+			  , TB_COIN_WITHDRAW_LIMIT C
+			  , TB_COIN_MAST D
+			  , TB_EXCHANGE_INFO E
+		WHERE A.USER_ID = TRIM(#{user_id})
+		AND A.EXCHANGE_ID = TRIM(#{exchange_id})
+		AND A.EXCHANGE_ID = B.EXCHANGE_ID
+		AND A.USER_ID = B.USER_ID
+		AND A.EXCHANGE_ID = C.EXCHANGE_ID
+		AND A.AUTH_LEVEL = C.AUTH_LEVEL
+		AND B.USER_TYPE_CD = C.USER_TYPE_CD
+		AND A.EXCHANGE_ID = E.EXCHANGE_ID
+		AND C.COIN_NO =  E.BC_COIN_NO
+		AND C.COIN_NO = D.COIN_NO
+	</select>
+
+	<update id="updateAuthMeansCD">
+		UPDATE TB_MEMBER_INFO
+		   SET AUTH_MEANS_CD = #{code}
+			   , UPDT_DT = DATE_FORMAT( NOW(), '%Y%m%d%H%i%S')
+		 WHERE EXCHANGE_ID = #{exchange_id}
+		   AND USER_ID = #{user_id}
+	</update>
+
+	<update id="updateMarketingAgree">
+		UPDATE TB_MEMBER_INFO
+		   SET MRKT_AGREE_YN = #{code}
+			   , UPDT_DT = DATE_FORMAT( NOW(), '%Y%m%d%H%i%S')
+		 WHERE EXCHANGE_ID = #{exchange_id}
+		   AND USER_ID = #{user_id}
+	</update>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 	<resultMap type="kr.co.coinis.webserver.coinis.mypage.mpg001.vo.UserInfoVO" id="UserInfoVO">
+		<result property="userId" column="USER_ID" jdbcType="VARCHAR"/>
+		<result property="mobile" column="MOBILE"  jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.coinis.mypage.mpg001.vo.RecommendInfoVO" id="RecommendInfoVO">
+		<result property="recommandCd" 		column="RECOMMENDER_CD" 	jdbcType="VARCHAR"/>
+		<result property="recommandLink"	column="LINK"  			jdbcType="VARCHAR"/>
+		<result property="totalCnt" 		column="TOTAL_CNT"  		jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<select id="selectUserInfo" resultMap="UserInfoVO">
+		SELECT USER_ID
+			   , AES_DECRYPT(MOBILE, SHA2(SHA2(CONCAT(USER_ID, JOIN_DT), 512), 512)) AS MOBILE
+		  FROM TB_MEMBER_INFO
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND USER_ID = #{userId}
+	</select>
+	
+	<select id="selectRecommendInfo" resultMap="RecommendInfoVO">
+		SELECT C.RECOMMENDER_CD, CONCAT(A.EXCHANGE_URL, CONCAT('/register?code=', C.RECOMMENDER_CD )) AS LINK
+			   , (SELECT COUNT(*) 
+					FROM TB_MEMBER_INFO
+				   WHERE EXCHANGE_ID = #{exchangeId} 
+					 AND USER_ID = #{userId} 
+					 AND RECOMMENDER_CD = C.RECOMMENDER_CD) AS TOTAL_CNT
+		  FROM TB_EXCHANGE_INFO A
+	INNER JOIN TB_MEMBER_INFO B
+			ON A.EXCHANGE_ID = B.EXCHANGE_ID
+	INNER JOIN TB_MEMBER_INFO_EXTRA C
+			ON C.EXCHANGE_ID = B.EXCHANGE_ID
+		   AND C.USER_ID = B.USER_ID
+		 WHERE A.EXCHANGE_ID = #{exchangeId}
+		   AND B.USER_ID = #{userId}
+	</select>
+	-->
+
+</mapper>
+

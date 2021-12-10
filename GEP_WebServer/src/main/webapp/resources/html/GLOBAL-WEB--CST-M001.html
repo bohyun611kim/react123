@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Notice</title>
+
+    <link rel="shortcut icon" href="../path/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../css/uiGlobal.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+
+
+    <script src="../js/jquery/jquery-3.3.1.js"></script>
+    <script src="../js/jquery/jquery-ui.js"></script>
+    <script src="../js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="../js/jquery/slick.js"></script>
+
+
+    <script type="text/javascript">
+        //상단 네비게이션
+        $(document).ready(function() {
+
+            $(".topnav").hover(function() { //마우스를 topnav에 오버시
+                $(this).parent().find(".subnav").slideDown('normal').show(); //subnav가 내려옴.
+                $(this).addClass('on');
+                $(this).parent().hover(function() {}, function() {
+                    $(this).parent().find(".subnav").slideUp('fast'); //subnav에서 마우스 벗어났을 시 원위치  
+                    $(".topnav").removeClass('on');
+                });
+            });
+        });
+
+        //달력
+        $(function() {
+            $("#startDate").datepicker();
+        });
+        $(function() {
+            $("#endDate").datepicker();
+        });
+
+        //label을 사용한 셀렉트
+        $(document).ready(function() {
+            var selectTarget = $('.selectbox select');
+            selectTarget.change(function() {
+                var select_name = $(this).children('option:selected').text();
+                $(this).siblings('label').text(select_name);
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <!-- HEADER : Start -->
+    <header>
+        <!--최상단 네비게이션 시작-->
+        <nav>
+            <div class="navi-wrap">
+                <div class="navi-logo">
+                    <h1>
+                        <a href="home.html" target="_parent"><img src="../img/logo.png" alt="logo"></a>
+                    </h1>
+
+                </div>
+                <div class="navi-menu">
+                    <ul class="navi">
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MKT-M001.html','_parent')">Exchange</div>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Wallet</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M001.html','_parent')">Deposit & Withdrawal</li>
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M002.html','_parent')">Transaction</li>
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M003.html','_parent')">Holdings</li>
+                            </ul>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Orders</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--MKT-M002.html','_parent')">Trading Histroy</li>
+                                <li onclick="window.open('GLOBAL-WEB--MKT-M003.html','_parent')">Outstanding Orders</li>
+                            </ul>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav active">Support</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--CST-M001.html','_parent')">Notice</li>
+                                <li onclick="window.open('GLOBAL-WEB--CST-M002.html','_parent')">FAQ</li>
+                                <li onclick="window.open('GLOBAL-WEB--CST-M003.html','_parent')">1:1 Inquiry</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navi-user">
+                    <ul class="navi">
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MBR-M001.html','_parent')">Register</div>
+                            <!--<div class="topnav" onclick="window.open('GLOBAL-WEB--MYP-M001.html','_parent')">My Page</div>-->
+                        </li>
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MBR-M002.html','_parent')">Log In</div>
+                            <!--<div class="topnav">Log Out</div>-->
+                        </li>
+                        <li class="navi_set">
+                            <div class="topnav">English</div>
+                            <ul class="subnav">
+                                <li>English</li>
+                                <li>한국어</li>
+                                <li>ภาษาไทย</li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!--최상단 네비게이션 끝-->
+    </header>
+    <!-- //HEADER : End -->
+
+    <!--컨텐츠 내용 영역 시작-->
+    <section class="bggray">
+        <!--공지사항 전체 내용 시작-->
+        <article class="bgwhite">
+
+            <h1 class="sub-title">
+                <ul>
+                    <li>Notice</li>
+                </ul>
+            </h1>
+            <div class="content-item">
+                <div class="search-option-group">
+                    <div class="fl-left">
+                        Total <b class="blue">0</b> rows retrieved
+                    </div>
+                    <div class="option-right">
+                        <div class="calendar-group">
+                            <input type="text" id="startDate" value="2019.03.13" readonly="readonly">
+                            <span>~</span>
+                            <input type="text" id="endDate" value="2019.03.20" readonly="readonly">
+                            <div class="fl-right">
+                                <button href="" class="bggray">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--공지사항 리스트  테이블 시작-->
+                <div class="notice">
+                    <table class="tblType02">
+                        <colgroup>
+                            <col style="width: 100px">
+                            <col>
+                            <col style="width: 200px">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>Notice No.</th>
+                                <th>Title</th>
+                                <th>DateTime</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!--최대 20개? 노출-->
+                            <tr>
+                                <td>006</td>
+                                <td class="left new">
+                                    <a href="GLOBAL-WEB--CST-S001.html">The withdrawal limit is KRW & coin integration limit based on the authentication level. </a>
+                                </td>
+                                <td>2019.03.22 00:00:00</td>
+                            </tr>
+                            <tr>
+                                <td>005</td>
+                                <td class="left new">
+                                    <a href="GLOBAL-WEB--CST-S001.html">The coin is based on the current price of the coin at the time of withdrawal.</a>
+                                </td>
+                                <td>2019.03.22 00:00:00</td>
+                            </tr>
+                            <tr>
+                                <td>004</td>
+                                <td class="left">
+                                    <a href="GLOBAL-WEB--CST-S001.html">Make sure you check your wallet address prior to deposit.</a>
+                                </td>
+                                <td>2019.03.22 00:00:00</td>
+                            </tr>
+                            <tr>
+                                <td>003</td>
+                                <td class="left">
+                                    <a href="GLOBAL-WEB--CST-S001.html">The withdrawal limit is KRW & coin integration limit based on the authentication level. </a>
+                                </td>
+                                <td>2019.03.22 00:00:00</td>
+                            </tr>
+                            <tr>
+                                <td>002</td>
+                                <td class="left">
+                                    <a href="GLOBAL-WEB--CST-S001.html">The coin is based on the current price of the coin at the time of withdrawal.</a>
+                                </td>
+                                <td>2019.03.22 00:00:00</td>
+                            </tr>
+                            <tr>
+                                <td>001</td>
+                                <td class="left">
+                                    <a href="GLOBAL-WEB--CST-S001.html">Make sure you check your wallet address prior to deposit.</a>
+                                </td>
+                                <td>2019.03.22 00:00:00</td>
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+
+
+
+                    <!-- //페이징 : End -->
+                </div>
+                <!--공지사항 리스트 테이블 끝-->
+                <!-- 페이징 : Start -->
+                <ul class="pagination">
+                    <li><a class="btn-page first"></a></li>
+                    <li><a class="btn-page prev"></a></li>
+                    <li><a href="#" class="active">1</a></li><!-- 선택된 번호의 a 태그에 acitve 클래스 추가 -->
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li><a class="btn-page next"></a></li>
+                    <li><a class="btn-page last"></a></li>
+                </ul>
+            </div>
+
+        </article>
+        <!--공지사항 전체 내용 끝-->
+    </section>
+    <!--컨텐츠 내용 영역 끝-->
+
+    <!-- FOOTER : Start -->
+    <footer>
+        <div class="footer-menu-wrap">
+            <div class="footer-menu">
+                <a href="GLOBAL-WEB--ETC-M002.html">Terms and Conditions </a>
+                <a href="GLOBAL-WEB--ETC-M003.html">Privacy Statements </a>
+                <a href="GLOBAL-WEB--ETC-M001.html">Fees</a>
+            </div>
+        </div>
+
+        <div class="footer-wrap">
+            <p class="footer-logo">
+                <a href="#">WAVE STRAING</a>
+            </p>
+            <div class="footer-group">
+                <ul>
+                    <li>주식회사 <span class="orange-bold">웨이브스트링</span></li>
+                    <li>서울특별시 구로구 디지털로 273, 306호(구로동, 에이스트윈타워 2차)</li>
+                    <li>대표이사 : 정명묵</li>
+                </ul>
+                <ul>
+                    <li>사업자등록번호 : 113-86-84751</li>
+                </ul>
+                <ul>
+                    <li>현금입출금 :<span class="white-bold"> 09:00~18:00 (휴일포함)</span></li>
+                    <li>코인입출금 : <span class="white-bold">24시간 (휴일포함)</span></li>
+                </ul>
+                <p class="copyright-area">Copyright&copy; 2012 wavestring All rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+    <!-- FOOTER : End -->
+
+    <!--상세보기 팝업 시작-->
+    <div class="popup more" id="myForm">
+        <form action="">
+            <div class="pop-title"><span> Deposit / Withdrawal Detail </span>
+                <button type="button" class="cancel" onclick="closeForm()"><img src="../img/btn-alert-close.png" alt="닫기버튼"></button>
+            </div>
+        </form>
+
+        <div class="popup-cont">
+
+            <h1>Deposit/Withdrawal Info</h1>
+            <table class="tblType01">
+                <colgroup>
+                    <col style="width: 130px">
+                    <col>
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <th>Coin</th>
+                        <td>Monero</td>
+                    </tr>
+                    <tr>
+                        <th>Transaction</th>
+                        <td>Withdrawal</td>
+                    </tr>
+                    <tr>
+                        <th>Quantity</th>
+                        <td>200 SRT</td>
+                    </tr>
+                    <tr>
+                        <th>Fees</th>
+                        <td>0.1 SRT</td>
+                    </tr>
+                    <tr>
+                        <th>DateTime</th>
+                        <td>2018-05-18 13:03:30</td>
+                    </tr>
+                    <tr>
+                        <th>Channel</th>
+                        <td>WEB</td>
+                    </tr>
+                    <tr>
+                        <th>Confirm Dt</th>
+                        <td>2018-05-15 13:30:00</td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>Success</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h1 class="mgt20">BlockChain Info</h1>
+            <table class="tblType01">
+                <colgroup>
+                    <col style="width: 130px">
+                    <col>
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <th>Address</th>
+                        <td>1P6i15uJWRTfmEXWHBO5hOztkd1P6i15uJWRTfmEXWHBO5hOztkdX</td>
+                    </tr>
+                    <tr>
+                        <th>TransactionID</th>
+                        <td>
+                            <!-- 클릭시 블로체인 익스플로러 연결-->
+                            <a href="">Afdsafldjk2ewsdffdsa989242jkfsaf </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit" class="big bggray">Close </button>
+        </div>
+
+
+    </div>
+    <!--상세보기 팝업 끝-->
+
+    <script>
+        //상단 전체메뉴 
+        var zoomx = 100;
+        $(document).ready(function() {
+            $(".gnb-menu").hover(
+                function() {
+                    $(".sub-menu-wrap").stop().slideDown(400);
+                },
+                function() {
+                    $(".sub-menu-wrap").stop().slideUp(200);
+                });
+
+            $(".sub-menu-wrap").hover(
+                function() {
+                    $(".sub-menu-wrap").stop().slideDown(400);
+                },
+                function() {
+                    $(".sub-menu-wrap").stop().slideUp(200);
+                });
+        });
+
+        //마켓별 전체보기
+        $(document).ready(function() {
+            $('.btn-folding').click(function() {
+                $('.folding').toggleClass('more');
+            });
+
+        });
+
+        /*북마크*/
+        $('.bookmark').click(function() {
+            $(this).toggleClass('mark-on');
+        });
+
+        /*슬릭스 슬라이더*/
+        $(".regular").slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            autoplay: false,
+            autoplaySpeed: 4000
+        });
+
+        //팝업 열고 닫기   
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+        //jquery 탭
+        $(document).ready(function() {
+            $("#tab-group").tabs();
+
+            $("#datepicker").datepicker({
+                inline: true
+            });
+        });
+    </script>
+</body>
+
+</html>

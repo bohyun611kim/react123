@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.holdport.about.abt001.dao.HoldportAboutDAO">
+
+	<resultMap id="InquiryMap" type="kr.co.coinis.webserver.holdport.about.abt001.vo.InquiryVO">
+		<result property="INQUIRY_NO"						column="INQUIRY_NO"						jdbcType="NUMERIC"/>
+		<result property="EXCHANGE_ID"                      column="EXCHANGE_ID"                    jdbcType="VARCHAR"/>
+		<result property="USER_ID"                          column="USER_ID"                        jdbcType="VARCHAR"/>
+		<result property="INQUIRY_TYPE_CD"                  column="INQUIRY_TYPE_CD"                jdbcType="NUMERIC"/>
+		<result property="INQUIRY_TITLE"                    column="INQUIRY_TITLE"                  jdbcType="VARCHAR"/>
+		<result property="INQUIRY_CONTENTS"                 column="INQUIRY_CONTENTS"               jdbcType="VARCHAR"/>
+		<result property="REG_DT"                           column="REG_DT"                         jdbcType="VARCHAR"/>
+	</resultMap>
+
+    <!-- ==================================================================================== -->
+    <!-- 1. Select Statement -->
+    <!-- ==================================================================================== -->
+
+	<!-- select TB_INQUIRY -->
+	<!-- 1:1 문의내역 List  -->
+	<select id="selectInquiryList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+			*,
+			B.REG_DT AS 'REPLY_DT',
+			ROW_NUMBER() OVER (ORDER BY A.REG_DT DESC) AS 'ROWNUM'
+		FROM
+			TB_INQUIRY A
+			LEFT OUTER JOIN TB_INQUIRY_REPLY B
+		ON 1 = 1
+			AND A.INQUIRY_NO 			= B.INQUIRY_NO
+			AND A.EXCHANGE_ID 			= B.EXCHANGE_ID
+		WHERE 1 = 1
+			AND A.EXCHANGE_ID			= #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND A.USER_ID				= #{USER_ID, jdbcType=VARCHAR}
+        GROUP BY A.INQUIRY_NO
+        ORDER BY A.REG_DT DESC, ROWNUM DESC
+        LIMIT #{PAGE_INDEX, jdbcType=NUMERIC}, #{PAGE_CONT_NUM, jdbcType=NUMERIC}
+	</select> 
+	<!-- select TB_INQUIRY -->
+	<!-- 1:1 문의내역 List Count  -->
+	<select id="selectInquiryListCount" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+			COUNT(INQUIRY_NO) AS size
+		FROM
+			TB_INQUIRY
+		WHERE 1 = 1
+			AND EXCHANGE_ID			= #{EXCHANGE_ID, jdbcType=VARCHAR}
+            AND USER_ID				= #{USER_ID, jdbcType=VARCHAR}
+	</select> 
+
+	<!-- select TB_INQUIRY_REPLY -->
+	<!-- 1:1 문의내역 답변 List  -->
+	<select id="selectInquiryReplyList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+			*
+		FROM
+			TB_INQUIRY_REPLY
+		WHERE 1 = 1
+			AND INQUIRY_NO				= #{INQUIRY_NO, jdbcType=NUMERIC}
+			AND EXCHANGE_ID				= #{EXCHANGE_ID, jdbcType=VARCHAR}
+	   ORDER BY REG_DT DESC
+	</select> 
+
+    <!-- ==================================================================================== -->
+    <!-- 1.1 Procedure Call -->
+    <!-- ==================================================================================== -->
+	<!-- WAS서버 - 일대일문의 저장처리 - 관련업무[일대일문의] 프로시저 -->
+	<update id="call_PR_WAS_INSERT_INQUIRY" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_INSERT_INQUIRY
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_INQUIRY_TYPE_CD, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_INQUIRY_TITLE, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_INQUIRY_CONTENTS, mode=IN, jdbcType=VARCHAR}
+					, #{V_INQUIRY_NO, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				) 
+		}
+	</update>
+
+	<!-- 'WAS서버 - 일대일문의첨부파일 정보 저장처리 - 관련업무[일대일문의] 프로시저 -->
+	<update id="call_PR_WAS_INSERT_INQUIRY_ATTACH_FILE" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call PR_WAS_INSERT_INQUIRY_ATTACH_FILE
+				(
+					  #{ARG_EXCHANGE_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_USER_ID, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_INQUIRY_NO, mode=IN, jdbcType=NUMERIC}
+					, #{ARG_ATTACH_FILE_NM, mode=IN, jdbcType=VARCHAR}
+					, #{ARG_SAVED_FILE_NM, mode=IN, jdbcType=VARCHAR}
+					, #{V_RTN_CD, mode=OUT, jdbcType=NUMERIC}
+					, #{V_RTN_MSG, mode=OUT, jdbcType=VARCHAR}
+				) 
+		}
+	</update>
+
+
+</mapper>
+

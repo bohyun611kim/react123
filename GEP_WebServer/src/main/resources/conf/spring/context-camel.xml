@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<!-- <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:conf/property/config.properties</value>
+			</list>
+		</property>
+		 <property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean> -->
+
+	<bean id="WebRouter" class="kr.co.coinis.webserver.common.web.camel.router.WebRouter" />
+
+	<camel:camelContext id="WebRouter-CamelContext" >
+		<camel:routeBuilder ref="WebRouter" />
+	</camel:camelContext>
+    
+    <!-- <context:component-scan base-package="kr.co.coinis.webserver.common.wrts" /> -->
+    
+    <!-- =========================== -->
+	<!-- ActiveMQ Connection Factory -->
+	<!-- =========================== -->
+	<bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="failover:(${activemq.broker.url})?initialReconnectDelay=5000" />
+		<property name="userName" value="${activemq.user.id}" />
+		<property name="password" value="${activemq.user.password}" />
+	</bean>
+
+	<bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory" init-method="start" destroy-method="stop">
+		<property name="maxConnections" value="5" />
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+	</bean>
+
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="pooledConnectionFactory"/>
+		<property name="concurrentConsumers" value="2"/>
+	</bean>
+
+	<bean id="jmsTransactionManager" class="org.springframework.jms.connection.JmsTransactionManager">
+	    <property name="connectionFactory" ref="pooledConnectionFactory"/>
+	</bean>
+
+	<bean id="COINISWEB-MQ" class="org.apache.activemq.camel.component.ActiveMQComponent">
+		<property name="configuration" ref="jmsConfig"/>
+		<property name="transacted" value="true"/>
+		<property name="transactionManager" ref="jmsTransactionManager"/>
+	</bean>
+    
+</beans>

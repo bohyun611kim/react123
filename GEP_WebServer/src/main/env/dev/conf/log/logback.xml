@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!-- logback resource --> 
+ 	<property name="DEV_HOME" value="/usr/share/tomcat/logs" /> 
+	<!-- console로 log -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                  ▶ %-5level [%d{yyyy-MM-dd HH:mm:ss.SSS}] %logger{0}[%method:%line] - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- 로그 전체를 파일로 남김 -->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${DEV_HOME}/debug.log</file>
+        <encoder>
+            <pattern>
+                ▶ %-5level [%d{yyyy-MM-dd HH:mm:ss.SSS}] %logger{0}[%method:%line] - %msg%n
+            </pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${DEV_HOME}/archived/debug.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender> 
+
+    <!-- file 에러만 별도로 남긴다. -->
+    <appender name="file-error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${DEV_HOME}/error.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>error</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                ▷ %-5level %d{yyyy-MM-dd HH:mm:ss.SSS} %logger{0}[%method:%line] - %msg%n
+            </Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${DEV_HOME}/archived/error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <!--  log 기록 -->
+    <logger name="kr.co.coinis.webserver" level="debug" additivity="false">
+        <appender-ref ref="console" />
+        <appender-ref ref="file" />
+        <appender-ref ref="file-error" />
+    </logger>
+    
+    <logger name="kr.co.coinis.webserver.common" level="debug" additivity="false">
+        <appender-ref ref="console" />
+        <appender-ref ref="file" />
+        <appender-ref ref="file-error" />
+    </logger>
+ 
+    <logger name="org.springframework" level="error" additivity="false">
+        <appender-ref ref="console" />
+        <appender-ref ref="file" />
+        <appender-ref ref="file-error" />
+    </logger>
+    
+    <logger name="org.springframework.security" level="error" additivity="false">
+        <appender-ref ref="console" />
+        <appender-ref ref="file" />
+        <appender-ref ref="file-error" />
+    </logger>
+    
+    <logger name="org.mybatis" level="error" additivity="false">
+        <appender-ref ref="console" />
+        <appender-ref ref="file" />
+        <appender-ref ref="file-error" />
+    </logger>
+  
+    <logger name="org.apache"  level="error" additivity="false">
+        <appender-ref ref="console" />
+        <appender-ref ref="file" /> 
+        <appender-ref ref="file-error" />
+    </logger>
+ 
+ 	<!-- logger  -->
+    <!-- 
+    <root level="error"> 
+        <appender-ref ref="file-error" />
+    </root>        
+    -->
+</configuration>

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link rel="stylesheet" type="text/css" href="../css/uiStyle.css">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <script src="../js/jquery/jquery-3.3.1.js"></script>
+	<script src="../js/jquery/jquery-ui.js"></script>
+	<script src="../js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="../js/jquery/slick.js"></script>
+    <script type="text/javascript">
+        //세로탭메뉴
+        $(function() {
+            $("div.vpanel ul:not(" + $("div.vtab div a.vselected").attr("href") + ")").hide()
+            $("div.vtab div a").click(function() {
+                $("div.vtab div a").removeClass("vselected");
+                $(this).addClass("vselected");
+                $("div.vpanel ul").hide();
+                $($(this).attr("href")).show();
+                return false;
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="wrap">
+    <div class="header header_new">
+        <!-- menu PC -->
+        <div id="sub_top" class="sub_top_new">
+            <div class="inner_new">
+                <div class="s_logo">
+                    <a href="#/">
+                        <img src="../img/newbita/logo.png" alt="Logo" />
+                    </a>
+                </div>
+                <div class="gnb">
+                    <select name="language.selector" class="select_lang">
+                        <option value="ko">Korean</option>
+                        <option value="en">English</option>
+                    </select>
+                    <ul class="gnb_btn_new">
+                        <li id="active">
+                            <a href="signup.html" class="gnb_signup"> 회원가입 </a>
+                        </li>
+                        <li>
+                            <a href="login.html" class="gnb_login"> 로그인 </a>
+                        </li> 
+                    </ul>
+                    
+                    <div class="sc-bdVaJa dXfIaQ">
+                        <ul class="gnb_menu">
+                            <li class="nav-item">
+                                <a href="exchange.html">거래소</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="deposit_withdrawal.html">입출금</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="invest.ko.html">자산내역</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="support.html">고객지원</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- menu mobile -->
+        <div class="m_top">
+            <div class="inner">
+                <div class="m_logo">
+                    <a href="#/">
+                        <img src="../img/newbita/logo.png" alt="Logo" />
+                    </a>
+                </div>
+                <div class="m_btn" onclick="openNavMobile()">
+                    <img src="../img/toggle.png" alt="toggle">
+                </div>
+            </div>
+            <aside class="global-sidebar">
+                <div id="m_nav" class="slide-side-enter-done" style="right: -100%;">
+                    <div class="m_nav_inner">
+                        <div class="close">
+                            <img src="../img/modal_close.png" alt="close" onclick="closeNavMobile()" />
+                        </div>
+                        <ul class="m_nav_btnbox">
+                            <li>
+                                <a href="#/user/signin">SIGN IN</a>
+                            </li>
+                            <li>
+                                <a href="#/user/signup">SIGN UP</a>
+                            </li>
+                        </ul>
+                            <select name="language.selector" class="m_select_lan">
+                                <option value="ko">Korean</option>
+                                <option value="en">English</option>
+                            </select>
+                        <ul>
+                            <li class="m_nav_menu">
+                                <a class="m_menu_dep01" href="exchange.html">Exchange</a>
+                            </li>
+                            <li class="m_nav_menu">
+                                <a class="m_menu_dep01" href="deposit_withdrawal.html">Deposit and withdrawal</a>
+                            </li>
+                            <li class="m_nav_menu">
+                                <a class="m_menu_dep01" href="invest.ko.html">Asset details</a>
+                            </li>
+                            <li class="m_nav_menu">
+                                <a class="m_menu_dep01" href="support.html">Support</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+    <main id="content" role="main">
+        <div class="main-visual main-visual-new">
+            <div class="visual-wrap">
+                <div class="slider_notice">
+                    <ul class="slider_notice_tit">
+                       <li>안전하고 간편한<br/>디지털 자산 거래플랫폼</li>
+                       <li>안전하고 간편한<br/>디지털 자산 거래플랫폼</li>
+                       <li>안전하고 간편한<br/>디지털 자산 거래플랫폼</li>
+                    </ul>
+                </div>
+                <div class="list_notice">
+                    <div class="notice_item">
+                        <div class="div2 vtab">
+                            <div><a href="#vtab1" class="vselected">Notice</a></div>
+                            <div><a href="#vtab2">블록체인 Today</a></div>
+                        </div>
+                        <div class="vpanel">
+                            <ul id="vtab1">
+                                <li>[안내] HOLDPORT 회원 데이터 이전공지</li>
+                                <li>[안내] HOLDPORT 회원 데이터 이전공지</li>
+                                <li>[안내] HOLDPORT 회원 데이터 이전공지</li>
+                                <li>[안내] HOLDPORT 회원 데이터 이전공지</li>
+                            </ul> 
+                            <ul id="vtab2">
+                                <li>[안내] HOLDPORT 회원 데이터 이전공지</li>
+                                <li>[안내] HOLDPORT 회원 데이터 이전공지</li>
+                                <li>[안내] HOLDPORT 회원 데이터 이전공지</li>
+                                <li>[안내] HOLDPORT 회원 데이터 이전공지</li>
+                            </ul>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="home">
+            <div class="notice_home">
+                <p class="notice_tit">동일 색상</p>
+                <ul class="notice_content alCenter">
+                    <li>
+                        <a class="noticeText" href="#/support/notice?post=8826">라이브 차트영역</a>
+                    </li> 
+                </ul>
+            </div>
+            <article class="slider_notice_wrap">
+                <ul class="slider_data">
+                    <li>
+                        <img src="../img/gdc.png" alt="gdc" class="icon_coin">
+                        <span>GDC/KRW</span>
+                        <span>11,600</span>
+                        <img src="../img/icon_chart.png" alt="chart" class="icon_chart">
+                    </li>
+                    <li>
+                        <img src="../img/gdc.png" alt="gdc" class="icon_coin">
+                        <span>GDC/KRW</span>
+                        <span>11,600</span>
+                        <img src="../img/icon_chart.png" alt="chart" class="icon_chart">
+                    </li>
+                    <li>
+                        <img src="../img/gdc.png" alt="gdc" class="icon_coin">
+                        <span>GDC/KRW</span>
+                        <span>11,600</span>
+                        <img src="../img/icon_chart.png" alt="chart" class="icon_chart">
+                    </li>
+                    <li>
+                        <img src="../img/gdc.png" alt="gdc" class="icon_coin">
+                        <span>GDC/KRW</span>
+                        <span>11,600</span>
+                        <img src="../img/icon_chart.png" alt="chart" class="icon_chart">
+                    </li>
+                    <li>
+                        <img src="../img/gdc.png" alt="gdc" class="icon_coin">
+                        <span>GDC/KRW</span>
+                        <span>11,600</span>
+                        <img src="../img/icon_chart.png" alt="chart" class="icon_chart">
+                    </li>
+                    <li>
+                        <img src="../img/gdc.png" alt="gdc" class="icon_coin">
+                        <span>GDC/KRW</span>
+                        <span>11,600</span>
+                        <img src="../img/icon_chart.png" alt="chart" class="icon_chart">
+                    </li>
+                    <li>
+                        <img src="../img/gdc.png" alt="gdc" class="icon_coin">
+                        <span>GDC/KRW</span>
+                        <span>11,600</span>
+                        <img src="../img/icon_chart.png" alt="chart" class="icon_chart">
+                    </li>
+                </ul>
+            </article>
+            <article class="content_assets">
+                <div class="inner_new alCenter">
+                    <ul class="list_assets">
+                        <li>
+                            <img src="../img/newbita/icon_heart.png" alt="icon heart">
+                            <div class="detail_exchange">
+                                <p class="detail_tit">이벤트</p>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="../img/newbita/icon_up.png" alt="icon up">
+                            <div class="detail_exchange">
+                                <p class="detail_tit">금주의 상장 코인</p>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="../img/newbita/icon_setup.png" alt="icon setup">
+                            <div class="detail_exchange">
+                                <p class="detail_tit">인증센터</p>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="../img/newbita/icon_folder.png" alt="icon folder">
+                            <div class="detail_exchange">
+                                <p class="detail_tit">나의 자산</p>
+                            </div>
+                        </li> 
+                        <li>
+                            <img src="../img/newbita/icon_folder.png" alt="icon folder">
+                            <div class="detail_exchange">
+                                <p class="detail_tit">나의 자산</p>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="../img/newbita/icon_folder.png" alt="icon folder">
+                            <div class="detail_exchange">
+                                <p class="detail_tit">나의 자산</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="list_data_new">
+                        <div class="market-price-header table01_top">
+                            <ul class="tab">
+                                <li class="on">KRW</li>
+                                <li>BTC</li>
+                                <li>USDT</li>
+                            </ul>
+                            <input type="text" class="srch" placeholder="Search Coins" value="">
+                        </div>
+                        <div class="market-price-body">
+                            <table class="table01">
+                                <thead>
+                                    <tr class="table01_title">
+                                        <th>거래코인명</th>
+                                        <th>코인</th>
+                                        <th>현재가</th>
+                                        <th>24h 변동율</th>
+                                        <th>24h 고가</th>
+                                        <th>24h 저가</th>
+                                        <th>24h 거래대금</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="coin">
+                                            <img src="../img/coin-symbol/TELO.png" alt="TELO">TELO/KRW
+                                        </td>
+                                        <td>TELO</td>
+                                        <td>99</td>
+                                        <td class="green">
+                                            <span class="rate up01"></span>
+                                            <span>10,000,000</span>
+                                        </td>
+                                        <td>100</td>
+                                        <td>99</td>
+                                        <td>99,755,915.6</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="coin">
+                                            <img src="../img/coin-symbol/WRD.png" alt="WRD">WRD/KRW
+                                        </td>
+                                        <td>WRD</td>
+                                        <td>99</td>
+                                        <td class="red">
+                                            <span class="rate up02"></span>
+                                            <span>10,000,000</span>
+                                        </td>
+                                        <td>100</td>
+                                        <td>99</td>
+                                        <td>99,755,915.6</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="coin">
+                                            <img src="../img/coin-symbol/ETC.png" alt="ETC">ETC/KRW
+                                        </td>
+                                        <td>ETC</td>
+                                        <td>99</td>
+                                        <td class="red">
+                                            <span class="rate up02"></span>
+                                            <span>10,000,000</span>
+                                        </td>
+                                        <td>100</td>
+                                        <td>99</td>
+                                        <td>99,755,915.6</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="coin">
+                                            <img src="../img/coin-symbol/USDT.png" alt="TELO">USDT/KRW
+                                        </td>
+                                        <td>USDT</td>
+                                        <td>99</td>
+                                        <td class="green">
+                                            <span class="rate up01"></span>
+                                            <span>10,000,000</span>
+                                        </td>
+                                        <td>100</td>
+                                        <td>99</td>
+                                        <td>99,755,915.6</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="coin">
+                                            <img src="../img/coin-symbol/ETH.png" alt="TELO">ETH/KRW
+                                        </td>
+                                        <td>ETH</td>
+                                        <td>99</td>
+                                        <td class="red">
+                                            <span class="rate up02"></span>
+                                            <span>10,000,000</span>
+                                        </td>
+                                        <td>100</td>
+                                        <td>99</td>
+                                        <td>99,755,915.6</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button class="btn_price">더보기</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="content_security content_security_new">
+                <div class="inner_new alCenter">
+                    <h2 class="tit">강력한 보안시스템</h2>
+                    <ul class="list_security">
+                        <li>
+                            <img src="../img/newbita/icon_exwallet.png" alt="wallet">
+                            <p class="list_tit">강화된 월렛보안</p>
+                            <p class="list_txt">핫월렛과 콜드월렛 분리하여 사용하며 멀티시그를 <br/>제공하여 보안의핵심인 private-key를 암호화관리<br/>콜드월렛에 90% 이상의 자산을 안전하게 보관</p>
+                        </li>
+                        <li>
+                            <img src="../img/newbita/icon_excenter.png" alt="icon security">
+                        </li>
+                        <li>
+                            <img src="../img/newbita/icon_exuser.png" alt="exuser">
+                            <p class="list_tit">계정정보보안</p>
+                            <p class="list_txt">이메일/휴대폰인증,OTP 인증 ARS인증,KYC계좌인증<br/>4중 인증으로 최적화된 보안 인증 시스템</p>
+                        </li>
+                    </ul>
+                </div>
+            </article>
+            <article class="content_system">
+                <div class="inner_new alCenter">
+                    <ul class="list_system">
+                        <li>
+                            <img src="../img/newbita/icon_system01.png" alt="exuser">
+                            <p class="list_tit">최상의 보안 솔루션</p>
+                            <p class="list_txt">최고 수준의 업계 보안 전문가<br/>파트너들와 함께 가장 안전한 보안<br/>시스템을 구축하여<br/>외부 해킹과 공격을 탐지하고 방어하며<br/>더욱 안전하게 거래할 수 있도록 최상의<br/>보안 솔루션을 제공합니다.</p>
+                        </li>
+                        <li>
+                            <img src="../img/newbita/icon_system02.png" alt="exuser">
+                            <p class="list_tit">빠르고 안정적인 거래시스템</p>
+                            <p class="list_txt">최고의 개발팀 구성, 신뢰할 수 있는<br/>기술력으로 보다 안정적인 서버운영과<br/>최고의 보안 시스템을 지원하여 보다.<br/>빠르고 안정적으로 거래 할 수 있도록<br/>합니다.</p>
+                        </li>
+                        <li>
+                            <img src="../img/newbita/icon_system03.png" alt="exuser">
+                            <p class="list_tit">엄선된 디지털 가상자산</p>
+                            <p class="list_txt">디지털 가상자산에 대하여 기술력<br/>안정성, 투자 가치성을 고려하여 검증이<br/>확인된 가상자산들을 엄격한 기준을<br/>통해서 상장합니다.</p>
+                        </li>
+                        <li>
+                            <img src="../img/newbita/icon_system04.png" alt="exuser">
+                            <p class="list_tit">친절하고 신속한 고객서비스</p>
+                            <p class="list_txt">거래 플랫폼을 이용하는 도중 생기는<br/>불편사항, 문의사항을 빠르고, 정확하게<br/>응대하여 이용하시는 회원님들의 편의와<br/>만족도를 충족시키기 위해 회원님들의<br/>입장에서 나아가겠습니다.<br/></p>
+                        </li>
+                    </ul>
+                </div>
+            </article>
+        </div>
+    </main> 
+    <footer id="footer_new">
+        <div class="inner_new">
+            <div class="footer_content">
+                <div class="footer_top_new">
+                    <div class="footer_logo_new">
+                        <img src="../img/newbita/logo_footer.png" alt="logo">
+                    </div>
+                    <address class="footer_body_new">
+                        <p>회사명 : 주식회사 오병이어 홀딩스 ㅣ 회사주소 : 서울시 강남구 봉은사로 112길6 익성빌딩 5F</p>
+                        <p>사업자 등록번호 : 808-86-01241 | 고객센터 : 1833-9078</p><p>상장문의 이메일 : listing@bita500.com</p>
+                        <p>고객문의 이메일 : help@bita500.com</p>
+                    </address>
+                    <p class="copyright">Copyright©bita500.com All rights reserved.</p>
+                </div>
+                <nav class="footer_gnb_new">
+                    <ul class="gnb_ul_new">
+                        <li class="gnb_li_tit">
+                            <a href="#none">회사정보</a>
+                        </li>
+                        <li>
+                            <a href="#none">회사정보</a>
+                        </li>
+                        <li>
+                            <a href="#none">이용약관</a>
+                        </li>
+                        <li>
+                            <a href="#none">개인정보처리방침</a>
+                        </li>
+                    </ul>
+                    <ul class="gnb_ul_new">
+                        <li class="gnb_li_tit">
+                            <a href="#none">고객지원</a>
+                        </li>
+                        <li>
+                            <a href="#none">공지사항</a>
+                        </li>
+                        <li>
+                            <a href="#none">자주하는 질문</a>
+                        </li>
+                        <li>
+                            <a href="#none">수수료 안내</a>
+                        </li>
+                        <li>
+                            <a href="#none">1:1 문의하기 (평일10:00-19:00)</a>
+                        </li>
+                        <li>
+                            <a href="#none">카카오톡 문의</a>
+                        </li>
+                        <li>
+                            <a href="#none">상장문의</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </footer>
+    <aside class="global-sidebar"></aside>
+</div>
+<script src="../js/common/tab.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    
+    $(".slider_notice_tit").slick({
+        dots:true, 
+        infinite: true,
+        autoplay: true, 
+        autoplaySpeed: 3500, 
+        arrows: false, 
+	}).show();
+
+    $(".list_assets").slick({
+        dots: false, 
+        infinite: true,
+        slidesToShow: 4, 
+        slidesToScroll: 1, 
+        autoplay: false, 
+        autoplaySpeed: 4000, 
+        cssEase: 'linear', 
+        arrows: true, 
+        responsive: [
+            {
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                infinite: true,
+                dots: true
+            }
+            },
+            {
+            breakpoint: 600,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 1
+            }
+            },
+            {
+            breakpoint: 480,
+            settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1
+            }
+            }
+            // You can unslick at a given breakpoint now by adding:
+            // settings: "unslick"
+            // instead of a settings object
+        ]
+	}).show();
+</script>
+  
+</body>
+</html>

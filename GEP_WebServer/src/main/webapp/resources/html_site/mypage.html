@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>My Page</title>
+
+    <link rel="icon" href="../path/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="../css/uiStyle.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/jquery/jquery-3.3.1.js"></script>
+    <script src="../js/jquery/jquery-ui.js"></script>
+    <script src="../js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="../js/jquery/slick.js"></script>
+
+    <script type="text/javascript">
+        //세로탭메뉴
+        $(function() {
+            $("ul.vpanel li:not(" + $("ul.vtab li a.vselected").attr("href") + ")").hide()
+            $("ul.vtab li a").click(function() {
+                $("ul.vtab li a").removeClass("vselected");
+                $(this).addClass("vselected");
+                $("ul.vpanel li").hide();
+                $($(this).attr("href")).show();
+                return false;
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <div id="wrap" class="sc-gzVnrw ibZhkv">
+        <div class="header">
+            <!-- menu PC -->
+            <div id="sub_top">
+                <div class="inner">
+                    <div class="s_logo">
+                        <a href="#/">
+                            <!-- lost image -->
+                            <img src="../img/logo.png" alt="Logo" />
+                        </a>
+                    </div>
+                    <div class="gnb">
+                        <ul class="gnb_btn_box">
+                            <li id="active">
+                                <a href="signup.html"> Sign up </a>
+                            </li>
+                            <li>
+                                <a href="login.html"> Login </a>
+                            </li> 
+                        </ul>
+                        <select name="language.selector" class="select_lan">
+                            <option value="en">English</option>
+                            <option value="ko">Korean</option>
+                            <option value="ja">Japanese</option>
+                            <option value="id">Indonesian</option>
+                            <option value="zh">Chinese</option>
+                        </select>
+                        <div class="notice_header">
+                            <img src="../img/ic_notice.png" alt="notice" width="20px"/>
+                        </div>
+                        <div class="sc-bdVaJa dXfIaQ">
+                            <ul class="gnb_menu">
+                                <li class="nav-item">
+                                    <a href="exchange.html">Exchange</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="deposit_withdrawal.html">Deposit and withdrawal</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="invest.html">Investment details</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="is-active"  href="mypage.html">My page</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="support.html">Support</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- menu mobile -->
+            <div class="m_top">
+                <div class="inner">
+                    <div class="m_logo">
+                        <a href="#/">
+                            <img src="../img/logo_m.png" alt="Logo" />
+                        </a>
+                    </div>
+                    <div class="m_btn" onclick="openNavMobile()">
+                        <img src="../img/toggle.png" alt="toggle">
+                    </div>
+                </div>
+                <aside class="global-sidebar">
+                    <div id="m_nav" class="slide-side-enter-done" style="right: -100%;">
+                        <div class="m_nav_inner">
+                            <div class="close">
+                                <img src="../img/modal_close.png" alt="close" onclick="closeNavMobile()" />
+                            </div>
+                            <ul class="m_nav_btnbox">
+                                <li>
+                                    <a href="#/user/signin">SIGN IN</a>
+                                </li>
+                                <li>
+                                    <a href="#/user/signup">SIGN UP</a>
+                                </li>
+                             </ul>
+                                <select name="language.selector" class="m_select_lan">
+                                    <option value="en">English</option>
+                                    <option value="ko">Korean</option>
+                                    <option value="ja">Japanese</option>
+                                    <option value="id">Indonesian</option>
+                                    <option value="zh">Chinese</option>
+                                </select>
+                            <ul>
+                                <li class="m_nav_menu">
+                                    <a class="m_menu_dep01" href="#/exchange">Exchange</a>
+                                </li>
+                                <li class="m_nav_menu">
+                                    <a class="m_menu_dep01" href="#/wallet/balances">Deposit and withdrawal</a>
+                                </li>
+                                <li class="m_nav_menu">
+                                    <a class="m_menu_dep01" href="#/order/openorders">Investment details</a>
+                                </li>
+                                <li class="m_nav_menu">
+                                    <a class="m_menu_dep01" href="#/account/myassets">My page</a>
+                                </li>
+                                <li class="m_nav_menu">
+                                    <a class="m_menu_dep01" href="#/support/notice">Support</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+        <main id="content" role="main" class="main">
+            <article class="layoutD">
+
+                <aside>
+                    <h1 class="menutitle">
+                        마이페이지
+                    </h1>
+                    <ul class="vtab">
+                        <li><a href="#vtab1" class="vselected">회원정보</a></li>
+                        <li><a href="#vtab2">보안인증</a></li>
+                        <li><a href="#vtab3">접속관리</a></li>
+                    </ul>
+    
+                </aside>
+    
+                <div class="content">
+                    <ul class="vpanel">
+                        <!--회원정보 시작-->
+                        <li id="vtab1">
+                            <h1 class="subtitle">
+                                회원정보
+                            </h1>
+    
+                            <h2 class="tabletitle">회원정보</h2>
+                            <table class="type01">
+                                <tbody>
+                                    <tr>
+                                        <th>이메일</th>
+                                        <td>asdfgjk@gmail.com</td>
+                                    </tr>
+                                    <tr>
+                                        <th>휴대폰번호</th>
+                                        <td>010*****0000 <button>변경하기</button></td>
+                                    </tr>
+                                    <tr>
+                                        <th>비밀번호 변경</th>
+                                        <td><button class="pop-password">비밀번호 변경</button></td>
+                                    </tr>
+                                    <tr>
+                                        <th>보안 인증 수단 선택</th>
+                                        <td>
+                                            <input type="radio" id="ex_rd1" name="rdo">
+                                            <label for="ex_rd1">SMS</label>
+                                            <input type="radio" id="ex_rd2" name="rdo">
+                                            <label for="ex_rd2">OTP</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>마케팅 수신동의</th>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox"><em></em>동의
+                                            </label>
+    
+    
+                                            <label>
+                                                <input type="checkbox"><em></em>미동의
+                                            </label>
+    
+                                            
+                                            <p>▶ 주요 공지사항은 수신 동의 여부와 관계없이 발송됩니다.</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+    
+                            <h2 class="tabletitle">나의 추천인</h2>
+                            <table class="type01">
+                                <tbody>
+                                    <tr>
+                                        <!--<th>지급완료 회원수</th>
+                                        <td class="recomm">
+                                            <b class="blue">5</b>명
+                                        </td>-->
+    
+                                        <th>총 추천 회원수</th>
+                                        <td colspan="2">※ 추천인이 회원가입 후 보안등급 레벨3(OTP)까지 인증한 경우에만 집계됩니다.</td>
+                                        <td class="recomm">
+                                            <b class="blue">6</b>명
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>추천방법</th>
+                                        <td colspan="3">
+                                            <h6>
+                                                <sapn class="blue">① 추천인 코드</sapn>
+                                                를 회원가입 시 입력
+                                            </h6>
+                                            <h6>
+                                                <span class="gray">추천인 코드</span>
+                                                <b>4SSDFD</b>
+                                                <button>복사하기</button>
+                                            </h6>
+                                            <h6>
+                                                <sapn class="blue">② 추천인 코드</sapn>
+                                                가 포함된 가입링크로 회원가입(추천코드 자동 입력)
+                                            </h6>
+                                            <h6>
+                                                <span class="gray">가입링크 </span>
+                                                <b>http//wwww.coinis.co.kr/daksjhfgfgsddfsfdfssadffgaee</b>
+                                                <button>복사하기</button>
+                                            </h6>
+                                        </td>
+                                    </tr>
+                                    <!--<tr>
+                                        <th>추천인 삭제</th>
+                                        <td colspan="3">
+                                            <button>추천인 삭제하기</button>
+                                        </td>
+                                    </tr>-->
+                                </tbody>
+                            </table>
+                        </li>
+                        <!--회원정보 끝-->
+    
+                        <!--보안인증 시작-->
+                        <li id="vtab2">
+                            <h1 class="subtitle">
+                                보안인증
+                            </h1>
+                            <p class="mylevel">
+                                <span>홍길동님</span>의 현재 보안등급은 
+                                <span class="blue"> 레벨3 </span>입니다.</p>
+                            <p><span class="blue">신분증 인증시</span> 암호화폐 출금한도가 상향됩니다.</p>
+    
+                            <dl class="level">
+                                <dt class="done levellink" onclick="openPage('level1')" id="defaultOpen">
+                                    <p class="blue">레벨1</p>
+                                    <p>이메일 인증</p>
+                                    <p><img src="../img/yaho/level1.png" alt="level1"></p>
+                                    <p>askd@gmail.com</p>
+                                </dt>
+                                <dd class="done levellink" onclick="openPage('level2')">
+                                    <p class="blue">레벨2</p>
+                                    <p>휴대폰 본인인증</p>
+                                    <p><img src="../img/yaho/level2.png" alt="level2"></p>
+                                    <p>홍길동(010****1234)</p>
+                                    <button class="pop-sms">재설정</button>
+                                </dd>
+                              
+                                <dd class="now levellink" onclick="openPage('level3')">
+                                    <p class="blue">레벨3</p>
+                                    <p>추가인증 사용</p>
+                                    <p><img src="../img/yaho/level3.png" alt="level3"></p>
+                                    <p>OTP인증</p>
+                                    <button class="pop-otp">초기화</button>
+                                </dd>
+                                <dd class="able levellink" onclick="openPage('level4')">
+                                    <p>레벨4</p>
+                                    <p>신분인증</p>
+                                    <p><img src="../img/yaho/level4.png" alt="level4"></p>
+                                    <p>출금한도 상향</p>
+                                    <button>인증하기</button>
+                                </dd>
+                                <dd class="impossble levellink" onclick="openPage('level5')">
+                                    <p>레벨5</p>
+                                    <p>거주지인증</p>
+                                    <p><img src="../img/yaho/level5.png" alt="level5"></p>
+                                    <p>출금한도 상향</p>
+                                    <button class="gray">레벨5 신청</button> <!--비활성화일경우 클래스 gray-->
+                                    <!--<p>별도심사</p>-->
+                                </dd>
+                            </dl>
+    
+                            <div id="level1" class="leveinfo">
+                                <h3>이메일 인증</h3>
+                                <p>회원가입시 레벨1 이메일 인증이 완료 됩니다.</p>
+                            </div>
+    
+                            <div id="level2" class="leveinfo">
+    
+                                <div>
+                                    <h3>휴대폰 인증</h3>
+                                    <span>본인 명의의 휴대폰으로 실명, 생년월일, 성별, 전화번호를 인증합니다.</span>
+                                    <button class="blue big"> 인증하기</button>
+                                </div>
+    
+                                <!--<div>
+                                    <h3>휴대폰 재설정</h3>
+                                    <p>- 휴대폰 번호 변경 및 재인증이 필요한 경우 진행해주세요</p>
+                                    <p>- 인증에 사용된 번호로 고객님의 휴대폰 번호 정보가 업데이트 됩니다.</p>
+                                    <p>- 인증요청은 일 1회로 제한됩니다.</p>
+                                    <span>본인 명의의 휴대폰으로 실명, 생년월일, 성별, 전화번호를 인증합니다.</span>
+                                    <button class="blue big"> 인증하기</button>
+                                </div>-->
+                            </div>
+    
+                            
+    
+                            <!--추가인증 otp 시작-->
+                            <div id="level3" class="leveinfo">
+                                <h3>추가인증 - OTP 인증</h3>
+                                <p>- OTP 인증을 설정하시면 로그인, 출금신청시 OTP 추가인증을 통해 보안이 강화됩니다.</p>
+    
+    
+                                <div class="mgt20">
+                                    <h1> 1. OTP 앱 설치</h1>
+    
+                                    <p>스마트폰의 Play스토어(안드로이드 폰) 또는 App스토어(아이폰) 에서 Google OTP 앱을 검색 후 설치 합니다.</p>
+    
+                                    <div class="mgt20">
+                                        <img src="../img/yaho/img-google.jpg">
+                                        <img src="../img/yaho/img-apple.jpg">
+                                    </div>
+                                </div>
+    
+                                <div class="mgt20">
+                                    <h1> 2. OTP 앱 실행 및 키 값 설정</h1>
+    
+                                    <p>Google OTP 앱을 실행 하신 후 아래의 바코드를 스캔 하거나 키를 입력 하십시오.</p>
+    
+                                    <div class="my-key">
+                                        <span class="my-key-qr">
+                                            <img src="../img/temp-qrimg.png" alt="qr code">
+                                        </span>
+                                    </div>
+                                    
+                                    <div class="my-key-txt">
+                                        <span>
+                                            <span>바코드 스캔을 할 수 없는 경우에는 아래의 키를 OTP 앱에 직접 입력 하세요<br><span>HFCECNBRGRATGNCDGYYDIM2GGQ4UENSASWEDEEDHFBTGMJSIM3EKNBUGVDA</span>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+    
+                                <div class="mgt20">
+                                    <h1>3. OTP 인증 하기</h1>
+    
+                                    <p>OTP 앱 화면에 표시된 인증번호 여섯자리를 입력 하세요.</p>
+    
+                                    <table class="type01 mgt20">
+                                        <colgroup>
+                                            <col style="width: 200px">
+                                            <col>
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <th>로그인 비밀번호</th>
+                                                <td>
+                                                    <input type="password" id="" name="" value="" class="basic">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>휴대폰 SMS 인증</th>
+                                                <td>
+                                                    <input type="text" id="" name="" value="" placeholder="휴대폰 번호를 입력하세요">
+                                                    <button>인증번호 요청</button>
+                                                </td>
+                                            </tr>
+    
+                                            <tr>
+                                                <th>OTP 인증번호</th>
+                                                <td>
+                                                    <input type="text" id="" name="" value="" placeholder="OTP 인증번호를 입력하세요">
+    
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="btn-wrap mgt20">
+                                        <button class="big blue">인증하기</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--추가인증 otp 끝-->
+    
+                            <!--신분증인증 시작-->
+                            <div id="level4" class="leveinfo">
+                                <!--개인시분증 시작-->
+                                <h3>개인 신분증 인증</h3>
+                                <p>- 신분인증을 하시고 출금한도 상향 문의주세요.</p>
+                                <table class="type01 mgt10">
+                                    <colgroup>
+                                        <col style="width: 200px">
+                                        <col>
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <th>성명</th>
+                                            <td><input type="text" value="홍길동" disabled></td>
+                                        </tr>
+                                        <tr>
+                                            <th>생년월일</th>
+                                            <td>
+                                                <input type="text" name="calendar" id="Date" required="" placeholder="Date of Birth" value="1985-02-18" disabled>
+                                            </td>
+                                        </tr>
+                                       <!-- <tr>
+                                            <th>주소</th>
+                                            <td><input type="text" value="서울시 종로구 가로수길 23 길동빌라 503호" disabled></td>
+                                        </tr>
+                                        <tr>
+                                            <th>우편번호</th>
+                                            <td><input type="text" value="12345" disabled></td>
+                                        </tr>-->
+                                        <tr>
+                                            <th>국가</th>
+                                            <td>
+    
+                                                <select id="ex-select" class="select-box disable" disabled>
+                                                    <option>Country</option>
+                                                    <option selected>South Korea</option>
+                                                    <option>United States</option>
+                                                    <option>Philippines</option>
+                                                    <option>Vietnam</option>
+                                                    <option>China</option>
+                                                    <option>Japan</option>
+                                                    <option>South Korea</option>
+                                                    <option>United States</option>
+                                                    <option>Philippines</option>
+                                                    <option>Vietnam</option>
+                                                    <option>China</option>
+                                                    <option>Japan</option>
+                                                    <option>South Korea</option>
+                                                    <option>United States</option>
+                                                    <option>Philippines</option>
+                                                    <option>Vietnam</option>
+                                                    <option>China</option>
+                                                    <option>Japan</option>
+                                                    <option>South Korea</option>
+                                                    <option>United States</option>
+                                                    <option>Philippines</option>
+                                                    <option>Vietnam</option>
+                                                    <option>China</option>
+                                                    <option>Japan</option>
+                                                </select>
+    
+    
+                                            </td>
+                                        </tr>
+    
+                                        <tr>
+                                            <th>신분증 종류</th>
+                                            <td>
+                                                <div class="rd-box">
+                                                    <input type="radio" name="radio" id="ex_rd3" checked="checked">
+                                                    <label for="ex_rd3">주민등록증</label>
+                                                    <input type="radio" name="radio" id="ex_rd4">
+                                                    <label for="ex_rd4">운전면허증</label>
+                                                    <input type="radio" name="radio" id="ex_rd5">
+                                                    <label for="ex_rd5">여권</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                신분증 사진
+                                            </th>
+                                            <td>
+                                                <div class="fileimg">
+                                                    <h1>1. 신분증 + 요청사항 메모</h1>
+                                                    <label>
+                                                        <img id="image_section" src="../img/yaho/img_level4_info1.jpg" alt="your image" />
+                                                        <span>Click Upload</span>
+                                                        <input type='file' id="imgInput" />
+                                                    </label>
+    
+                                                </div>
+    
+                                                <div class="fileimg">
+                                                    <h1>2. 1번을 들고 찍은 사진</h1>
+                                                    <label>
+                                                        <img id="image_section1" src="../img/yaho/img_levle4_info2.jpg" alt="your image" />
+                                                        <span>Click Upload</span>
+                                                        <input type='file' id="imgInput1" />
+                                                    </label>
+                                                </div>
+    
+    
+                                                <p class="mgt10">
+                                                1. 개인정보(①,②) 가린 요청사항 메모부착 신분증 사진(위 사진 참조)</p>
+                                                <p>2. 메모부착 신분증을 들고 찍은 정면 사진(위 사진 참조)</p>
+                                                <p>※ 신분증은 주민등록증, 운전면허증, 여권 3가지 유효기간내의 신분증만 해당됩니다.</p>
+                                                <p>※ 신분증 사진 촬영시 포트잇 등으로 개인정보를 가리고 사진촬영하세요.(사진 참조, 포토샵 등 이미지 편집프로그램으로 수정 금지)</p>
+                                                <p>※ 첨부파일은 jpg / png 이미지 파일만 첨부가 가능합니다.(4MB 제한)</p>
+                                                <p>※ 제출 서류에 개인정보가 가려져 있지 않은 경우 반려 처리 됩니다.</p>
+                                                <p>※ 추가 한도 상향을 요청하는 경우 추가적인 인증이 더 필요 할 수 있으며, 관리자 승인에 시간이 소요됩니다. 1:1 문의를 통해 문의하세요</p>
+                                                <p>※ 자동차운전면허증 : 면허번호, 주민등록번호 뒷 7자리, 주소 가려주세요</p>
+                                                <p>※ 여권 : 여권번호, 기계 판독 영역 가려주세요</p>
+                                                
+                                                
+                                            </td>
+                                        </tr>
+    
+                                    </tbody>
+                                </table>
+                                <!--개인시분증 끝-->
+    
+                                <!--법인신분증 시작-->
+                                <h3>법인 신분증 인증</h3>
+                                <p>- 신분인증을 하시고 출금한도 상향 문의주세요.</p>
+                                <table class="type01 mgt10">
+                                    <colgroup>
+                                        <col style="width: 200px">
+                                        <col>
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <th>회사명</th>
+                                            <td><input type="text" value="홍길동" disabled></td>
+                                        </tr>
+                                        <tr>
+                                            <th>대표자성명</th>
+                                            <td>
+                                                <input type="text" name="calendar" id="Date" required="" placeholder="Date of Birth" value="1985-02-18" disabled>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>로그인 이메일</th>
+                                            <td><input type="text" value="서울시 종로구 가로수길 23 길동빌라 503호" disabled></td>
+                                        </tr>
+                                        <tr>
+                                            <th>담당자명</th>
+                                            <td><input type="text" value="12345" disabled></td>
+                                        </tr>
+                                        <tr>
+                                            <th>국가</th>
+                                            <td>
+    
+                                                <select id="ex-select" class="select-box disable" disabled>
+                                                    <option>Country</option>
+                                                    <option selected>South Korea</option>
+                                                    <option>United States</option>
+                                                    <option>Philippines</option>
+                                                    <option>Vietnam</option>
+                                                    <option>China</option>
+                                                    <option>Japan</option>
+                                                    <option>South Korea</option>
+                                                    <option>United States</option>
+                                                    <option>Philippines</option>
+                                                    <option>Vietnam</option>
+                                                    <option>China</option>
+                                                    <option>Japan</option>
+                                                    <option>South Korea</option>
+                                                    <option>United States</option>
+                                                    <option>Philippines</option>
+                                                    <option>Vietnam</option>
+                                                    <option>China</option>
+                                                    <option>Japan</option>
+                                                    <option>South Korea</option>
+                                                    <option>United States</option>
+                                                    <option>Philippines</option>
+                                                    <option>Vietnam</option>
+                                                    <option>China</option>
+                                                    <option>Japan</option>
+                                                </select>
+    
+    
+                                            </td>
+                                        </tr>
+    
+                                        <tr>
+                                            <th>신분증 종류</th>
+                                            <td>
+                                                <div class="rd-box">
+                                                    <input type="radio" name="radio1" id="ex_rd6" checked="checked">
+                                                    <label for="ex_rd6">주민등록증</label>
+                                                    <input type="radio" name="radio1" id="ex_rd7">
+                                                    <label for="ex_rd7">운전면허증</label>
+                                                    <input type="radio" name="radio1" id="ex_rd8">
+                                                    <label for="ex_rd8">여권</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                신분증 사진
+                                            </th>
+                                            <td>
+                                                <div class="fileimg">
+                                                    <h1>담당자 신분증 :</h1>
+                                                    <label>
+                                                        <img id="image_section" src="../img/yaho/img_otp_info1.jpg" alt="your image" />
+                                                        <span>Click Upload</span>
+                                                        <input type='file' id="imgInput" />
+                                                    </label>
+    
+                                                </div>
+    
+                                                <div class="fileimg">
+                                                    <h1>대표자 신분증 :</h1>
+                                                    <label>
+                                                        <img id="image_section" src="../img/yaho/img_otp_info1.jpg" alt="your image" />
+                                                        <span>Click Upload</span>
+                                                        <input type='file' id="imgInput1" />
+                                                    </label>
+                                                </div>
+                                                <div class="fileimg mgt20">
+                                                    <h1>사업자등록증 :</h1>
+                                                    <label>
+                                                        <img id="image_section1" src="../img/img-id03.jpg" alt="your image" />
+                                                        <span>Click Upload</span>
+                                                        <input type='file' id="imgInput1" />
+                                                    </label>
+                                                </div>
+    
+                                                <p class="txt-gray mgt10">Only jpg/png files supported and the file should not exceed 4MB</p>
+                                            </td>
+                                        </tr>
+    
+                                    </tbody>
+                                </table>
+                                <!--법인신분증 끝-->
+    
+                                <div class="btn-wrap mgb20">
+                                    <button class="big blue">인증하기</button>
+                                </div>
+                            </div>
+                            <!--신분증인증 끝-->
+                            
+                            <!--거주지인증 시작-->
+                            <div id="level5" class="leveinfo">
+                                <div>
+                                    <h3>거주지 인증</h3>
+                                    <p>- 거주지 증명서는 주민등록초본/외국인등록사실증명서/국내거소신고증명서 중 택1 하여 제출해야 합니다.</p>
+                                    <p>- 거주지 증명서는 발급일로부터 3개월 이내인 경우에만 유효합니다</p>
+                                    <p>- 거주지 인증 후, 암호화폐 출금한도 상향이 가능합니다..</p>
+                                    <!--<button class="blue big"> 레벨5 상향 신청</button>-->
+                                </div>
+                                
+                                <table class="type01 mgt10">
+                                    <colgroup>
+                                        <col style="width: 200px">
+                                        <col>
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <th>주소</th>
+                                            <td>
+                                                <!--<input type="text" placeholder="증빙서류 상의주소를 정확히 기재해주세요." >-->
+                                                <textarea placeholder="증빙서류 상의주소를 정확히 기재해주세요"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>직업</th>
+                                            <td>
+                                                <select id="ex-select" class="select-box">
+                                                    <option>직업을 선택해 주세요</option>
+                                                    <option>근로소득자</option>
+                                                    <option>자영업자</option>
+                                                    <option>전문직</option>
+                                                    <option>정년퇴직자</option>
+                                                    <option>주부</option>
+                                                    <option>학생</option>
+                                                    <option>무직/기타</option>
+                                                    
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>거래의 목적</th>
+                                            <td>
+                                                <input type="text">
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <th>자금의 원천 및 출처</th>
+                                            <td>
+                                                <input type="text">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>월간 예상 거래 횟수</th>
+                                            <td>
+                                                <input type="text">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>월간 예상 거래 금액(원화)</th>
+                                            <td>
+                                                <input type="text">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>보안등급5 확인 사항 동의</th>
+                                            <td>
+                                                <div class="rd-box">
+                                                    <input type="radio" name="radio" id="ex_rd9">
+                                                    <label for="ex_rd9">동의</label>
+                                                </div>
+                                                <p>
+                                                    ■ 본인은 암호화폐의 출금한도를 10억원에서 50억원으로 상향하는 것에 동의합니다.<br>
+                                                    ■ 보안등급 5인증 신청은 암호화폐 출금한도만 상향되는 것으로 입금과는 무관함을 알려드립니다.<br>
+                                                    ■ 본인은 금융사기, 자금세탁 등 불법 행위에 암호화폐 거래를 이용하지 않을 것이며 이러한 행위로 인해 발생할 수 있는 불이익에 대해서는 본인이 감수할 것을 확인합니다.<br>
+                                                    ■ 정확한 서류 제출 후 정상 접수가 확인되면 익일 처리될 예정임을 알려드립니다.</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>개인정보 수집 및 이용 동의(필수)</th>
+                                            <td>
+                                                <div class="rd-box">
+                                                    <input type="radio" name="radio1" id="ex_rd10">
+                                                    <label for="ex_rd10">동의</label>
+                                                </div>
+                                                <p>
+                                                    수집 목적 : 본인 확인 및 암호화폐 거래 관계 확인, 암호화폐 거래 관계의 설정·유지·해지, 출금한도 상향 등 서비스 관리 전반에 관한 사항 등<br>
+                                                    수집 항목 : 주소, 직업, 거주지 증명 서류 (주민등록초본, 외국인등록사실증명서, 국내거소신고증명서), 거래 정보(거래 목적, 예상 거래 등)<br>
+                                                    보유 기간 : 탈퇴 후 5년<br>
+                                                    ■ 회원은 상담 문의 처리로 개인정보를 제공하는 것에 동의하지 않을 수 있으며, 동의를 거부하시는 경우 상담 문의 처리가 불가합니다.<br>
+                                                    ■ 위 내용을 반드시 전부 확인하신 뒤 동의하신다면 체크해 주세요.
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                첨부파일
+                                            </th>
+                                            <td>
+                                                  <h1>주민등록초본/외국인등록사실증명서/국내거소신고증명서 중 택1</h1>
+                                                <div class="fileimg">
+                                                  
+                                                    <label>
+                                                        <img id="image_section" src="../img/img-id03.jpg" alt="your image" />
+                                                        <span>Click Upload</span>
+                                                        <input type='file' id="imgInput" />
+                                                    </label>
+    
+                                                </div>
+    
+                                              
+    
+                                                <p class="mgt10">
+                                                    ■ 발급일로부터 3개월 이내인 경우에만 유효합니다.<br>
+                                                    ■ 주민등록번호/외국인등록번호/거소신고번호 뒤 6자리는 표시되지 않아야 하며, 번호 전체가 노출된 서류 업로드 시, 거주지 인증이 불가합니다.<br>
+                                                    ■ 주민등록초본/외국인등록사실증명서/국내거소신고증명서 상에 표기된 '가족사항 및 이전 거주 주소'를 가려 주셔야 하며 '가족사항 및 이전 거주 주소'가 노출된 서류 업로드 시, 거주지 인증이 불가합니다.<br>
+                                                    ■ 상단에 기재하신 주소와 증빙서류 상의 주소가 일치하지 않을 경우 거주지 인증이 불가합니다.<br>
+                                                    ■ '세대주 및 세대주와의 관계'가 노출된 주민등록초본은 접수 불가합니다. '세대주 및 관계' 가 노출되지 않은 주민등록초본을 발급받으셔야 합니다.</p>
+                                                
+                                                
+                                            </td>
+                                        </tr>
+    
+                                    </tbody>
+                                </table>
+                                
+                                <div class="btn-wrap">
+                                    <button class="big blue">인증하기</button>
+                                </div>
+                            </div>
+                            
+                            <!--거주지인증 끝-->
+    
+                        </li>
+                        <!--보안인증 끝-->
+    
+                        <!--접속관리 시작-->
+                        <li id="vtab3">
+                            <h1 class="subtitle">
+                                접속관리
+                            </h1>
+                            <div class="dw-history">
+                                <!-- 조회 옵션 : Start -->
+                                <div class="mgt20">
+                                    <!--<span class="option-title">종목</span>-->
+                                    <div class="calendar">
+                                        <input type="text" name="calendar" id="startDate" required="" value="2019-04-14">
+                                        <span>~</span>
+                                        <input type="text" name="calendar" id="endDate" required="" value="2019-04-15">
+                                        <button>조회</button>
+                                    </div>
+                                </div>
+    
+                                <!-- //조회 옵션 : End -->
+                                <!-- 조회 건수 표시 : Start -->
+    
+                                <p class="case-info">총 <b class="blue">0</b>건의 자료가 조회 되었습니다</p>
+    
+                                <!-- //조회 건수 표시 : End -->
+                                <!-- 데이터 영역 : Start -->
+                                <div class="mgt30">
+                                    <table class="line">
+                                        <colgroup>
+                                            <col>
+                                            <col>
+                                            <col>
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th class="alCenter">OS</th>
+                                                <th class="alCenter">접속프로그램</th>
+                                                <th class="alCenter">IP주소</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- 기본 : 총 10개의 Row가 항상 있어야 함. -->
+                                            <!-- 1개의 Row : Start -->
+                                            <tr>
+                                                <td class="alCenter">Windows</td>
+                                                <td class="alCenter">Chrome 7802558455</td>
+                                                <td class="alCenter">100.00.000.0</td>
+                                            </tr>
+                                            <!-- //1개의 Row : End -->
+    
+                                        </tbody>
+                                    </table>
+                                    <!-- 페이징 : Start -->
+                                    <ul class="pagination">
+                                        <li><a class="btn-page first"></a></li>
+                                        <li><a class="btn-page prev"></a></li>
+                                        <li><a href="#" class="active">1</a></li><!-- 선택된 번호의 a 태그에 acitve 클래스 추가 -->
+                                        <li><a class="btn-page next"></a></li>
+                                        <li><a class="btn-page last"></a></li>
+                                    </ul>
+                                    <!-- //페이징 : End -->
+                                </div>
+                                <!-- //데이터 영역 : End -->
+                            </div>
+                        </li>
+                        <!--접속관리 끝-->
+                    </ul>
+                </div>
+            </article>
+        </main> 
+    <footer id="footer">
+        <div class="inner">
+            <div class="footer_top">
+                <div class="footer_logo">
+                    <img src="../img/logo_g.png" alt="logo">
+                </div>
+                <nav class="footer_gnb">
+                    <ul class="footer_gnb_ul">
+                        <li>
+                            <a href="#/policy">About</a>
+                        </li>
+                        <li>
+                            <a href="#/policy">Terms</a>
+                        </li>
+                        <li>
+                            <a href="#/policy?status=2">Privacy</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <address class="footer_body">
+                <p>Address : 603, Daejong-ro, Jung-gu, Daejeon, Republic of Korea</p>
+                <p>Contact: help@holdport.com</p><p>Telegram: https://t.me/HOLDPORT</p>
+                <p>© 2019 HOLDPORT. All rights reserved</p>
+            </address>
+        </div>
+    </footer>
+    <aside class="global-sidebar"></aside>
+</div>
+    <!--팝업창-->
+    <div class="popup-wrap">
+        <!-- ALTER. 기본 : Start -->
+        <div class="popup alert">
+            <!-- 팝업내용 : Start -->
+            <div class="alert-header">
+                <p class="alert-title">알림</p><!-- 팝업 타이틀 -->
+                <a class="top-close"><img src="../img/btn-alert-close.png" alt="닫기버튼"></a><!-- 팝업 닫기 버튼 -->
+            </div>
+            <div class="alert-content">
+                <!-- 팝업 메세지 -->
+                <p class="alert-message"> 이메일 또는 비밀번호가 잘못 입력 되었습니다.</p>
+            </div>
+            <!-- //팝업내용 : End -->
+            <div class="alert-btn">
+                <button class="blue">확인 </button>
+            </div>
+        </div>
+        <!-- //ALTER. 기본 : End -->
+    </div>
+
+
+    <script>
+        //마켓별 전체보기
+        $(document).ready(function() {
+            $('.btn-folding').click(function() {
+                $('.folding').toggleClass('more');
+            });
+            $('.btn-folding1').click(function() {
+                $('.folding1').toggleClass('more');
+            });
+            $('.btn-folding2').click(function() {
+                $('.folding2').toggleClass('more');
+            });
+        });
+
+        /*북마크*/
+        $('.bookmark').click(function() {
+            $(this).toggleClass('mark-on');
+        });
+
+        /*슬릭스 슬라이더*/
+        $(".regular").slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            autoplay: false,
+            autoplaySpeed: 4000
+        });
+
+        //팝업 열고 닫기   
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+
+        //레이어팝업닫기
+
+        $(document).ready(function() {
+            $('.top-close').click(function() {
+                $('.security-pop').hide();
+            });
+        });
+        
+        /*아코디언*/
+        $(document).ready(function(){
+            $( "#tab-group" ).tabs();
+
+            $( "#accordion1" ).accordion();
+            $( "#accordion2" ).accordion();
+            $( "#accordion3" ).accordion();
+            $( "#accordion4" ).accordion();
+            $( "#accordion5" ).accordion();
+            $( "#accordion6" ).accordion();
+        });
+    </script>
+</body>
+
+</html>

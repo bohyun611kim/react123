@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.coinis.webserver.holdport.product.prd001.dao.HoldportProductDAO">
+
+	<select id="selectCoinBalance" parameterType="java.util.Map" resultType="java.util.Map">
+			SELECT  IFNULL(A.BALANCE_QTY,0.0)  - IFNULL(B.NON_CONTRACT_QTY, 0.0) - IFNULL(DW_REQ_QTY,0.0)
+ 			AS BALANCE_QTY
+            FROM
+            (
+                    SELECT  SUM(BALANCE_QTY ) AS  BALANCE_QTY
+                    FROM   TB_COIN_BALANCE
+                    WHERE  EXCHANGE_ID = #{exchangeId, jdbcType=VARCHAR}
+                    AND     USER_ID = #{userId, jdbcType=VARCHAR}
+                    AND     COIN_NO = #{coinNo, jdbcType=NUMERIC, javaType=integer}
+            ) A,
+            (
+                    SELECT SUM(TRUNCATE(ORD_PRICE * NON_CONTRACT_QTY + TRADE_FEE_BY_AC,10)) AS NON_CONTRACT_QTY
+                    FROM  TB_NON_CONTRACT_ORDER A,
+                              TB_ITEM_CODE_MAST B
+                    WHERE A.EXCHANGE_ID = #{exchangeId, jdbcType=VARCHAR}
+                    AND    A.USER_ID = #{userId, jdbcType=VARCHAR}
+                    AND    A.NON_CONTRACT_QTY > 0.0
+                    AND    ORD_TYPE_CD = 1 -- 신규주문
+                    AND    SELL_BUY_RECOG_CD = 1 -- 매수
+                    AND    A.ITEM_CODE = B.ITEM_CODE
+                    AND    B.BASIC_ASSET_COIN_NO = #{coinNo, jdbcType=NUMERIC, javaType=integer}
+            ) B,
+            (
+                    SELECT SUM(REQ_QTY + IFNULL(WTDRW_FEE, 0.0)) AS DW_REQ_QTY
+                    FROM  TB_DEPOSIT_WITHDRAW_MGR
+                    WHERE EXCHANGE_ID = #{exchangeId, jdbcType=VARCHAR}
+                    AND     USER_ID = #{userId, jdbcType=VARCHAR}
+                    AND     COIN_NO = #{coinNo, jdbcType=NUMERIC, javaType=integer}
+                    AND     DW_REQ_TYPE_CD IN (2, 4)
+                    AND     REQ_STAT_PROC_CD != 5   -- 요청취소
+                    AND     APPROVAL_STAT_CD != -1  -- 승인취소
+                    AND     DW_PROC_STAT_CD  NOT IN (1, -1) -- 처리완료, 처리실패
+            ) C
+	</select>
+
+	<select id="selectCoinTradeAmout" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT IFNULL(TRUNCATE(SUM(BASIC_ASSET_COIN_QTY-TRADE_FEE_AMT), 0), 0) AS TRADE_AMT,
+		IFNULL(SUM(CONTRACT_QTY), 0) AS TRADE_QTY
+		FROM TB_ORDER_LIST
+		WHERE IF_TRANSACTION_ID=#{ifTransactionId, jdbcType=VARCHAR}
+		AND ORD_STATUS_CD=322
+  </select>
+
+	<select id="selectPointConvertList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+         REQ_DAY,
+         REQ_DT,
+         COIN_NO,
+         PIN_CD,
+         TARGET_ADDR,
+         TARGET_ADDR_ETC1,
+         TARGET_ADDR_ETC2,
+         REQ_QTY,
+         DW_REQ_TYPE_CD,
+         REQ_STAT_PROC_CD,
+         APPROVAL_STAT_CD,
+         DW_PROC_STAT_CD
+        FROM TB_DEPOSIT_WITHDRAW_MGR
+        WHERE     USER_ID  = #{userId, jdbcType=VARCHAR}
+         AND EXCHANGE_ID = #{exchangeId, jdbcType=VARCHAR}
+         AND DW_REQ_TYPE_CD= 4
+         AND TARGET_ADDR='DIBAPAY'
+         AND FROM_ADDR= #{fromAddr, jdbcType=VARCHAR}
+         ORDER BY  REQ_DT DESC
+	</select>
+
+	<update id="procPointConvertRequest" parameterType="java.util.Map" statementType="CALLABLE">
+		{
+			CALL PR_API_POINT_CONVERT_REQ(
+				#{exchangeId,	mode=IN, 	jdbcType=VARCHAR},
+				#{requestIp, 	mode=IN, 	jdbcType=VARCHAR},
+				#{userId, 		mode=IN, 	jdbcType=VARCHAR},
+				#{pointUserId, 	mode=IN, 	jdbcType=VARCHAR},
+				#{pointUserPwd, 	mode=IN, 	jdbcType=VARCHAR},
+				#{coinNo, 	mode=IN, 	jdbcType=NUMERIC, javaType=integer},
+				#{reqQty, 	mode=IN, 	jdbcType=NUMERIC},
+				#{rtnCd, 		mode=OUT, 	jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 		mode=OUT, 	jdbcType=VARCHAR}
+			)
+		}
+	</update>
+
+	<update id="procCoinToPointConvert" parameterType="java.util.Map" statementType="CALLABLE">
+		{
+			CALL PR_API_COIN_TO_POINT_CONVERT_REQ(
+				#{exchangeId,	mode=IN, 	jdbcType=VARCHAR},
+				#{requestIp, 	mode=IN, 	jdbcType=VARCHAR},
+				#{userId, 		mode=IN, 	jdbcType=VARCHAR},
+				#{pointUserId, 	mode=IN, 	jdbcType=VARCHAR},
+				#{pointUserPwd, 	mode=IN, 	jdbcType=VARCHAR},
+				#{fromAddr, 	mode=IN, 	jdbcType=VARCHAR},
+				#{coinNo, 	mode=IN, 	jdbcType=NUMERIC, javaType=integer},
+				#{reqQty, 	mode=IN, 	jdbcType=NUMERIC},
+				#{pinCd, 	mode=IN, 	jdbcType=VARCHAR},
+				#{rtnCd, 		mode=OUT, 	jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 		mode=OUT, 	jdbcType=VARCHAR}
+			)
+		}
+	</update>
+
+</mapper>
+

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>1:1 Inquiry</title>
+
+    <link rel="shortcut icon" href="../path/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../css/uiGlobal.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+
+
+    <script src="../js/jquery/jquery-3.3.1.js"></script>
+    <script src="../js/jquery/jquery-ui.js"></script>
+    <script src="../js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="../js/jquery/slick.js"></script>
+
+    <script type="text/javascript">
+        //상단 네비게이션
+        $(document).ready(function() {
+
+            $(".topnav").hover(function() { //마우스를 topnav에 오버시
+                $(this).parent().find(".subnav").slideDown('normal').show(); //subnav가 내려옴.
+                $(this).addClass('on');
+                $(this).parent().hover(function() {}, function() {
+                    $(this).parent().find(".subnav").slideUp('fast'); //subnav에서 마우스 벗어났을 시 원위치  
+                    $(".topnav").removeClass('on');
+                });
+            });
+        });
+
+        //달력
+        $(function() {
+            $("#startDate").datepicker();
+        });
+        $(function() {
+            $("#endDate").datepicker();
+        });
+
+        //label을 사용한 셀렉트
+        $(document).ready(function() {
+            var selectTarget = $('.select-box select');
+            selectTarget.change(function() {
+                var select_name = $(this).children('option:selected').text();
+                $(this).siblings('label').text(select_name);
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <!-- HEADER : Start -->
+    <header>
+        <!--최상단 네비게이션 시작-->
+        <nav>
+            <div class="navi-wrap">
+                <div class="navi-logo">
+                    <h1>
+                        <a href="home.html" target="_parent"><img src="../img/logo.png" alt="logo"></a>
+                    </h1>
+
+                </div>
+                <div class="navi-menu">
+                    <ul class="navi">
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MKT-M001.html','_parent')">Exchange</div>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Wallet</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M001.html','_parent')">Deposit & Withdrawal</li>
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M002.html','_parent')">Transaction</li>
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M003.html','_parent')">Holdings</li>
+                            </ul>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Orders</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--MKT-M002.html','_parent')">Trading Histroy</li>
+                                <li onclick="window.open('GLOBAL-WEB--MKT-M003.html','_parent')">Outstanding Orders</li>
+                            </ul>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav active">Support</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--CST-M001.html','_parent')">Notice</li>
+                                <li onclick="window.open('GLOBAL-WEB--CST-M002.html','_parent')">FAQ</li>
+                                <li onclick="window.open('GLOBAL-WEB--CST-M003.html','_parent')">1:1 Inquiry</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navi-user">
+                    <ul class="navi">
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MBR-M001.html','_parent')">Register</div>
+                            <!--<div class="topnav" onclick="window.open('GLOBAL-WEB--MYP-M001.html','_parent')">My Page</div>-->
+                        </li>
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MBR-M002.html','_parent')">Log In</div>
+                            <!--<div class="topnav">Log Out</div>-->
+                        </li>
+                        <li class="navi_set">
+                            <div class="topnav">English</div>
+                            <ul class="subnav">
+                                <li>English</li>
+                                <li>한국어</li>
+                                <li>ภาษาไทย</li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!--최상단 네비게이션 끝-->
+    </header>
+    <!-- //HEADER : End -->
+
+    <!--컨텐츠 내용 영역 시작-->
+    <section>
+        <!--공지사항 전체 내용 시작-->
+        <article class="bgwhite">
+
+            <h1 class="sub-title">
+                <ul>
+                    <li>1:1 Inquiry</li>
+                </ul>
+            </h1>
+            <div class="content-item">
+                <div class="search-option-group">
+                    <div class="fl-right">
+                        <button class="bggray" onclick="openForm()">1:1 Inquiry</button>
+                    </div>
+                </div>
+
+                <!--보유 코인 테이블 시작-->
+                <div class="tblType02 mgt0">
+                    <table>
+                        <colgroup>
+                            <col>
+                            <col style="width: 700px;">
+                            <col>
+                            <col>
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>제목</th>
+                                <th>작성일</th>
+                                <th>답변일</th>
+                                <th>답변여부</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5" class="center">You have no Inauiry </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td class="left blue">OTP 초기화 해주세요</td>
+                                <td>2019-03-13</td>
+                                <td>2019-03-13</td>
+                                <td class="txt-gray">대기중</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td class="left">출금해주세요</td>
+                                <td>2019-03-13</td>
+                                <td>2019-03-13</td>
+                                <td>처리완료</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td class="left">테스트테스트</td>
+                                <td>2019-03-13</td>
+                                <td>2019-03-13</td>
+                                <td>처리완료</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <!-- 페이징 : Start -->
+                    <ul class="pagination">
+                        <li><a class="btn-page first"></a></li>
+                        <li><a class="btn-page prev"></a></li>
+                        <li><a href="#" class="active">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a class="btn-page next"></a></li>
+                        <li><a class="btn-page last"></a></li>
+                    </ul>
+                    <!-- //페이징 : End -->
+                </div>
+                <!--보유코인 테이블 끝-->
+
+                <!--1:1 문의 내용 및 답변 보기 시작-->
+                <div class="mgt20">
+                    <h1><strong>문의 내용 및 답변</strong></h1>
+
+                    <div class="inquiry-view">
+                        <!--문의 분류 및 제목 영역 시작-->
+                        <dl>
+                            <dt>Initialize OTP Setting</dt>
+                            <dd><strong>OTP 설정 초기화 해주세요. </strong></dd>
+                        </dl>
+                        <!--문의 분류 및 제목 영역 끝-->
+
+                        <!--질문 내용 보여지는 영역 시작-->
+                        <div class="ask-view">
+                            <div>
+                                계좌등록시 오류가 나요. 농협은행을출금거래를했는데출금계좌표시가없어서 다시만들려고하는데 오류가뜨네요.
+                            </div>
+                            <div class="file-view">
+                                <p class="filetitle-view">
+                                    <img src="../img/icon-photo.jpg" alt="image icon">
+                                </p>
+                                <p>2019-05-05 00:00  </p>
+                            </div>
+                            <span class="filetitle-box">
+                                <p>
+                                    <span class="file-name">ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.jpg</span>
+                                    <span class="file-volume">
+                                        <span>6.15</span>
+                                        <span>MB</span>
+                                    </span>
+                                </p>
+                                <p>
+                                    <span class="file-name">KakaoTalk_20190107_124804948.jpg</span>
+                                    <span class="file-volume">
+                                        <span>196.15</span>
+                                        <span>MB</span>
+                                    </span>
+                                </p>
+                            </span>
+                        </div>
+                        <!--질문 내용 보여지는 영역 끝-->
+
+                        <!--답변 내용 보여지는 영역 시작-->
+                        <div class="answer-view">
+                            <div class="re-wrap">
+                                <div class="icon-re"></div>
+                            </div>
+                            <div class="answer-box">
+                                OTP 로그인 초기화 절차 안내드립니다.<br>
+                                ※ 코인이즈 웹페이지 > 로그인 > 하단에 "OTP초기화 신청" 들어가신 후 하단 제출서류 안내 참고 하셔서 제출부탁드립니다.<br>
+                                메모지에 "코인이즈 본인인증" "ID" "날짜" 적으신 후 메모지를 신분증에 부착하시고<br>
+                                1.신분증, 2. 신분증 들고 있는 사진 [메모부착] 2개의 인증자료를 제출 해주시면 확인후 초기화 도움드리겠습니다.
+                            </div>
+
+
+                            <!--재문의 버튼 - 항상 마지막 답변에 붙어있음-->
+                            <div class="re-btn-box">
+                                <p class="re-btn"><button class="small bgblue">Re-inquiry</button></p>
+                                <p>2019-05-05 00:00  </p>
+                            </div>
+                        </div>
+                        <!--답변 내용 보여지는 영역 끝-->
+
+                        <!--re-inquiry 눌렀을 경우 나타나는 재문의 입력영역 시작-->
+                        <div class="re-ask" style="display: block">
+                            <div class="re-ask-write">
+                                <textarea placeholder="내용을 입력해 주세요"></textarea>
+                                <div class="filebox">
+                                    <!-- 파일첨부 버튼 : Start -->
+                                    <label for="ex_filename">Add file</label>
+                                    <input type="file" id="ex_filename" class="upload-hidden">
+                                    <!-- //파일첨부 버튼 : End -->
+                                    <!-- 첨부된 파일 리스트 : Start -->
+                                    <div class="filebox-inner mCustomScrollbar fl-right">
+                                        <div class="filebox-item">
+                                            <!-- 첨부된 파일 1개 : Start -->
+                                            <p>
+                                                <span><a href="#" class="file-btn-del"></a></span><!-- 첨부한 파일 삭제 버튼 -->
+                                                <span class="file-name">ABCDEFGHIJKLMNOPQRSTU.jpg</span><!-- 첨부된 파일 명 -->
+                                                <span class="file-volume">
+                                                    <span>2.3</span><!-- 첨부된 파일의 크기 -->
+                                                    <span>MB</span><!-- 사이즈는 MB로 고정임 -->
+                                                </span>
+                                            </p>
+                                            <!-- //첨부된 파일 1개 : End -->
+                                            <p>
+                                                <span><a href="#" class="file-btn-del"></a></span>
+                                                <span class="file-name">ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.jpg</span>
+                                                <span class="file-volume">
+                                                    <span>196.15</span>
+                                                    <span>MB</span>
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <!-- //첨부된 파일 리스트 : End -->
+                                </div>
+                            </div>
+                            <div class="re-ask-regist">
+                                <button class="bggray">등록</button>
+                            </div>
+
+                        </div>
+                        <!--re-inquiry 눌렀을 경우 나타나는 재문의 입력영역 끝-->
+
+                    </div>
+                </div>
+                <!--1:1 문의 내용 및 답변 끝-->
+
+            </div>
+
+        </article>
+        <!--공지사항전체 전체 내용 끝-->
+    </section>
+    <!--컨텐츠 내용 영역 끝-->
+
+    <!-- FOOTER : Start -->
+    <footer>
+        <div class="footer-menu-wrap">
+            <div class="footer-menu">
+                <a href="GLOBAL-WEB--ETC-P001.html">Terms and Conditions </a>
+                <a href="GLOBAL-WEB--ETC-P002.html">Privacy Statements </a>
+                <a href="GLOBAL-WEB--ETC-M001.html">Fees</a>
+            </div>
+        </div>
+
+        <div class="footer-wrap">
+            <p class="footer-logo">
+                <a href="#">WAVE STRAING</a>
+            </p>
+            <div class="footer-group">
+                <ul>
+                    <li>주식회사 <span class="orange-bold">웨이브스트링</span></li>
+                    <li>서울특별시 구로구 디지털로 273, 306호(구로동, 에이스트윈타워 2차)</li>
+                    <li>대표이사 : 정명묵</li>
+                </ul>
+                <ul>
+                    <li>사업자등록번호 : 113-86-84751</li>
+                </ul>
+                <ul>
+                    <li>현금입출금 :<span class="white-bold"> 09:00~18:00 (휴일포함)</span></li>
+                    <li>코인입출금 : <span class="white-bold">24시간 (휴일포함)</span></li>
+                </ul>
+                <p class="copyright-area">Copyright&copy; 2012 wavestring All rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+    <!-- FOOTER : End -->
+
+    <!--문의하기 팝업 시작-->
+    <div class="inquiry-pop" id="myForm" style="display: block">
+        <div class="popup-back"></div>
+        <div class="popup more">
+            <form action="">
+                <div class="pop-title"><span>1:1 Inquiry</span>
+                    <div class="cancel" onclick="closeForm()">
+                        <img src="../img/btn-alert-close.png" alt="닫기버튼">
+                    </div>
+                </div>
+            </form>
+
+            <div class="popup-cont">
+
+                <h1>Choose 1:1 Inquiry Classification</h1>
+                <table class="tblType01">
+                    <colgroup>
+                        <col style="width: 130px">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>Classification</th>
+                            <td>
+                                <div class="select-box">
+                                    <label for="country">Choose Classification</label>
+                                    <select id="ex-select">
+                                        <option selected>Choose Classification</option>
+                                        <option>비밀번호 변경</option>
+                                        <option>수수료</option>
+                                        <option>인증레벨 설정</option>
+                                        <option>코인매수 / 매도</option>
+                                        <option>코인입출금</option>
+                                        <option>회원가입 / 탈퇴</option>
+                                        <option>계정 도용 / 해킹피해신고</option>
+                                        <option>OPT설정 초기화</option>
+                                        <option>SMS인증 초기화</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Attach files</th>
+                            <td>
+                                <div class="filebox">
+                                    <!-- 첨부된 파일 리스트 : Start -->
+                                    <div class="filebox-inner mCustomScrollbar">
+                                        <div class="filebox-item">
+                                            <!-- 첨부된 파일 1개 : Start -->
+                                            <p>
+                                                <span><a href="#" class="file-btn-del"></a></span><!-- 첨부한 파일 삭제 버튼 -->
+                                                <span class="file-name">ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.jpg</span><!-- 첨부된 파일 명 -->
+                                                <span class="file-volume">
+                                                    <span>2.3</span><!-- 첨부된 파일의 크기 -->
+                                                    <span>MB</span><!-- 사이즈는 MB로 고정임 -->
+                                                </span>
+                                            </p>
+                                            <!-- //첨부된 파일 1개 : End -->
+                                            <p>
+                                                <span><a href="#" class="file-btn-del"></a></span>
+                                                <span class="file-name">ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.jpg</span>
+                                                <span class="file-volume">
+                                                    <span>0.0023</span>
+                                                    <span>MB</span>
+                                                </span>
+                                            </p>
+                                            <p>
+                                                <span><a href="#" class="file-btn-del"></a></span>
+                                                <span class="file-name">ABCDEFGHIJKLMNOPQRST.jpg</span>
+                                                <span class="file-volume">
+                                                    <span>50.000</span>
+                                                    <span>MB</span>
+                                                </span>
+                                            </p>
+                                            <p>
+                                                <span><a href="#" class="file-btn-del"></a></span>
+                                                <span class="file-name">ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.jpg</span>
+                                                <span class="file-volume">
+                                                    <span>49.999</span>
+                                                    <span>MB</span>
+                                                </span>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                    <!-- //첨부된 파일 리스트 : End -->
+                                    <!-- 파일첨부 버튼 : Start -->
+                                    <label for="ex_filename">Attach files</label>
+                                    <input type="file" id="ex_filename" class="upload-hidden">
+                                    <!-- //파일첨부 버튼 : End -->
+
+                                </div>
+                                <div class="tip-txt">
+                                    - Photo file must be one of jpg, png, gif format <br> 
+                                    - Total size of attached files can't exceed 50MB
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h1 class="mgt20">Enter 1:1 Inquiry</h1>
+                <table class="tblType01">
+                    <colgroup>
+                        <col style="width: 130px">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>Subject</th>
+                            <td><input type="text" placeholder="Enter the Subject"></td>
+                        </tr>
+                        <tr>
+                            <th>Contents</th>
+                            <td>
+                                <textarea placeholder="Enter body text"></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="btn-wrap">
+                    <button type="submit" class="big bggray">1:1 Inquiry </button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <!--문의하기 팝업 끝-->
+
+
+
+    <script>
+        //상단 전체메뉴 
+        var zoomx = 100;
+        $(document).ready(function() {
+            $(".gnb-menu").hover(
+                function() {
+                    $(".sub-menu-wrap").stop().slideDown(400);
+                },
+                function() {
+                    $(".sub-menu-wrap").stop().slideUp(200);
+                });
+
+            $(".sub-menu-wrap").hover(
+                function() {
+                    $(".sub-menu-wrap").stop().slideDown(400);
+                },
+                function() {
+                    $(".sub-menu-wrap").stop().slideUp(200);
+                });
+        });
+
+        //마켓별 전체보기
+        $(document).ready(function() {
+            $('.btn-folding').click(function() {
+                $('.folding').toggleClass('more');
+            });
+
+        });
+
+        /*북마크*/
+        $('.bookmark').click(function() {
+            $(this).toggleClass('mark-on');
+        });
+
+
+
+        /*슬릭스 슬라이더*/
+        $(".regular").slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            autoplay: false,
+            autoplaySpeed: 4000
+        });
+
+
+        //jquery 탭
+        $(document).ready(function() {
+            $("#tab-group").tabs();
+
+            $("#datepicker").datepicker({
+                inline: true
+            });
+        });
+
+        //1:1문의 토글
+        $('.filetitle-view').click(function() {
+            $('.filetitle-box').toggle();
+        });
+
+        $('.re-btn').click(function() {
+            $('.re-ask').toggle();
+        });
+
+        //팝업 열고 닫기   
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

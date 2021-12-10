@@ -1,0 +1,232 @@
+{
+    "shared.markets": ["KRW", "BTC", "TRX", "USDT"],
+    "coin.market.titles": [{"tit": "Asset", "class": "alLeft"},{"tit": "Present value", "class": "alLeft"},{"tit": "Volume", "class": "alCenter"}, {"tit": "Change rate", "class": "alRight"}],
+    "coin.names": { 
+        "BTC": "Bitcoin", "ETH": "Ethereum", "AMC": "Aircraft Mileage Coin", "LTC": "Litecoin", "EOS": "EOS", 
+        "MC" : "Mostcash", "AMB" : "AMC Blue", "BCS" : "Bitcoinstar", "BCH" : "Bitcoincash", "BTG" : "Bitcoingold", 
+        "DASH" : "DASH", "ABAG" : "ABAG", "HDN" : "Hidden", "BTH" : "Bithidden", "AIDAO" : "AIDAO", 
+        "YOC" : "YOCoin", "CWC" : "CWCoin", "EBH" : "EBlackHole", "MXR" : "MaxVRcoin", "APL" : "Aplcash", 
+        "ICZ" : "Increz", "GBC" : "Goldenbay", "COS" : "Coinstar", "SCOR" : "Scorcoin", "CIM" : "COINMAN", 
+        "RIZ" : "RIZ Token", "TAMSG" : "TAMSGOLD", "OSN" : "Official Signature", "DWC" : "DOWON COIN", "XRP" : "Ripple", 
+        "RVN" : "Ravencoin", "BIZT" : "BIZ Token", "STRO" : "Super Tron", "ETG" : "ETG TOKEN", "XET" : "ETERNAL TOKEN", 
+        "TORUS": "Torus", "MAVL": "Marvel Token", "TCG": "TCG coin", "GIGC": "GIGCoin", "DCMC": "DCMC", 
+        "RET": "Raise Entertainment Token", "LANX": "LANX Coin", "TRX": "TRON", "ABZC": "asiabizcion", "WCC": "World Check Coin", 
+        "DIOT": "DREAMIOTCOIN", "STC": "STC Coin", "UMX": "UMX Coin", "LCGC": "Life Care Global COIN", "GTT": "GOLDENTIME",
+        "AMBX" : "AMC Blue","WRD":"WRD", "SMILE":"SMILE", "HGN":"HGN"
+    },
+    "menu.list": [
+        { "title": "Exchange", "path": "/site/exchange" },
+        { "title": "Deposit and withdrawal", "path": "/site/wallet" },
+        { "title": "Asset details", "path": "/site/invest" },
+        { "title": "Product*Service", "path": "/site/product" },
+        { "title": "Support", "path": "/site/support" }
+    ],
+    "intro.visuals": [
+        { "title": "Safe and easy", "explain": "digital asset trading platform" }    
+    ],
+    "intro.newcoins": [
+        { "image": "/resources/img/newbita/banner01_en.png", "path": "/site/support", "alt": "#"},
+        { "image": "/resources/img/newbita/banner02_en.png", "path": "/site/support", "alt": "#"},
+        { "image": "/resources/img/newbita/banner03_en.png", "path": "/site/support", "alt": "#"},
+        { "image": "/resources/img/newbita/banner04_en.png", "path": "/site/support", "alt": "#"},
+        { "image": "/resources/img/newbita/banner05_en.png", "path": "/site/support", "alt": "#"}
+    ],
+    "events.new": [
+        { "image": "event_banner6_ko.png", "path": "https://holdport.com/frontend/build/index.html#/support/notice?post=5803", "alt": "#" }
+    ],
+    "exchange.technology.list": [
+        { "image": "icon_exwallet.png", "alt": "wallet","title": "Enhanced wallet security", "explain": "Separate use of hot wallet and cold wallet, and provide multi-sig,\ncryptographic management of the\nkey of security, private-key, safe storage of more than 90% of assets in cold wallet" },
+        { "image": "icon_excenter.png", "alt": "center","title": "", "explain": "" },
+        { "image": "icon_exuser.png", "alt": "user","title": "Account Information Security", "explain": "Preserve the assets of storage\nmembers with leading industry experts and with information security equivalent to information\nprotection certification according to international standards." }
+    ],
+    "list.system.list":[
+        { "image": "icon_system01.png", "alt": "system 1","title": "Best security solution", "explain": "Industry-leading security experts\nThe most secure security with our partners by building a system Detect and\ndefend against external hacking and attacks For safer transactions We provide\nthe best security solutions." },
+        { "image": "icon_system02.png", "alt": "system 2","title": "Fast and reliable trading system", "explain": "Formation of the best development\nteam, reliable More stable server\noperation and By supporting the best\nsecurity system faster and more\nstable Allows you to trade." },
+        { "image": "icon_system03.png", "alt": "system 3","title": "Selected digital virtual assets", "explain": "Tecnologia para ativos virtuais \ndigitais,Considerando a estabilidade e o\nvalor do investimentoAtivos virtuais\nverificadosEles são listados de acordo com critérios estritos." },
+        { "image": "icon_system04.png", "alt": "system 4","title": "Friendly and prompt customer service", "explain":"Occurring while using the trading platform.\nQuickly and accurately respond to complaints and inquiries\nConvenience and convenience of members who use to satisfy satisfaction\nin the members' offices I will move on."}
+    ],
+    "cold.wallet.list": [
+            { "title": "Wallet security", "explain": "Safely separated and stored in a cold wallet\nBased on the highest level of security system\nSafely operate various digital asset wallets" },
+            { "title": "Account security", "explain": "Know How SMS of Bita500, which is simpler and safer than OTP\n2-channel additional authentication with simple authentication\n24-hour monitoring with a systematically designed" }
+    ],
+    "intro.asideBanners": [
+        { "path": "https://krwcworld.com", "image": "aside_krwc.en.png", "alt": "krwc world" },
+        { "path": "https://www.blockchain.com/en/explorer", "image": "aside_banner1.png", "alt": "blockchain" },
+        { "path": "https://etherscan.io", "image": "aside_banner2.png", "alt": "etherscan" },
+        { "path": "https://xrpscan.com", "image": "aside_banner4.png", "alt": "xrpcharts" },
+        { "path": "https://tronscan.io/#/", "image": "aside_banner8.png", "alt": "tronscan" },
+        { "path": "http://smilescan.co.kr/", "image": "aside_banner9.png", "alt": "smilescan" },
+        { "path": "http://gdcscan.com/", "image": "aside_banner10.png", "alt": "gdcscan" }
+    ],
+    "intro.features": [
+        { "image": "#", "title": "Best Security Solution", 
+          "desc": "We have established the best solutions and secure systems to detect  and defend against external hacking attacks through constant  discussion and design between top security companies and exchange  developers to further safeguard your assets." },
+        { "image": "#", "title": "Reliable Technical Skills", 
+          "desc": "Our development team of diverse programmers has more than 20 years of experience in program development and operation, and support stable sever operation and the best security system with the best ability and experience." },
+        { "image": "#", "title": "Safe Asset Management", 
+          "desc": "Our exchange uses the way to separate cold wallets and hot wallets in preparation for emergency. More than 90% of your assets are stored separately in Cold Wallet wallets to keep your assets as secure as possible." }
+    ],
+    "intro.partners": [
+        { "path": "#", "image": "main_partner_amazon.png", "alt": "amazon" },
+        { "path": "#", "image": "main_partner_fntoday.png", "alt": "fntoday" },
+        { "path": "#", "image": "main_partner_qubit.png", "alt": "qubit security" },
+        { "path": "#", "image": "main_partner_daily.png", "alt": "daily coin news" },
+        { "path": "#", "image": "main_partner_camon.png", "alt": "comonpay" }
+    ],
+    "intro.shortcuts": [
+        { "title": "Exchange", "to": "/exchange", "className": "exchange" },
+        { "title": "Trade History", "to": "/order/tradehistory", "className": "trade_h" },
+        { "title": "My Asset", "to": "/account/assets", "className": "asset" },
+        { "title": "Deposit History", "to": "/wallet/history?type=deposit", "className": "deposit_h" },
+        { "title": "Withdrawal History", "to": "/wallet/history?type=withdraw", "className": "withdrawal_h" },
+        { "title": "Certification Center", "to": "/account/levelset", "className": "certificate" },
+        { "title": "Fee Information", "to": "/support/feeinfo", "className": "fee" },
+        { "title": "Login History", "to": "/account/loginhistory", "className": "login_h" }
+    ],
+    "wallet.notices": {  
+        "deposit":{  
+           "account.register":[
+               "KRW(원화) 입출금 계좌를 등록 합니다",
+               "반드시 본인 명의의 계좌를 등록 하여야 사용 가능 합니다",
+               "입출금 계좌 변경은 고객센터를 통해 본인 확인후 가능 하오니, 주의해서 입력해 주세요.",
+               "평생계좌번호는 등록하실 수 없습니다."
+            ],
+           "address":[
+               "We can't find you on our exchange if you enter the wrong deposit address.",
+               "Minimum deposit: deposit_minimum_limit symbol"
+            ],
+            "newaddress":[
+                "아래 주소로 coin_name 입금을 해 주세요",
+                "coin_name 입금 주소가 없으신 경우에는 [입금 주소 생성하기] 클릭하여 고유 coin_name 주소를 발급 받으세요"
+            ],
+            "warning":[
+                "위의 고유 coin_name 주소로 coin_name 을 전송하면 회원님의 coin_name 지갑에 입금 처리 됩니다",
+                "입금에 소요되는 시간은 10~30분 소요되나 coin_name 네트워크 상태에 따라 지연 처리될 수 있습니다",
+                "입금 처리 결과는 입출금-입출금내역 화면에서 확인 하실 수 있습니다",
+                "입금 시 지갑 주소를 꼭 확인 하십시오",
+                "※ 암호화폐 이름 및 주소를 반드시 확인하시기 바랍니다.",
+                "※ 오입금시 복구에 수수료가 청구될 수 있으며, 복구가 되지 않을 수도 있습니다."
+            ],
+           "banking":[
+                "symbol The payment time may take 5 ~ 30 minutes after applying for the deposit request.",
+                "When you make a deposit request, the administrator will make a payment by hand. (No real-time deposits)",
+                "If you make a deposit, you may be delayed.",
+                "After a certain time, the data will be deleted, so please deposit as soon as possible after request."
+           ],
+           "banking.desc":[
+                "송금자명을 본인 이름으로 하지 말고",
+                "위의 나의원화자동코드를 송금자 이름 대신 입력합니다.",
+                "회원님의 통장에서 본사로 송금 시 24hour 실시간으로 입금처리가 가능합니다.",
+                "다른 사람 원화자동코드(송금자이름)로 입력 했을 경우 본 교환소에서 찾아드릴 수가 없습니다. (동명이인 있을 경우 찾을 수가 없으므로 반드시 본인의 원화자동코드를 입력바랍니다.)"
+           ],
+           "tag":[
+               "We can't find you on our exchange if you enter the wrong deposit address.",
+               "Minimum deposit: deposit_minimum_limit symbol",
+               "Deposit will not be processed unless Tag number is entered."
+            ]
+        },
+        "withdraw":{
+           "coin.desc":[
+                "회원님의 외부 전자 지갑으로 비트코인을 출금합니다",
+                "관리자 확인 후 출금 처리 됩니다",
+                "출금처리 결과는 입출금-입출금내역 화면에서 확인하실 수 있습니다"
+            ],
+           "coin.warning":[
+                "※ 암호화폐 특성 상 출금 신청이 완료되어 블록체인에 기록되면 취소가 불가능 합니다.",
+                "※ 송금과정은 블록체인 네트워크에서 처리되므로 비타500에서 도움을 드릴수가 없습니다. 반드시 출금 주소를 반복 확인하시고 출금신청 하시기 바랍니다."
+            ],
+           "address":[
+               "Minimum withdrawal: withdrawal_minimum_limit symbol", "Maximum withdrawal: withdrawal_maximum_limit symbol",
+               "We can't find you on our exchange if you enter the wrong withdrawal address."
+            ],
+           "banking":[
+                "Minimum withdrawal: withdrawal_minimum_limit symbol", "Maximum withdrawal: withdrawal_maximum_limit symbol",
+                "symbol withdrawals are only possible with bank accounts authorized for this exchange.",
+                "symbol withdrawal limits vary by authentication phase."
+           ],
+           "tag":[
+               "Minimum withdrawal: withdrawal_minimum_limit symbol", "Maximum withdrawal: withdrawal_maximum_limit symbol",
+               "We can't find you on our exchange if you enter the wrong withdrawal address.",
+               "It is difficult to move inside symbol in the system (holdport->holdport)."
+            ]
+        }
+    },
+    "wallet.servicenote": [
+        "Coins will be deposited immediately after 15 network confirmations.", 
+        "After making a deposit, you can track its progress on the history page."
+    ],
+    "wallet.aside": [
+        "미체결 수량을 제외한 거래 가능한 수량으로 실제 보유수량과 차이가 있습니다.",
+        "실제 보유수량은 투자내역 메뉴에서 확인 가능합니다."
+    ],
+    "wallet.important": [
+        "최소 출금 : withdraw_min_qty 원",
+        "최대 출금: withdraw_max_qty 원 ",
+        "원화 입출금은 본 거래소에 등록되 있는 본인명의 은행 계좌로만 가능합니다."
+    ],
+    "product.pay": {   
+        "menu" : "페이 전송", 
+        "history" : "페이 전송 내역" , 
+        "history_head" : ["상태", "코인", "수량", "날짜"] , 
+        "notice" : ["<전송시 주의사항>", 
+                    "1.페이로 전환된 코인은 다시 원위치가 안됩니다. 주의하시기 바랍니다.", 
+                    "2.코인이 페이로 전환될 경우 코인이 거래소에서 시장가로 판매가 되기 때문에 판매 금액과 일치 하지 않을 수 있습니다"] 
+    } ,
+    "product.coupon": [
+        {   "menu" : "페이 전송", 
+            "history" : "페이 전송 내역" , 
+            "history_head" : ["상태", "코인", "수량", "날짜"] , 
+            "notice" : ["<전송시 주의사항>", 
+                        "1.페이로 전환된 코인은 다시 원위치가 안됩니다. 주의하시기 바랍니다.", 
+                        "2.코인이 페이로 전환될 경우 코인이 거래소에서 시장가로 판매가 되기 때문에 판매 금액과 일치 하지 않을 수 있습니다"] }
+    ],
+    "coupon.list": [
+        { "image": "/resources/img/newbita/discount01.png", "qty": "50000", "bonus": "10"},
+        { "image": "/resources/img/newbita/discount02.png", "qty": "100000", "bonus": "20"},
+        { "image": "/resources/img/newbita/discount03.png", "qty": "300000", "bonus": "30"},
+        { "image": "/resources/img/newbita/discount04.png", "qty": "500000", "bonus": "50"},
+        { "image": "/resources/img/newbita/discount05.png", "qty": "800000", "bonus": "70"},
+        { "image": "/resources/img/newbita/discount06.png", "qty": "1000000", "bonus": "100"},
+        { "image": "/resources/img/newbita/discount07.png", "qty": "1500000", "bonus": "130"},
+        { "image": "/resources/img/newbita/discount08.png", "qty": "2000000", "bonus": "150"},
+        { "image": "/resources/img/newbita/discount09.png", "qty": "2500000", "bonus": "200"}
+    ],
+    "account.levelset.list": [
+        [
+            { "title": "Sign-Up", "explain": "Required: Requires email verification." }
+        ],
+        [
+            { "title": "OTP Authentication", "explain": "Required: Crypto currency deposits are available and transactions are available" }
+        ],
+        [
+            { "title": "ID Verification", "explain": "Required: Valid certificate issued by the government containing names and photos(ID card or passport)\nDeposit/withdraw limit: A daily limit of 20,000 USD" }
+        ],
+        [
+            { "title": "A tax receipt submitter in his own name", "explain": "Required: Electric tax receipt, water tax receipt, car tax, insurance receipt\nDeposit/withdraw limit: A daily limit of 50,000 USD\nPlease submit your tax receipt within three months of seeing your address." }
+        ],
+        [
+            { "title": "Advanced Crypto Trader", "explain": "Required: Trading for more than one month and trading amount of more than 500,000 USD\nDeposit/withdraw limit: A daily limit of 100,000 USD" }
+        ]
+    ],
+    "account.levelset.modal": [
+        {
+            "explain": "ID card or Passport Valid certificate issued by the government containing names and photos. (Image size is less than 1M)",
+            "body": [{"title": "ID Card image upload", "type": "file"}]
+        },
+        {
+            "explain": "Electric tax receipt, water tax receipt, car tax, insurance receipt (Image size is less than 1M)",
+            "body": [{"title": "Address", "type": "text", "placeholder": "address line" }, {"title": "Tax receipt image upload", "type": "file"}]
+        },
+        {
+            "explain": "",
+            "body": [{"title": "image upload", "type": "file"}]
+        }
+    ],
+    "tab.mobile": [
+        { "name": "image1", "title": "Exchange","path":"/site/exchange" },
+        { "name": "image2", "title": "Goods * service","path":"/site/product" },
+        { "name": "image3", "title": "Deposit and withdrawal","path":"/site/wallet"},
+        { "name": "image4", "title": "Asset Details","path":"/site/invest" },
+        { "name": "image5", "title": "Customer support","path":"/site/support" }    
+    ]
+}

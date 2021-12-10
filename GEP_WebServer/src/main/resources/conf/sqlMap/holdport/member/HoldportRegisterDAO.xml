@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.coinis.webserver.holdport.member.mbr001.dao.HoldportRegisterDAO">
+
+	<resultMap type="kr.co.coinis.webserver.common.vo.ResultVO" id="ResultVO">
+		<result property="rtnCd"	column="V_RTN_CD"	jdbcType="NUMERIC"/>
+		<result property="rtnMsg"	column="V_RTN_MSG"	jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<!-- 회원 가입 기본 정보 -->
+	<update id="insertMemberInfo" statementType="CALLABLE" parameterType="kr.co.coinis.webserver.holdport.member.mbr001.vo.ReqInsertMemberInfoVO">		{
+			CALL PR_WAS_INSERT_MEMBER_INFO(
+				#{exchangeId, 	 mode=IN,  jdbcType=VARCHAR},
+				#{userId,		 mode=IN,  jdbcType=VARCHAR},
+				#{userName,	 mode=IN,  jdbcType=VARCHAR},
+				#{password, 	 mode=IN,  jdbcType=VARCHAR},
+				#{mktAgree, 	 mode=IN,  jdbcType=NUMERIC},
+				#{recommanderId, mode=IN,  jdbcType=VARCHAR},
+				#{rtnCd, 		 mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 		 mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+
+	<!-- 회원 가입 extra 정보 -->
+	<update id="insertMemberInfoExtra" statementType="CALLABLE" parameterType="kr.co.coinis.webserver.holdport.member.mbr001.vo.ReqInsertMemberInfoVO">
+		{
+			CALL PR_WAS_INSERT_MEMBER_INFO_EXTRA(
+				#{exchangeId, 	mode=IN,  jdbcType=VARCHAR},
+				#{userId, 		mode=IN,  jdbcType=VARCHAR},
+				#{userTypeCd, 	mode=IN,  jdbcType=NUMERIC},
+				#{corpRegNo, 	mode=IN,  jdbcType=VARCHAR},
+				'KR',
+				null,
+				null,
+				null,
+				null,
+				#{idTypeCd, 	mode=IN,  jdbcType=NUMERIC},
+				#{userId, 		mode=IN,  jdbcType=VARCHAR},
+				#{regDt, 		mode=IN,  jdbcType=VARCHAR},
+				#{rtnCd, 		mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 		mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+
+	<!-- 회원가입 일시 조회 -->
+	<select id="selectJoinDt" resultType="string" parameterType="kr.co.coinis.webserver.holdport.member.mbr001.vo.ReqInsertMemberInfoVO">
+		SELECT REG_DT
+		  FROM TB_MEMBER_INFO
+		 WHERE EXCHANGE_ID = #{exchangeId, jdbcType=VARCHAR}
+		   AND USER_ID = #{userId, jdbcType=VARCHAR}
+	</select>
+
+	<!-- 법인 정보 등록 -->
+	<update id="insertMemberCorpInfo" statementType="CALLABLE" parameterType="kr.co.coinis.webserver.holdport.member.mbr001.vo.ReqInsertMemberInfoVO">
+		{
+			CALL PR_WAS_INSERT_MEMBER_CORP_INFO(
+				#{corpRegNo, 	mode=IN,  jdbcType=VARCHAR},
+				#{corpName, 	mode=IN,  jdbcType=VARCHAR},
+				#{corpRepr, 	mode=IN,  jdbcType=VARCHAR},
+				null,
+				null,
+				'',
+				#{rtnCd, 		mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 		mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+
+	<!-- 이메일 전송을 위한 전송 키 값 발급 -->
+	<update id="procEmailAuth" statementType="CALLABLE">
+		{
+			CALL PR_WAS_CHECK_AUTH_CODE(
+				#{exchangeId, 		mode=IN,  jdbcType=VARCHAR},
+				#{userId, 			mode=IN,  jdbcType=VARCHAR},
+				#{authPurposeCd,	mode=IN,  jdbcType=NUMERIC},
+				#{authMeansCd, 		mode=IN,  jdbcType=NUMERIC},
+				#{authMeansKeyVal, 	mode=IN,  jdbcType=VARCHAR},
+				#{authCd, 			mode=IN,  jdbcType=VARCHAR},
+				#{rtnCd, 			mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 			mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+
+	<!-- 회원 가입 완료 처리(회원상태코드 가입상태로 변경) -->
+	<update id="updateMemberStatus" statementType="CALLABLE" parameterType="kr.co.coinis.webserver.holdport.member.mbr001.vo.ReqEmailAuthVO">
+		{
+			CALL PR_WAS_ACTIVATE_MEMBER_INFO(
+				#{exchangeId, 	mode=IN, jdbcType=VARCHAR},
+				#{userId, 		mode=IN, jdbcType=VARCHAR},
+				#{rtnCd, 		mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 		mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+
+	<!-- 멤버 상태 코드 업데이트 -->
+	<update id="updateMemberAuthStatus" statementType="CALLABLE" parameterType="kr.co.coinis.webserver.holdport.member.mbr001.vo.ReqEmailAuthVO">
+		{
+			CALL PR_WAS_CHANGE_AUTH_MEANS_CD(
+				#{exchangeId, 	mode=IN, jdbcType=VARCHAR},
+				#{userId, 		mode=IN, jdbcType=VARCHAR},
+				1,
+				#{rtnCd, 		mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, 		mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</update>
+
+	<!-- 회원 인증 레벨 확인 -->
+	<select id="selectMemberStatCd" resultType="integer">
+		SELECT COUNT(*)
+		  FROM TB_MEMBER_INFO
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND USER_ID = #{userId}
+		   AND MEMBER_STAT_CD = 1
+	</select>
+
+</mapper>
+

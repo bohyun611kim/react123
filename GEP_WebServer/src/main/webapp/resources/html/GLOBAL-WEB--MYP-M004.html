@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>ID Card</title>
+
+    <link rel="shortcut icon" href="../path/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../css/uiGlobal.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+
+
+    <script src="../js/jquery/jquery-3.3.1.js"></script>
+    <script src="../js/jquery/jquery-ui.js"></script>
+    <script src="../js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="../js/jquery/slick.js"></script>
+    <script src="../js/jquery/script.js"></script>
+    <!--나라별 국기 나오는거 스크립트-->
+
+    <script type="text/javascript">
+        //상단 네비게이션
+        $(document).ready(function() {
+
+            $(".topnav").hover(function() { //마우스를 topnav에 오버시
+                $(this).parent().find(".subnav").slideDown('normal').show(); //subnav가 내려옴.
+                $(this).addClass('on');
+                $(this).parent().hover(function() {}, function() {
+                    $(this).parent().find(".subnav").slideUp('fast'); //subnav에서 마우스 벗어났을 시 원위치  
+                    $(".topnav").removeClass('on');
+                });
+            });
+        });
+
+        //달력
+        $(function() {
+            $("#startDate").datepicker();
+        });
+        $(function() {
+            $("#endDate").datepicker();
+        });
+
+        //드롭다운 셀렉트박스
+        $(document).ready(function() {
+            $(".dropdown img.flag").addClass("flagvisibility");
+
+            $(".dropdown dt a").click(function() {
+                $(".dropdown dd ul").toggle();
+            });
+
+            $(".dropdown dd ul li a").click(function() {
+                var text = $(this).html();
+                $(".dropdown dt a span").html(text);
+                $(".dropdown dd ul").hide();
+                $("#result").html("" + getSelectedValue("sample"));
+            });
+
+            function getSelectedValue(id) {
+                return $("#" + id).find("dt a span.value").html();
+            }
+
+            $(document).bind('click', function(e) {
+                var $clicked = $(e.target);
+                if (!$clicked.parents().hasClass("dropdown"))
+                    $(".dropdown dd ul").hide();
+            });
+
+
+            $("#flagSwitcher").click(function() {
+                $(".dropdown img.flag").toggleClass("flagvisibility");
+            });
+        });
+        
+        //달력
+        $(function() {
+            $("#Date").datepicker();
+        });    
+        
+                //label을 사용한 셀렉트
+        $(document).ready(function() {
+            var selectTarget = $('.select-box select');
+            selectTarget.change(function() {
+                var select_name = $(this).children('option:selected').text();
+                $(this).siblings('label').text(select_name);
+                $('label').addClass('on');
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <!-- HEADER : Start -->
+    <header>
+        <!--최상단 네비게이션 시작-->
+        <nav>
+            <div class="navi-wrap">
+                <div class="navi-logo">
+                    <h1>
+                        <a href="home.html" target="_parent"><img src="../img/logo.png" alt="logo"></a>
+                    </h1>
+
+                </div>
+                <div class="navi-menu">
+                    <ul class="navi">
+                        <li class="navi_set">
+                            <div class="topnav" onclick="window.open('GLOBAL-WEB--MKT-M001.html','_parent')">Exchange</div>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Wallet</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M001.html','_parent')">Deposit & Withdrawal</li>
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M002.html','_parent')">Transaction</li>
+                                <li onclick="window.open('GLOBAL-WEB--WLT-M003.html','_parent')">Holdings</li>
+                            </ul>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Orders</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--MKT-M002.html','_parent')">Trading Histroy</li>
+                                <li onclick="window.open('GLOBAL-WEB--MKT-M003.html','_parent')">Outstanding Orders</li>
+                            </ul>
+                        </li>
+
+                        <li class="navi_set">
+                            <div class="topnav">Support</div>
+                            <ul class="subnav">
+                                <li onclick="window.open('GLOBAL-WEB--CST-M001.html','_parent')">Notice</li>
+                                <li onclick="window.open('GLOBAL-WEB--CST-M002.html','_parent')">FAQ</li>
+                                <li onclick="window.open('GLOBAL-WEB--CST-M003.html','_parent')">1:1 Inquiry</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navi-user">
+                    <ul class="navi">
+                        <li class="navi_set">
+                            <!--<div class="topnav" onclick="window.open('GLOBAL-WEB--MBR-M001.html','_parent')">Register</div>-->
+                            <div class="topnav active" onclick="window.open('GLOBAL-WEB--MYP-M001.html','_parent')">My Page</div>
+                        </li>
+                        <li class="navi_set">
+                            <!--<div class="topnav" onclick="window.open('GLOBAL-WEB--MBR-M002.html','_parent')">Log In</div>-->
+                            <div class="topnav">Log Out</div>
+                        </li>
+                        <li class="navi_set">
+                            <div class="topnav">English</div>
+                            <ul class="subnav">
+                                <li>English</li>
+                                <li>한국어</li>
+                                <li>ภาษาไทย</li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!--최상단 네비게이션 끝-->
+    </header>
+    <!-- //HEADER : End -->
+
+    <!--컨텐츠 내용 영역 시작-->
+    <section>
+        <!--보안설정 전체 내용 시작-->
+        <article class="bgwhite">
+
+            <h1 class="sub-title">
+                <ul>
+                    <li>My page</li>
+                    <li>ID Card</li>
+                </ul>
+            </h1>
+            <div class="content-item">
+                <div id="tab-group" class="secure">
+                    <ul class="tabs-2li">
+                        <li class="tabs-gray"><a href="#tab1">Individual member </a></li>
+                        <li class="tabs-gray"><a href="#tab2">Corporate member</a></li>
+                    </ul>
+                    
+                    <div id="tab1">
+                        <table class="tblType01 mgt20">
+                            <colgroup>
+                                <col style="width: 200px">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th>Full Name</th>
+                                    <td><input type="text" class="basic"></td>
+                                </tr>
+                                <tr>
+                                    <th>Date of Birth</th>
+                                    <td>
+                                        <input type="text" name="calendar" id="Date" required="" placeholder="Date of Birth" class="basic">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Address</th>
+                                    <td><input type="text"></td>
+                                </tr>
+                                <tr>
+                                    <th>Postal Code</th>
+                                    <td><input type="text" class="basic"></td>
+                                </tr>
+                                <tr>
+                                    <th>Country</th>
+                                    <td>
+                                        <div class="select-box country">
+                                            <label for="country"></label>
+                                            <select id="ex-select" class="country">
+                                                <option>Country</option>
+                                                <option>South Korea</option>
+                                                <option>United States</option>
+                                                <option>Philippines</option>
+                                                <option>Vietnam</option>
+                                                <option>China</option>
+                                                <option>Japan</option>
+                                                <option>South Korea</option>
+                                                <option>United States</option>
+                                                <option>Philippines</option>
+                                                <option>Vietnam</option>
+                                                <option>China</option>
+                                                <option>Japan</option>
+                                                <option>South Korea</option>
+                                                <option>United States</option>
+                                                <option>Philippines</option>
+                                                <option selected>Vietnam</option>
+                                                <option>China</option>
+                                                <option>Japan</option>
+                                                <option>South Korea</option>
+                                                <option>United States</option>
+                                                <option>Philippines</option>
+                                                <option>Vietnam</option>
+                                                <option>China</option>
+                                                <option>Japan</option>
+                                            </select>
+                                        </div>
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>ID Type</th>
+                                    <td>
+                                        <div class="rd-box">
+                                            <input type="radio" name="radio" id="ex_rd1" checked="checked">  
+                                            <label for="ex_rd1">Passport</label>
+                                            <input type="radio" name="radio" id="ex_rd2">  
+                                            <label for="ex_rd2">Identity card</label>
+                                            <input type="radio" name="radio" id="ex_rd3">  
+                                            <label for="ex_rd3">Driver's license</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        ID Card Photo
+                                    </th>
+                                    <td>
+                                       <div class="fileimg">
+                                            <h1>ID Card front :</h1>
+                                            <label>
+                                                <img id="image_section" src="../img/img-id01.jpg" alt="your image" />
+                                                <span>Click Upload</span>
+                                                <input type='file' id="imgInput" />
+                                            </label>
+                                            
+                                        </div> 
+                                        
+                                         <div class="fileimg">
+                                            <h1>Handheld ID card :</h1>
+                                            <label>
+                                                <img id="image_section1" src="../img/img-id02.jpg" alt="your image" />
+                                                <span>Click Upload</span>
+                                                <input type='file' id="imgInput1" />
+                                            </label>
+                                        </div>
+                                        
+                                       
+                                    <p class="txt-gray mgt10">Only jpg/png files supported and the file should not exceed 4MB</p>
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+
+                        <div class="btn-wrap mgb20">
+                            <button class="big bgblue">Submit</button>
+                        </div>
+                    </div>
+                    
+                    <div id="tab2">
+                        <table class="tblType01 mgt20">
+                            <colgroup>
+                                <col style="width: 200px">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th>Corporate Name</th>
+                                    <td><input type="text" class="basic"></td>
+                                </tr>
+                                <tr>
+                                    <th>Representative Name</th>
+                                    <td><input type="text" class="basic"></td>
+                                </tr>
+                                <tr>
+                                    <th>E-mail(login)ID</th>
+                                    <td><input type="text" class="basic"></td>
+                                </tr>
+                                <tr>
+                                    <th>Country / Region</th>
+                                    <td>
+                                        <div class="select-box country">
+                                            <label for="country"></label>
+                                            <select id="ex-select" class="country">
+                                                <option>Country</option>
+                                                <option>South Korea</option>
+                                                <option>United States</option>
+                                                <option>Philippines</option>
+                                                <option>Vietnam</option>
+                                                <option>China</option>
+                                                <option>Japan</option>
+                                                <option>South Korea</option>
+                                                <option>United States</option>
+                                                <option>Philippines</option>
+                                                <option>Vietnam</option>
+                                                <option>China</option>
+                                                <option>Japan</option>
+                                                <option>South Korea</option>
+                                                <option>United States</option>
+                                                <option>Philippines</option>
+                                                <option selected>Vietnam</option>
+                                                <option>China</option>
+                                                <option>Japan</option>
+                                                <option>South Korea</option>
+                                                <option>United States</option>
+                                                <option>Philippines</option>
+                                                <option>Vietnam</option>
+                                                <option>China</option>
+                                                <option>Japan</option>
+                                            </select>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Main Contact Number</th>
+                                    <td><input type="text" class="basic"></td>
+                                </tr>
+
+                                <tr>
+                                    <th>ID Type</th>
+                                    <td>
+                                        <div class="rd-box">
+                                            <input type="radio" name="radio1" id="ex_rd4" checked="checked"> 
+                                            <label for="ex_rd4">Passport</label>
+                                            <input type="radio" name="radio1" id="ex_rd5">  
+                                            <label for="ex_rd5">Identity card</label>
+                                            <input type="radio" name="radio1" id="ex_rd6">  
+                                            <label for="ex_rd6">Driver's license</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        ID Card Photo
+                                    </th>
+                                    <td>
+                                       <div class="fileimg">
+                                            <h1>ID card of person in charge :</h1>
+                                            <label>
+                                                <img id="image_section" src="../img/img-id01.jpg" alt="your image" />
+                                                <span>Click Upload</span>
+                                                <input type='file' id="imgInput" />
+                                            </label>
+                                            
+                                        </div> 
+                                        
+                                         <div class="fileimg">
+                                            <h1>Representative ID card :</h1>
+                                            <label>
+                                                <img id="image_section1" src="../img/img-id01.jpg" alt="your image" />
+                                                <span>Click Upload</span>
+                                                <input type='file' id="imgInput1" />
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="fileimg">
+                                            <h1>Business Registration :</h1>
+                                            <label>
+                                                <img id="image_section1" src="../img/img-id03.jpg" alt="your image" />
+                                                <span>Click Upload</span>
+                                                <input type='file' id="imgInput1" />
+                                            </label>
+                                        </div>
+                                       
+                                    <p class="txt-gray mgt10">Only jpg/png files supported and the file should not exceed 4MB</p>
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+
+                        <div class="btn-wrap mgb20">
+                            <button class="big bgblue">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </article>
+        <!--보안설정 전체 내용 끝-->
+    </section>
+    <!--컨텐츠 내용 영역 끝-->
+
+    <!-- FOOTER : Start -->
+    <footer>
+        <div class="footer-menu-wrap">
+            <div class="footer-menu">
+                <a href="GLOBAL-WEB--ETC-M002.html">Terms and Conditions </a>
+                <a href="GLOBAL-WEB--ETC-M003.html">Privacy Statements </a>
+                <a href="GLOBAL-WEB--ETC-M001.html">Fees</a>
+            </div>
+        </div>
+
+        <div class="footer-wrap">
+            <p class="footer-logo">
+                <a href="#">WAVE STRAING</a>
+            </p>
+            <div class="footer-group">
+                <ul>
+                    <li>주식회사 <span class="orange-bold">웨이브스트링</span></li>
+                    <li>서울특별시 구로구 디지털로 273, 306호(구로동, 에이스트윈타워 2차)</li>
+                    <li>대표이사 : 정명묵</li>
+                </ul>
+                <ul>
+                    <li>사업자등록번호 : 113-86-84751</li>
+                </ul>
+                <ul>
+                    <li>현금입출금 :<span class="white-bold"> 09:00~18:00 (휴일포함)</span></li>
+                    <li>코인입출금 : <span class="white-bold">24시간 (휴일포함)</span></li>
+                </ul>
+                <p class="copyright-area">Copyright&copy; 2012 wavestring All rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+    <!-- FOOTER : End -->
+
+
+    <script>
+        //상단 전체메뉴 
+        var zoomx = 100;
+        $(document).ready(function() {
+            $(".gnb-menu").hover(
+                function() {
+                    $(".sub-menu-wrap").stop().slideDown(400);
+                },
+                function() {
+                    $(".sub-menu-wrap").stop().slideUp(200);
+                });
+
+            $(".sub-menu-wrap").hover(
+                function() {
+                    $(".sub-menu-wrap").stop().slideDown(400);
+                },
+                function() {
+                    $(".sub-menu-wrap").stop().slideUp(200);
+                });
+        });
+
+        //마켓별 전체보기
+        $(document).ready(function() {
+            $('.btn-folding').click(function() {
+                $('.folding').toggleClass('more');
+            });
+
+        });
+
+        /*북마크*/
+        $('.bookmark').click(function() {
+            $(this).toggleClass('mark-on');
+        });
+
+
+
+        /*슬릭스 슬라이더*/
+        $(".regular").slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            autoplay: false,
+            autoplaySpeed: 4000
+        });
+
+
+        //jquery 탭
+        $(document).ready(function() {
+            $("#tab-group").tabs();
+
+            $("#datepicker").datepicker({
+                inline: true
+            });
+        });
+
+        //1:1문의 토글
+        $('.filetitle-view').click(function() {
+            $('.filetitle-box').toggle();
+        });
+
+        $('.re-btn').click(function() {
+            $('.re-ask').toggle();
+        });
+
+        //팝업 열고 닫기   
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+        
+        //파일첨부
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#image_section').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#imgInput").change(function(){
+            readURL(this);
+        });
+        
+     
+
+    </script>
+</body>
+
+</html>

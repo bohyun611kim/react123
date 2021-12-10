@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.yahobit.exchange.dao.YahobitExchangeDAO">
+
+	<resultMap type="kr.co.coinis.webserver.yahobit.exchange.vo.ItemCodeInfoVO" id="ItemCodeInfoVO">
+		<result property="mktId" 			column="MKT_ID" 					jdbcType="VARCHAR"/>
+		<result property="mktGrpId" 		column="MKT_GRP_ID" 				jdbcType="VARCHAR"/>
+		<result property="itemCode" 		column="ITEM_CODE" 					jdbcType="VARCHAR"/>
+		<result property="itemNm" 			column="ITEM_NM" 					jdbcType="VARCHAR"/>
+		<result property="itemEngNm" 		column="ITEM_ENG_NM" 				jdbcType="VARCHAR"/>
+		<result property="itemDomesticNm" 	column="ITEM_DOMESTIC_NM" 			jdbcType="VARCHAR"/>
+		<result property="itemKorNm" 		column="ITEM_KOR_NM" 				jdbcType="VARCHAR"/>
+		<result property="basicCoinNo" 		column="BASIC_ASSET_COIN_NO" 		jdbcType="NUMERIC"/>
+		<result property="coinNo" 			column="COIN_NO" 					jdbcType="NUMERIC"/>
+		<result property="qtyCalcDevPnt" 	column="QTY_CALC_DECIMAL_PNT" 		jdbcType="NUMERIC"/>
+		<result property="amtCalcDecPnt" 	column="AMT_CALC_DECIMAL_PNT" 		jdbcType="NUMERIC"/>
+		<result property="ordPrcUnit" 		column="ORD_PRICE_UNIT" 			jdbcType="NUMERIC"/>
+		<result property="prcDspDecPnt" 	column="PRICE_DSP_DECIMAL_PNT"		jdbcType="NUMERIC"/>
+		<result property="qtyDspDecPnt" 	column="QTY_DSP_DECIMAL_PNT" 		jdbcType="NUMERIC"/>
+		<result property="volDspDecPnt" 	column="VOL_DSP_DECIMAL_PNT"	 	jdbcType="NUMERIC"/>
+		<result property="amtDecPnt" 		column="AMT_DECIMAL_PNT"	 		jdbcType="NUMERIC"/>
+		<result property="minOrdAmt" 		column="MIN_ORD_AMT" 				jdbcType="NUMERIC"/>
+		<result property="openPrc" 			column="OPEN_PRICE" 				jdbcType="NUMERIC"/>
+		<result property="closePrc" 		column="CLOSE_PRICE" 				jdbcType="NUMERIC"/>
+		<result property="highPrc" 			column="HIGH_PRICE" 				jdbcType="NUMERIC"/>
+		<result property="lowPrc" 			column="LOW_PRICE" 					jdbcType="NUMERIC"/>
+		<result property="daebiRecogCd" 	column="DAEBI_RECOG_CD" 			jdbcType="NUMERIC"/>
+		<result property="prcDevAmt" 		column="PRICE_DEV_AMT" 				jdbcType="NUMERIC"/>
+		<result property="prcDevRate" 		column="PRICE_DEV_RATE" 			jdbcType="NUMERIC"/>
+		<result property="prevClosePrc" 	column="PREV_CLOSE_PRICE" 			jdbcType="NUMERIC"/>
+		<result property="tradeVol" 		column="TRADE_VOL" 					jdbcType="NUMERIC"/>
+		<result property="tradeAmt" 		column="TRADE_AMT" 					jdbcType="NUMERIC"/>
+		<result property="week52High" 		column="WEEKS_52_HIGH" 				jdbcType="NUMERIC"/>
+		<result property="week52HighDay" 	column="WEEKS_52_HIGH_DAY" 			jdbcType="VARCHAR"/>
+		<result property="week52Low" 		column="WEEKS_52_LOW" 				jdbcType="NUMERIC"/>
+		<result property="week52LowDay" 	column="WEEKS_52_LOW_DAY" 			jdbcType="VARCHAR"/>
+		<result property="sellFeeVal" 		column="SELL_FEE_VAL" 				jdbcType="NUMERIC"/>
+		<result property="buyFeeVal" 		column="BUY_FEE_VAL" 				jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.exchange.vo.ItemCodeListVO" id="ItemCodeListVO">
+		<result property="mktId" 			column="MKT_ID" 					jdbcType="VARCHAR"/>
+		<result property="mktGrpId" 		column="MKT_GRP_ID" 				jdbcType="VARCHAR"/>
+		<result property="itemCode" 		column="ITEM_CODE" 					jdbcType="VARCHAR"/>
+		<result property="itemNm" 			column="ITEM_NM" 					jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.exchange.vo.CoinInfoVO" id="CoinInfoVO">
+		<result property="symbol" 			column="COIN_SYMBOLIC_NM" 	jdbcType="VARCHAR"/>
+		<result property="engNm" 			column="COIN_ENG_NM" 		jdbcType="VARCHAR"/>
+		<result property="korNm" 			column="COIN_KOR_NM" 		jdbcType="VARCHAR"/>
+		<result property="fullNm" 			column="COIN_FULL_NM" 		jdbcType="VARCHAR"/>
+		<result property="issueDay" 		column="ISSUE_DAY" 			jdbcType="VARCHAR"/>
+		<result property="foundNm" 			column="FOUNDATION_NM" 		jdbcType="VARCHAR"/>
+		<result property="foundLoc" 		column="FOUNDATION_LOC" 	jdbcType="VARCHAR"/>
+		<result property="representNm" 		column="REPRESENT_NM" 		jdbcType="VARCHAR"/>
+		<result property="foundDay" 		column="FOUND_DAY" 			jdbcType="VARCHAR"/>
+		<result property="homepageUrl" 		column="HOMEPAGE_URL" 		jdbcType="VARCHAR"/>
+		<result property="snsUrl" 			column="SNS_URL" 			jdbcType="VARCHAR"/>
+		<result property="searchUrl" 		column="BLCHN_SEARCH_URL" 	jdbcType="VARCHAR"/>
+		<result property="paperUrl" 		column="WHITEPAPER_URL" 	jdbcType="VARCHAR"/>
+		<result property="sourceCodeUrl" 	column="SOURCE_CODE_URL" 	jdbcType="VARCHAR"/>
+		<result property="protocol" 		column="PROOF_PROTOCOL" 	jdbcType="VARCHAR"/>
+		<result property="argorithm" 		column="ENCRT_ALGORITHM" 	jdbcType="VARCHAR"/>
+		<result property="totSupplyQty" 	column="TOTAL_SUPPLY_QTY" 	jdbcType="NUMERIC"/>
+		<result property="supplyQtyPerDay" 	column="SUPPLY_QTY_PER_DAY" jdbcType="NUMERIC"/>
+		<result property="explanation" 		column="COIN_EXPLANATION" 	jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.exchange.vo.MarketInfoVO" id="MarketInfoVO">
+		<result property="mktNm" 	column="MKT_NM"					jdbcType="VARCHAR"/>
+		<result property="coinNo" 	column="BASIC_ASSET_COIN_NO"	jdbcType="NUMERIC"/>
+		<collection 
+			property="item"
+			column="{mktId=MKT_ID, exchangeId=EXCHANGE_ID, mktGrpId=MKT_GRP_ID, bsCoinNo=BASIC_ASSET_COIN_NO}"
+			javaType="java.util.ArrayList"
+			ofType="kr.co.coinis.webserver.yahobit.exchange.vo.MarketItemCodeVO"
+			select="selectMarketItemCode"
+		>
+		</collection>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.exchange.vo.MarketInfoVO" id="MarketFreeInfoVO">
+		<result property="mktNm" 	column="MKT_NM"					jdbcType="VARCHAR"/>
+		<result property="coinNo" 	column="BASIC_ASSET_COIN_NO"	jdbcType="NUMERIC"/>
+		<collection 
+			property="item"
+			column="{mktId=MKT_ID, exchangeId=EXCHANGE_ID, mktGrpId=MKT_GRP_ID, bsCoinNo=BASIC_ASSET_COIN_NO}"
+			javaType="java.util.ArrayList"
+			ofType="kr.co.coinis.webserver.exchange.vo.MarketItemCodeVO"
+			select="selectFreeMarketItemCode"
+		>
+		</collection>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.exchange.vo.MarketItemCodeVO" id="MarketItemCodeVO">
+		<result property="mktId" 			column="MKT_ID"					jdbcType="VARCHAR"/>
+		<result property="mktGrpId" 		column="MKT_GRP_ID"				jdbcType="VARCHAR"/>
+		<result property="itemCode" 		column="ITEM_CODE"				jdbcType="VARCHAR"/>
+		<result property="itemNm" 			column="ITEM_NM"				jdbcType="VARCHAR"/>
+		<result property="itemEngNm" 		column="ITEM_ENG_NM"			jdbcType="VARCHAR"/>
+		<result property="itemDomesticNm" 	column="ITEM_DOMESTIC_NM"		jdbcType="VARCHAR"/>
+		<result property="itemKorNm" 		column="ITEM_KOR_NM"			jdbcType="VARCHAR"/>
+		<result property="closePrc" 		column="CLOSE_PRICE"			jdbcType="NUMERIC"/>
+		<result property="tradeAmt" 		column="TRADE_AMT"				jdbcType="NUMERIC"/>
+		<result property="prcDevAmt" 		column="PRICE_DEV_AMT"			jdbcType="NUMERIC"/>
+		<result property="prcDevRate" 		column="PRICE_DEV_RATE"			jdbcType="NUMERIC"/>
+		<result property="prcDspDecPnt" 	column="PRICE_DSP_DECIMAL_PNT"	jdbcType="NUMERIC"/>
+		<result property="amtDecPnt" 		column="AMT_DECIMAL_PNT"	 	jdbcType="NUMERIC"/>
+		<result property="daebiCd" 			column="DAEBI_RECOG_CD"	 		jdbcType="NUMERIC"/>
+		<result property="basicClosePrc" 	column="BASIC_CLOSE_PRICE"	 	jdbcType="NUMERIC"/>
+		<result property="closePrcYep" 		column="CLOSE_PRICE_YEP"		jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.exchange.vo.BalanceVO" id="BalanceVO">
+		<result property="coinNo" 			column="COIN_NO"	 			jdbcType="NUMERIC"/>
+		<result property="balanceQty" 		column="BALANCE_QTY"			jdbcType="NUMERIC"/>
+		<result property="avgPrc" 			column="AVG_PRICE_BY_BC"		jdbcType="NUMERIC"/>
+		<result property="symbol" 			column="COIN_SYMBOLIC_NM"		jdbcType="VARCHAR"/>
+		<result property="coinKorNm" 		column="COIN_KOR_NM"			jdbcType="VARCHAR"/>
+		<result property="qtyDspDecPnt" 	column="COIN_DECIMAL_PNT"		jdbcType="NUMERIC"/>
+		<result property="bsCoinNo" 		column="BC_COIN_NO"	 			jdbcType="NUMERIC"/>
+		<result property="bsSymbol" 		column="BASIC_COIN_SYMBOLIC_NM"	jdbcType="VARCHAR"/>
+		<result property="prcDspDecPnt" 	column="BASIC_COIN_DECIMAL_PNT"	jdbcType="NUMERIC"/>
+		<result property="itemCode" 		column="ITEM_CODE"	 			jdbcType="VARCHAR"/>
+		<result property="closePrc" 		column="CLOSE_PRICE"			jdbcType="NUMERIC"/>
+		<result property="closePrcYep" 		column="CLOSE_PRICE_YEP"		jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.exchange.vo.HogaVO" id="HogaVO">
+		<result property="ordPrc"	column="HOGA"	 	jdbcType="NUMERIC"/>
+		<result property="hogaQty"	column="HOGA_QTY"	jdbcType="NUMERIC"/>
+		<result property="hogaCnt"	column="HOGA_CNT"	jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.exchange.vo.RealContractVO" id="RealContractVO">
+		<result property="contractDt"		column="CONTRACT_DT"	 	jdbcType="VARCHAR"/>
+		<result property="contractQty"		column="CONTRACT_QTY"	 	jdbcType="NUMERIC"/>
+		<result property="contractRecogCd"	column="CONTRACT_RECOG_CD"	jdbcType="NUMERIC"/>
+		<result property="contractPrc"		column="CONTRACT_PRICE"	 	jdbcType="NUMERIC"/>
+		<result property="ifTransactionId"	column="IF_TRANSACTION_ID"	jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.exchange.vo.DailySiseVO" id="DailySiseVO">
+		<result property="tradeDt"		column="TRADE_DAY"	 	jdbcType="VARCHAR"/>
+		<result property="closePrc"		column="CLOSE_PRICE"	jdbcType="NUMERIC"/>
+		<result property="daebiRecogCd"	column="DAEBI_RECOG_CD"	jdbcType="NUMERIC"/>
+		<result property="prcDevAmt"	column="PRICE_DEV_AMT"	jdbcType="NUMERIC"/>
+		<result property="prcDevRate"	column="PRICE_DEV_RATE"	jdbcType="NUMERIC"/>
+		<result property="tradeVol"		column="TRADE_VOL"	 	jdbcType="NUMERIC"/>
+		<result property="tradeAmt"		column="TRADE_AMT"	 	jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.exchange.vo.ContractVO" id="ContractVO">
+		<result property="contractDt"		column="CONTRACT_DT"	 	jdbcType="VARCHAR"/>
+		<result property="contractQty"		column="CONTRACT_QTY"	 	jdbcType="NUMERIC"/>
+		<result property="contractPrc"		column="CONTRACT_PRICE"	 	jdbcType="NUMERIC"/>
+		<result property="sellBuyRecogCd"	column="SELL_BUY_RECOG_CD"	jdbcType="NUMERIC"/>
+		
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.yahobit.exchange.vo.NonContractVO" id="NonContractVO">
+		<result property="tranOrdNo"	column="IF_TRANSACTION_ID"		jdbcType="VARCHAR"/>
+		<result property="ordOrdNo"		column="ORDSVR_ORD_NO"			jdbcType="VARCHAR"/>
+		<result property="excOrdNo"		column="EXCHGSVR_ORD_NO"		jdbcType="VARCHAR"/>
+		<result property="itemCode"		column="ITEM_CODE"				jdbcType="VARCHAR"/>
+		<result property="sellBuyCd"	column="SELL_BUY_RECOG_CD"	 	jdbcType="NUMERIC"/>
+		<result property="ordTypeCd"	column="ORD_TYPE_CD"			jdbcType="NUMERIC"/>
+		<result property="ordPrc"		column="ORD_PRICE"	 			jdbcType="NUMERIC"/>
+		<result property="nonQty"		column="NON_CONTRACT_QTY"		jdbcType="NUMERIC"/>
+		<result property="contractQty"	column="CONTRACT_QTY"	 		jdbcType="NUMERIC"/>
+		<result property="ordDt"		column="ORD_DT"					jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.common.vo.SendOrderCancelVO" id="SendOrderCancelVO">
+		<result property="exchangeId"			column="EXCHANGE_ID"		jdbcType="VARCHAR"/>
+		<result property="userId"				column="USER_ID"			jdbcType="VARCHAR"/>
+		<result property="mktGrpId"				column="MKT_GRP_ID"			jdbcType="VARCHAR"/>
+		<result property="mktId"				column="MKT_ID"				jdbcType="VARCHAR"/>
+		<result property="wasSvrNo"				column="WAS_SVR_NO"			jdbcType="NUMERIC"/>
+		<result property="itemCode"				column="ITEM_CODE"			jdbcType="VARCHAR"/>
+		<result property="ordTypeCd"			column="ORD_TYPE_CD"		jdbcType="NUMERIC"/>
+		<result property="orgIfTransactionId"	column="IF_TRANSACTION_ID"	jdbcType="VARCHAR"/>
+		<result property="ordsvrOrgOrdNo"		column="ORDSVR_ORD_NO"		jdbcType="VARCHAR"/>
+		<result property="exchgsvrOrgOrdNo"		column="EXCHGSVR_ORD_NO"	jdbcType="VARCHAR"/>
+		<result property="sellBuyRecogCd"		column="SELL_BUY_RECOG_CD"	jdbcType="NUMERIC"/>
+		<result property="ordPrice"				column="ORD_PRICE"			jdbcType="NUMERIC"/>
+		<result property="ordQty"				column="ORD_QTY"			jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<!-- default itemcode 조회 -->
+	<select id="selectDefaultItemCode" resultMap="ItemCodeInfoVO">
+		SELECT A.EXCHANGE_ID
+			   , A.MKT_ID
+			   , A.MKT_GRP_ID
+			   , A.ITEM_CODE
+			   , A.ITEM_NM
+			   , A.ITEM_ENG_NM
+			   , A.ITEM_DOMESTIC_NM
+			   , A.ITEM_KOR_NM
+			   , A.BASIC_ASSET_COIN_NO
+			   , A.COIN_NO
+			   , A.QTY_CALC_DECIMAL_PNT
+			   , A.AMT_CALC_DECIMAL_PNT
+			   , A.ORD_PRICE_UNIT
+			   , A.PRICE_DSP_DECIMAL_PNT
+			   , A.QTY_DSP_DECIMAL_PNT
+			   , A.VOL_DSP_DECIMAL_PNT
+			   , A.AMT_DECIMAL_PNT
+			   , A.MIN_ORD_AMT
+			   , IFNULL(B.OPEN_PRICE, 0) AS OPEN_PRICE
+			   , IFNULL(B.CLOSE_PRICE, 0) AS CLOSE_PRICE
+			   , IFNULL(B.HIGH_PRICE, 0) AS HIGH_PRICE
+			   , IFNULL(B.LOW_PRICE, 0) AS LOW_PRICE
+			   , IFNULL(B.DAEBI_RECOG_CD, 0) AS DAEBI_RECOG_CD
+			   , IFNULL(B.PRICE_DEV_AMT, 0) AS PRICE_DEV_AMT
+			   , IFNULL(B.PRICE_DEV_RATE, 0) AS PRICE_DEV_RATE
+			   , IFNULL(B.PREV_CLOSE_PRICE, 0) AS PREV_CLOSE_PRICE
+			   , IFNULL(D.TRADE_VOL, 0) AS TRADE_VOL
+			   , IFNULL(D.TRADE_AMT, 0) AS TRADE_AMT
+			   , IFNULL(B.WEEKS_52_HIGH, 0) AS WEEKS_52_HIGH
+			   , IFNULL(B.WEEKS_52_HIGH_DAY, '') AS WEEKS_52_HIGH_DAY
+			   , IFNULL(B.WEEKS_52_LOW, 0) AS WEEKS_52_LOW
+			   , IFNULL(B.WEEKS_52_LOW_DAY, '') AS WEEKS_52_LOW_DAY
+			   , IFNULL(C.SELL_FEE_VAL, A.SELL_FEE_VAL) AS SELL_FEE_VAL
+         	   , IFNULL(C.BUY_FEE_VAL, A.BUY_FEE_VAL) AS BUY_FEE_VAL
+		  FROM (
+		  			SELECT A.EXCHANGE_ID
+						   , B.MKT_ID
+						   , B.MKT_GRP_ID
+						   , D.ITEM_CODE
+						   , D.ITEM_NM
+						   , D.ITEM_ENG_NM
+						   , D.ITEM_DOMESTIC_NM
+						   , D.ITEM_KOR_NM
+						   , D.BASIC_ASSET_COIN_NO
+						   , D.COIN_NO
+						   , D.QTY_CALC_DECIMAL_PNT
+						   , D.AMT_CALC_DECIMAL_PNT
+						   , D.ORD_PRICE_UNIT
+						   , D.PRICE_DSP_DECIMAL_PNT
+						   , D.QTY_DSP_DECIMAL_PNT
+						   , D.VOL_DSP_DECIMAL_PNT
+						   , D.AMT_DECIMAL_PNT
+						   , D.MIN_ORD_AMT
+						   , B.SELL_FEE_VAL
+						   , B.BUY_FEE_VAL
+					  FROM TB_EXCHANGE_INFO A
+				INNER JOIN TB_EXCHANGE_MKT_INFO B
+						ON A.EXCHANGE_ID = B.EXCHANGE_ID
+				INNER JOIN TB_MKT_ITEM_CODE_INFO C
+						ON B.EXCHANGE_ID = C.EXCHANGE_ID
+					   AND B.MKT_ID = C.MKT_ID
+				INNER JOIN TB_ITEM_CODE_MAST D
+						ON C.ITEM_CODE = D.ITEM_CODE
+				 	 WHERE A.EXCHANGE_STAT_CD = 1
+					   AND A.EXCHANGE_ID = #{exchangeId}
+					   AND B.MKT_STAT_CD = 1
+					   AND C.TRADE_STAT_CD = 1
+					<if test='itemCode != null'>
+					   AND D.ITEM_CODE= #{itemCode}
+					</if>
+				  ORDER BY B.MKT_DISP_ORDER ASC, D.SORT_ORDER_NO ASC
+					 LIMIT 1
+			   ) A
+   	 LEFT JOIN TB_EXCHANGE_MKT_GRP_SISE B
+			ON B.MKT_GRP_ID = A.MKT_GRP_ID
+		   AND B.ITEM_CODE = A.ITEM_CODE
+	 LEFT JOIN (SELECT * 
+	 			  FROM TB_TRADE_FEE 
+	 			 WHERE EXCHANGE_ID = #{exchangeId} 
+	 			 <if test='itemCode != null'>
+	 			   AND ITEM_CODE= #{itemCode}
+	 			   </if>
+		   		   AND USER_ID = #{userId}
+	 		  ORDER BY REC_VER_MGT_NO DESC
+	 		  	 LIMIT 1) C
+			ON A.EXCHANGE_ID = C.EXCHANGE_ID
+		   AND A.ITEM_CODE = C.ITEM_CODE
+		   AND C.USER_ID = #{userId}
+		   AND C.APPLY_START_DT <![CDATA[ <= ]]> DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y%m%d%H%i%s')
+		   AND C.APPLY_END_DT <![CDATA[ >= ]]> DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y%m%d%H%i%s')
+	 LEFT JOIN TB_ITEM_CODE_24HOUR_VOL D
+	 		ON D.MKT_GRP_ID = A.MKT_GRP_ID
+		   AND D.ITEM_CODE = A.ITEM_CODE
+	  ORDER BY D.TRADE_AMT DESC
+		 LIMIT 1
+	</select>
+	
+	<!-- itemcode 조회 -->
+	<select id="selectMktItemCode" resultMap="ItemCodeInfoVO">
+		SELECT A.EXCHANGE_ID
+			   , A.MKT_ID
+			   , A.MKT_GRP_ID
+			   , A.ITEM_CODE
+			   , A.ITEM_NM
+			   , A.ITEM_ENG_NM
+			   , A.ITEM_DOMESTIC_NM
+			   , A.ITEM_KOR_NM
+			   , A.BASIC_ASSET_COIN_NO
+			   , A.COIN_NO
+			   , A.QTY_CALC_DECIMAL_PNT
+			   , A.AMT_CALC_DECIMAL_PNT
+			   , A.ORD_PRICE_UNIT
+			   , A.PRICE_DSP_DECIMAL_PNT
+			   , A.QTY_DSP_DECIMAL_PNT
+			   , A.VOL_DSP_DECIMAL_PNT
+			   , A.AMT_DECIMAL_PNT
+			   , A.MIN_ORD_AMT
+			   , IFNULL(B.OPEN_PRICE, 0) AS OPEN_PRICE
+			   , IFNULL(B.CLOSE_PRICE, 0) AS CLOSE_PRICE
+			   , IFNULL(B.HIGH_PRICE, 0) AS HIGH_PRICE
+			   , IFNULL(B.LOW_PRICE, 0) AS LOW_PRICE
+			   , IFNULL(B.DAEBI_RECOG_CD, 0) AS DAEBI_RECOG_CD
+			   , IFNULL(B.PRICE_DEV_AMT, 0) AS PRICE_DEV_AMT
+			   , IFNULL(B.PRICE_DEV_RATE, 0) AS PRICE_DEV_RATE
+			   , IFNULL(B.PREV_CLOSE_PRICE, 0) AS PREV_CLOSE_PRICE
+			   , IFNULL(D.TRADE_VOL, 0) AS TRADE_VOL
+			   , IFNULL(D.TRADE_AMT, 0) AS TRADE_AMT
+			   , IFNULL(B.WEEKS_52_HIGH, 0) AS WEEKS_52_HIGH
+			   , IFNULL(B.WEEKS_52_HIGH_DAY, '') AS WEEKS_52_HIGH_DAY
+			   , IFNULL(B.WEEKS_52_LOW, 0) AS WEEKS_52_LOW
+			   , IFNULL(B.WEEKS_52_LOW_DAY, '') AS WEEKS_52_LOW_DAY
+			   , IFNULL(C.SELL_FEE_VAL, A.SELL_FEE_VAL) AS SELL_FEE_VAL
+         	   , IFNULL(C.BUY_FEE_VAL, A.BUY_FEE_VAL) AS BUY_FEE_VAL
+		  FROM (
+		  			SELECT A.EXCHANGE_ID
+						   , B.MKT_ID
+						   , B.MKT_GRP_ID
+						   , D.ITEM_CODE
+						   , D.ITEM_NM
+						   , D.ITEM_ENG_NM
+						   , D.ITEM_DOMESTIC_NM
+						   , D.ITEM_KOR_NM
+						   , D.BASIC_ASSET_COIN_NO
+						   , D.COIN_NO
+						   , D.QTY_CALC_DECIMAL_PNT
+						   , D.AMT_CALC_DECIMAL_PNT
+						   , D.ORD_PRICE_UNIT
+						   , D.PRICE_DSP_DECIMAL_PNT
+						   , D.QTY_DSP_DECIMAL_PNT
+						   , D.VOL_DSP_DECIMAL_PNT
+						   , D.AMT_DECIMAL_PNT
+						   , D.MIN_ORD_AMT
+						   , B.SELL_FEE_VAL
+						   , B.BUY_FEE_VAL
+					  FROM TB_EXCHANGE_INFO A
+				INNER JOIN TB_EXCHANGE_MKT_INFO B
+						ON A.EXCHANGE_ID = B.EXCHANGE_ID
+				INNER JOIN TB_MKT_ITEM_CODE_INFO C
+						ON B.EXCHANGE_ID = C.EXCHANGE_ID
+					   AND B.MKT_ID = C.MKT_ID
+				INNER JOIN TB_ITEM_CODE_MAST D
+						ON C.ITEM_CODE = D.ITEM_CODE
+					 WHERE A.EXCHANGE_STAT_CD = 1
+					   AND A.EXCHANGE_ID = #{exchangeId}
+					   AND B.MKT_STAT_CD = 1
+					   AND B.MKT_ID = #{mktId}
+					   AND B.MKT_GRP_ID = #{mktGrpId}
+					   AND C.TRADE_STAT_CD = 1
+					   AND D.ITEM_CODE= #{itemCode}
+			   ) A
+     LEFT JOIN TB_EXCHANGE_MKT_GRP_SISE B
+			ON B.MKT_GRP_ID = A.MKT_GRP_ID
+		   AND B.ITEM_CODE = A.ITEM_CODE
+	 LEFT JOIN (SELECT * 
+	 			  FROM TB_TRADE_FEE 
+	 			 WHERE EXCHANGE_ID = #{exchangeId} 
+	 			   AND ITEM_CODE= #{itemCode}
+		   		   AND USER_ID = #{userId}
+	 		  ORDER BY REC_VER_MGT_NO DESC
+	 		  	 LIMIT 1) C
+			ON A.EXCHANGE_ID = C.EXCHANGE_ID
+		   AND A.ITEM_CODE = C.ITEM_CODE
+		   AND C.USER_ID = #{userId}
+		   AND C.APPLY_START_DT <![CDATA[ <= ]]> DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y%m%d%H%i%s')
+		   AND C.APPLY_END_DT <![CDATA[ >= ]]> DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y%m%d%H%i%s')
+	 LEFT JOIN TB_ITEM_CODE_24HOUR_VOL D
+	 		ON D.MKT_GRP_ID = A.MKT_GRP_ID
+		   AND D.ITEM_CODE = A.ITEM_CODE
+	  ORDER BY D.TRADE_AMT DESC
+	  	 LIMIT 1
+	</select>
+	
+	<!-- 종목 정보 조회 -->
+	<select id="selectItemCodeOfCoin" resultMap="ItemCodeListVO">
+		SELECT A.ITEM_CODE, A.ITEM_NM, D.MKT_ID, D.MKT_GRP_ID
+		  FROM TB_ITEM_CODE_MAST A
+	INNER JOIN TB_MKT_ITEM_CODE_INFO B
+			ON A.ITEM_CODE = B.ITEM_CODE
+	INNER JOIN TB_EXCHANGE_INFO C
+			ON B.EXCHANGE_ID = C.EXCHANGE_ID
+	INNER JOIN TB_EXCHANGE_MKT_INFO D
+			ON C.EXCHANGE_ID = D.EXCHANGE_ID
+		   AND B.MKT_ID = D.MKT_ID
+		 WHERE A.COIN_NO = #{coinNo, javaType=integer}
+		   AND B.EXCHANGE_ID = #{exchangeId}
+		   AND B.TRADE_STAT_CD = 1
+		   AND C.EXCHANGE_STAT_CD = 1
+		   AND D.MKT_STAT_CD = 1
+	</select>
+	
+	<!-- 코인 정보 조회 -->
+	<select id="selectCoinInfo" resultMap="CoinInfoVO">
+		SELECT COIN_SYMBOLIC_NM
+		       , COIN_ENG_NM
+		       , COIN_KOR_NM
+		       , COIN_FULL_NM
+		       , ISSUE_DAY
+		       , FOUNDATION_NM
+		       , FOUNDATION_LOC
+		       , REPRESENT_NM
+		       , FOUND_DAY
+		       , HOMEPAGE_URL
+		       , SNS_URL
+		       , BLCHN_SEARCH_URL
+		       , WHITEPAPER_URL
+		       , SOURCE_CODE_URL
+		       , PROOF_PROTOCOL
+		       , ENCRT_ALGORITHM
+		       , TOTAL_SUPPLY_QTY
+		       , SUPPLY_QTY_PER_DAY
+		       , COIN_EXPLANATION
+		  FROM TB_COIN_MAST
+		 WHERE COIN_NO = #{coinNo}
+	</select>
+	
+	<!-- ======================================================================= -->
+	<!-- 메인 마켓 -->
+	<!-- 마켓 리스트 조회 -->
+	<select id="selectMarket" resultMap="MarketInfoVO">
+		SELECT B.MKT_NM, B.MKT_ID, B.MKT_GRP_ID, B.EXCHANGE_ID, A.BC_COIN_NO, B.BASIC_ASSET_COIN_NO
+		  FROM TB_EXCHANGE_INFO A
+	INNER JOIN TB_EXCHANGE_MKT_INFO B
+			ON A.EXCHANGE_ID = B.EXCHANGE_ID
+		 WHERE A.EXCHANGE_ID = #{exchangeId}
+		   AND A.EXCHANGE_STAT_CD = 1
+		   AND B.MKT_STAT_CD = 1
+		   AND B.MKT_ID <![CDATA[ <> ]]> 'YAHOBIT_YEP'
+	  ORDER BY B.MKT_DISP_ORDER ASC
+	</select>
+	<!-- ======================================================================= -->
+	
+	<!-- ======================================================================= -->
+	<!-- 프리 마켓 -->
+	<!-- 마켓 리스트 조회 -->
+	<select id="selectFreeMarket" resultMap="MarketFreeInfoVO">
+		SELECT B.MKT_NM, B.MKT_ID, B.MKT_GRP_ID, B.EXCHANGE_ID, 430 AS BC_COIN_NO, B.BASIC_ASSET_COIN_NO
+		  FROM TB_EXCHANGE_INFO A
+	INNER JOIN TB_EXCHANGE_MKT_INFO B
+			ON A.EXCHANGE_ID = B.EXCHANGE_ID
+		 WHERE A.EXCHANGE_ID = #{exchangeId}
+		   AND A.EXCHANGE_STAT_CD = 1
+		   AND B.MKT_STAT_CD = 1
+		   AND B.MKT_ID = 'YAHOBIT_YEP'
+	  ORDER BY B.MKT_DISP_ORDER ASC
+	</select>
+	<!-- ======================================================================= -->
+	
+	<!-- ======================================================================= -->
+	<!-- 메인 마켓 -->
+	<!-- 마켓의 종목 리스트 조회 -->
+	<select id="selectMarketItemCode" resultMap="MarketItemCodeVO">
+		SELECT A.ITEM_CODE, A.ITEM_NM, A.ITEM_ENG_NM, A.ITEM_DOMESTIC_NM, A.ITEM_KOR_NM
+			   , A.MKT_ID, A.MKT_GRP_ID
+			   , IFNULL(B.CLOSE_PRICE, 0) CLOSE_PRICE
+			   , IFNULL(C.TRADE_AMT, 0) TRADE_AMT
+			   , IFNULL(B.PRICE_DEV_AMT, 0) PRICE_DEV_AMT
+			   , IFNULL(B.PRICE_DEV_RATE, 0) PRICE_DEV_RATE
+			   , IFNULL(B.DAEBI_RECOG_CD, 0) DAEBI_RECOG_CD
+			   , IFNULL(FN_WAS_GET_PRICE_BY_BC(A.COIN_NO, 10, #{exchangeId}), 0) AS BASIC_CLOSE_PRICE
+			   , A.PRICE_DSP_DECIMAL_PNT
+			   , A.AMT_DECIMAL_PNT
+		  FROM (
+		  			SELECT B.ITEM_CODE, C.ITEM_NM, C.ITEM_ENG_NM, C.ITEM_DOMESTIC_NM, C.ITEM_KOR_NM
+			   			   , B.MKT_ID, A.MKT_GRP_ID, C.PRICE_DSP_DECIMAL_PNT, C.AMT_DECIMAL_PNT, C.SORT_ORDER_NO
+			   			   , C.COIN_NO
+		  			  FROM TB_EXCHANGE_MKT_INFO A
+				INNER JOIN TB_MKT_ITEM_CODE_INFO B
+						ON A.EXCHANGE_ID = B.EXCHANGE_ID
+		   			   AND A.MKT_ID = B.MKT_ID
+				INNER JOIN TB_ITEM_CODE_MAST C
+						ON B.ITEM_CODE = C.ITEM_CODE
+					 WHERE A.EXCHANGE_ID = #{exchangeId}
+		   			   AND A.MKT_ID = #{mktId}
+		   			   AND A.MKT_GRP_ID = #{mktGrpId}
+		   			   AND B.TRADE_STAT_CD = 1
+   			   ) A
+	 LEFT JOIN TB_EXCHANGE_MKT_GRP_SISE B
+       		ON A.ITEM_CODE = B.ITEM_CODE
+		   AND B.MKT_GRP_ID = A.MKT_GRP_ID
+     LEFT JOIN TB_ITEM_CODE_24HOUR_VOL C
+	 		ON C.MKT_GRP_ID = A.MKT_GRP_ID
+		   AND C.ITEM_CODE = A.ITEM_CODE
+	  ORDER BY C.TRADE_AMT DESC
+	</select>
+	<!-- ======================================================================= -->
+	
+	<!-- ======================================================================= -->
+	<!-- 프리 마켓 -->
+	<select id="selectFreeMarketItemCode" resultMap="MarketItemCodeVO">
+		SELECT A.ITEM_CODE, A.ITEM_NM, A.ITEM_ENG_NM, A.ITEM_DOMESTIC_NM, A.ITEM_KOR_NM
+			   , A.MKT_ID, A.MKT_GRP_ID
+			   , IFNULL(B.CLOSE_PRICE, 0) CLOSE_PRICE
+			   , IFNULL(C.TRADE_AMT, 0) TRADE_AMT
+			   , IFNULL(B.PRICE_DEV_AMT, 0) PRICE_DEV_AMT
+			   , IFNULL(B.PRICE_DEV_RATE, 0) PRICE_DEV_RATE
+			   , IFNULL(B.DAEBI_RECOG_CD, 0) DAEBI_RECOG_CD
+			   , IFNULL(FN_WAS_GET_PRICE_BY_BC(430, 10, #{exchangeId}), 0) AS CLOSE_PRICE_YEP
+			   , A.PRICE_DSP_DECIMAL_PNT
+			   , A.AMT_DECIMAL_PNT
+		  FROM (
+		  			SELECT B.ITEM_CODE, C.ITEM_NM, C.ITEM_ENG_NM, C.ITEM_DOMESTIC_NM, C.ITEM_KOR_NM
+			   			   , B.MKT_ID, A.MKT_GRP_ID, C.PRICE_DSP_DECIMAL_PNT, C.AMT_DECIMAL_PNT, C.SORT_ORDER_NO
+			   			   , C.COIN_NO
+		  			  FROM TB_EXCHANGE_MKT_INFO A
+				INNER JOIN TB_MKT_ITEM_CODE_INFO B
+						ON A.EXCHANGE_ID = B.EXCHANGE_ID
+		   			   AND A.MKT_ID = B.MKT_ID
+				INNER JOIN TB_ITEM_CODE_MAST C
+						ON B.ITEM_CODE = C.ITEM_CODE
+					 WHERE A.EXCHANGE_ID = #{exchangeId}
+		   			   AND A.MKT_ID = #{mktId}
+		   			   AND A.MKT_GRP_ID = #{mktGrpId}
+		   			   AND B.TRADE_STAT_CD = 1
+   			   ) A
+	 LEFT JOIN TB_EXCHANGE_MKT_GRP_SISE B
+       		ON A.ITEM_CODE = B.ITEM_CODE
+		   AND B.MKT_GRP_ID = A.MKT_GRP_ID
+     LEFT JOIN TB_ITEM_CODE_24HOUR_VOL C
+	 		ON C.MKT_GRP_ID = A.MKT_GRP_ID
+		   AND C.ITEM_CODE = A.ITEM_CODE
+	  ORDER BY C.TRADE_AMT DESC
+	</select>
+	<!-- ======================================================================= -->
+	
+	<!-- ======================================================================= -->
+	<!-- 메인 마켓 -->
+	<!-- 보유 코인 조회 -->
+	<select id="selectBalance" resultMap="BalanceVO">
+		SELECT A.COIN_NO, A.AVG_PRICE_BY_BC, A.COIN_SYMBOLIC_NM, A.COIN_KOR_NM, A.COIN_DECIMAL_PNT
+			   , A.BC_COIN_NO, A.BASIC_COIN_SYMBOLIC_NM, A.BASIC_COIN_DECIMAL_PNT, A.ITEM_CODE, A.CLOSE_PRICE
+         	   , IFNULL(A.BALANCE_QTY,0.0) - (IFNULL(B.USED_QTY,0.0)) AS BALANCE_QTY
+		  FROM (
+					SELECT A.COIN_NO, A.BALANCE_QTY, A.AVG_PRICE_BY_BC
+						   , A.COIN_SYMBOLIC_NM, A.COIN_KOR_NM, A.COIN_DECIMAL_PNT
+						   , B.BC_COIN_NO, B.BASIC_COIN_SYMBOLIC_NM, B.BASIC_COIN_DECIMAL_PNT
+						   , CONCAT(A.COIN_SYMBOLIC_NM, B.BASIC_COIN_SYMBOLIC_NM) AS ITEM_CODE
+						   , IFNULL(FN_WAS_GET_PRICE_BY_BC(A.COIN_NO, B.BC_COIN_NO, A.EXCHANGE_ID), 0) AS CLOSE_PRICE
+			  		  FROM (
+								SELECT A.COIN_NO, A.BALANCE_QTY, A.AVG_PRICE_BY_BC, A.EXCHANGE_ID
+									   , B.COIN_SYMBOLIC_NM, B.COIN_KOR_NM
+									   , C.WTDRW_DECIMAL_PNT AS COIN_DECIMAL_PNT
+								  FROM TB_COIN_BALANCE A,
+									   TB_COIN_MAST B,
+									   TB_COIN_MGT_REF_INFO C
+								 WHERE A.EXCHANGE_ID = #{exchangeId}
+								   AND A.USER_ID = #{userId}
+			                       AND A.COIN_NO = B.COIN_NO
+			                       AND B.COIN_NO = C.COIN_NO
+						   ) A,
+			  			   (
+								SELECT A.BC_COIN_NO, A.EXCHANGE_ID
+						   			   , B.COIN_SYMBOLIC_NM AS BASIC_COIN_SYMBOLIC_NM
+						   			   , C.WTDRW_DECIMAL_PNT AS BASIC_COIN_DECIMAL_PNT
+						  		  FROM TB_EXCHANGE_INFO A,
+			                           TB_COIN_MAST B,
+			                           TB_COIN_MGT_REF_INFO C 
+			 					 WHERE EXCHANGE_ID = #{exchangeId}
+			                       AND A.BC_COIN_NO = B.COIN_NO
+								   AND B.COIN_NO = C.COIN_NO
+			  			   ) B
+					 WHERE A.EXCHANGE_ID = B.EXCHANGE_ID
+			   ) A
+		LEFT OUTER JOIN
+            (
+                SELECT  COIN_NO,
+                        TRUNCATE(SUM(USE_QTY), 8) AS USED_QTY
+                FROM
+                (
+                    SELECT COIN_NO,
+                        SUM(NON_CONTRACT_QTY) AS USE_QTY
+                    FROM  TB_NON_CONTRACT_ORDER A,
+                        TB_ITEM_CODE_MAST B  
+                    WHERE A.EXCHANGE_ID = TRIM(#{exchangeId})
+                    AND    A.USER_ID = TRIM(#{userId})
+                    AND    A.NON_CONTRACT_QTY &gt; 0.0
+                    AND    ORD_TYPE_CD = 1 
+                    AND    SELL_BUY_RECOG_CD = 2 
+                    AND    A.ITEM_CODE = B.ITEM_CODE
+                    GROUP BY COIN_NO
+                    
+                    UNION ALL
+                    SELECT COIN_NO,
+                        SUM(REQ_QTY + IFNULL(WTDRW_FEE, 0.0)) AS USE_QTY
+                    FROM  TB_DEPOSIT_WITHDRAW_MGR
+                    WHERE EXCHANGE_ID = TRIM(#{exchangeId})
+                    AND     USER_ID = TRIM(#{userId})
+                    AND     REQ_STAT_PROC_CD != 5  
+                    AND     APPROVAL_STAT_CD != -1 
+                    AND     DW_PROC_STAT_CD  NOT IN (1, -1) 
+                    AND     DW_REQ_TYPE_CD IN (2, 4)
+                    GROUP BY COIN_NO
+                    
+                    UNION ALL
+                    SELECT BASIC_ASSET_COIN_NO AS COIN_NO,
+                        SUM(NON_CONTRACT_QTY * ORD_PRICE) AS USE_QTY
+                    FROM  TB_NON_CONTRACT_ORDER A,
+                        TB_ITEM_CODE_MAST B  
+                    WHERE A.EXCHANGE_ID = TRIM(#{exchangeId})
+                    AND    USER_ID = TRIM(#{userId})
+                    AND    A.NON_CONTRACT_QTY &gt; 0.0
+                    AND    ORD_TYPE_CD = 1 
+                    AND    SELL_BUY_RECOG_CD = 1 
+                    AND    A.ITEM_CODE = B.ITEM_CODE
+                    GROUP BY BASIC_ASSET_COIN_NO
+                ) A
+                GROUP BY COIN_NO
+            ) B
+        
+        ON A.COIN_NO = B.COIN_NO
+	</select>
+	<!-- ======================================================================= -->
+	
+	<!-- 보유 코인 조회 -->
+	<select id="selectBalanceByCoinNo" resultType="double">
+	<![CDATA[
+		SELECT IFNULL(A.BALANCE_QTY,0.0) - (IFNULL(B.NON_CONTRACT_QTY,0.0) + IFNULL(C.DW_REQ_QTY,0.0) + IFNULL(D.NON_CONTRACT_QTY,0.0))
+          FROM
+                (
+                	SELECT SUM(BALANCE_QTY ) AS  BALANCE_QTY
+					  FROM TB_COIN_BALANCE
+                     WHERE EXCHANGE_ID = TRIM(#{exchangeId})
+                       AND USER_ID = TRIM(#{userId})
+                       AND COIN_NO = #{coinNo}
+                ) A,
+                (
+					SELECT SUM(NON_CONTRACT_QTY) AS NON_CONTRACT_QTY
+                      FROM TB_NON_CONTRACT_ORDER A
+                           , TB_ITEM_CODE_MAST B  
+                     WHERE A.EXCHANGE_ID = TRIM(#{exchangeId})
+                       AND A.USER_ID = TRIM(#{userId})
+                       AND A.NON_CONTRACT_QTY > 0.0
+                       AND ORD_TYPE_CD = 1  -- 신규주문
+                       AND SELL_BUY_RECOG_CD = 2 -- 매도
+                       AND A.ITEM_CODE = B.ITEM_CODE
+                       AND B.COIN_NO = #{coinNo}
+                ) B,
+                (
+					SELECT SUM(REQ_QTY + IFNULL(WTDRW_FEE, 0.0)) AS DW_REQ_QTY
+                      FROM TB_DEPOSIT_WITHDRAW_MGR
+                     WHERE EXCHANGE_ID = TRIM(#{exchangeId})
+                       AND USER_ID = TRIM(#{userId})
+                       AND COIN_NO = #{coinNo}
+                       AND DW_REQ_TYPE_CD IN (2, 4)
+                       AND REQ_STAT_PROC_CD != 5
+                       AND APPROVAL_STAT_CD != -1
+                       AND DW_PROC_STAT_CD  NOT IN (1, -1)
+                ) C,
+                (
+					SELECT SUM(NON_CONTRACT_QTY * ORD_PRICE) AS NON_CONTRACT_QTY
+                      FROM TB_NON_CONTRACT_ORDER A
+                           , TB_ITEM_CODE_MAST B  
+                     WHERE A.EXCHANGE_ID = TRIM(#{exchangeId})
+                       AND A.USER_ID = TRIM(#{userId})
+                       AND A.NON_CONTRACT_QTY > 0.0
+                       AND ORD_TYPE_CD = 1
+                       AND SELL_BUY_RECOG_CD = 1
+                       AND A.ITEM_CODE = B.ITEM_CODE
+                       AND B.BASIC_ASSET_COIN_NO = #{coinNo}
+                ) D;
+                ]]>
+	</select>
+	
+	<!-- 종목 매도 호가 10건 조회 -->
+	<select id="selectSellHogaList" resultMap="HogaVO">
+	<![CDATA[
+		SELECT
+			  ORD_PRICE HOGA
+			, SUM(NON_CONTRACT_QTY) HOGA_QTY
+			, COUNT(ORD_PRICE) HOGA_CNT
+		FROM 
+			TB_NON_CONTRACT_ORDER
+		WHERE 1 = 1
+			AND MKT_GRP_ID 			= #{mktGrpId, jdbcType=VARCHAR}
+			AND ITEM_CODE 			= #{itemCode, jdbcType=VARCHAR}
+			AND SELL_BUY_RECOG_CD 	= 2
+		GROUP BY ORD_PRICE
+		ORDER BY ORD_PRICE ASC
+		LIMIT 10
+	]]>
+	</select>
+	
+	<!-- 종목 매수 호가 10건 조회 -->
+	<select id="selectBuyHogaList" resultMap="HogaVO">
+	<![CDATA[
+		SELECT
+			  ORD_PRICE HOGA
+			, SUM(NON_CONTRACT_QTY) HOGA_QTY
+			, COUNT(ORD_PRICE) HOGA_CNT
+		FROM 
+			TB_NON_CONTRACT_ORDER
+		WHERE 1 = 1
+			AND MKT_GRP_ID 			= #{mktGrpId, jdbcType=VARCHAR}
+			AND ITEM_CODE 			= #{itemCode, jdbcType=VARCHAR}
+			AND SELL_BUY_RECOG_CD 	= 1
+		GROUP BY ORD_PRICE
+		ORDER BY ORD_PRICE DESC
+		LIMIT 10
+	]]>
+	</select>
+	
+	<!-- 실시간 체결 내역 조회 -->
+	<select id="selectRealContract" resultMap="RealContractVO">
+		SELECT CONTRACT_DT, CONTRACT_QTY, CONTRACT_RECOG_CD, CONTRACT_PRICE, IF_TRANSACTION_ID
+		  FROM TB_REALTIME_CONTRACT
+		 WHERE MKT_GRP_ID = #{mktGrpId}
+		   AND ITEM_CODE = #{itemCode}
+		   <if test="contractDt != null">
+		   AND CONTRACT_DT <![CDATA[ < ]]> #{contractDt}
+		   </if>
+	  ORDER BY CONTRACT_DT DESC
+	  	 LIMIT 20
+	</select>
+	
+	<!-- 일별시세 조회 -->
+	<select id="selectDailySise" resultMap="DailySiseVO">
+		SELECT TRADE_DAY, CLOSE_PRICE, DAEBI_RECOG_CD, PRICE_DEV_AMT, PRICE_DEV_RATE, TRADE_VOL, TRADE_AMT
+		  FROM TB_SISE_DAILY_DATA
+		 WHERE MKT_GRP_ID = #{mktGrpId}
+		   AND ITEM_CODE = #{itemCode}
+		   <if test="tradeDt != null">
+		   AND TRADE_DAY <![CDATA[ < ]]> #{tradeDt}
+		   </if>
+	  ORDER BY TRADE_DAY DESC
+		 LIMIT 24
+	</select>
+	
+	<!-- 회원 체결 내역 조회 -->
+	<select id="selectContract" resultMap="ContractVO">
+		SELECT CONTRACT_DT, SELL_BUY_RECOG_CD, CONTRACT_QTY, CONTRACT_PRICE
+  		  FROM TB_ORDER_LIST
+  		 WHERE EXCHANGE_ID = #{exchangeId}
+  		   AND USER_ID = #{userId}
+  		   AND MKT_GRP_ID = #{mktGrpId}
+  		   AND ITEM_CODE = #{itemCode}
+  		   AND ORD_STATUS_CD = 322
+  		   AND CONTRACT_DT IS NOT NULL
+  		   <if test="contractDt != null">
+  		   AND CONTRACT_DT <![CDATA[ < ]]> #{contractDt}
+  		   </if>
+	  ORDER BY CONTRACT_DT DESC
+	     LIMIT 24
+	</select>
+	
+	<!-- 미체결 내역 조회 -->
+	<select id="selectNonContract" resultMap="NonContractVO">
+		SELECT IF_TRANSACTION_ID
+			   , ORDSVR_ORD_NO
+			   , EXCHGSVR_ORD_NO
+			   , ITEM_CODE
+			   , SELL_BUY_RECOG_CD
+			   , ORD_TYPE_CD
+			   , ORD_PRICE
+			   , NON_CONTRACT_QTY
+			   , CONTRACT_QTY
+			   , ORD_DT
+		  FROM TB_NON_CONTRACT_ORDER
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND USER_ID = #{userId}
+		   AND MKT_GRP_ID = #{mktGrpId}
+		   AND ITEM_CODE = #{itemCode}
+	  ORDER BY ORD_DT DESC
+	</select>
+	
+	<!-- 주문 취소 정보 조회 -->
+	<select id="selectOrderCancelInfo" resultMap="SendOrderCancelVO">
+		SELECT EXCHANGE_ID, USER_ID, MKT_GRP_ID, MKT_ID, WAS_SVR_NO, ITEM_CODE, 2 AS ORD_TYPE_CD, IF_TRANSACTION_ID
+			   , ORDSVR_ORD_NO, EXCHGSVR_ORD_NO, SELL_BUY_RECOG_CD, ORD_PRICE, ORD_QTY
+		  FROM TB_NON_CONTRACT_ORDER
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND USER_ID = #{userId}
+		   AND ITEM_CODE = #{itemCode}
+		   AND IF_TRANSACTION_ID = #{tranNo}
+		   AND ORDSVR_ORD_NO = #{ordNo}
+		   AND EXCHGSVR_ORD_NO = #{excNo}
+	</select>
+	
+	<!-- 매도, 매수 일괄 취소 정보 조회 -->
+	<select id="selectOrderCancelAllInfo" resultMap="SendOrderCancelVO">
+		SELECT EXCHANGE_ID, USER_ID, MKT_GRP_ID, MKT_ID, WAS_SVR_NO, ITEM_CODE, 2 AS ORD_TYPE_CD, IF_TRANSACTION_ID
+			   , ORDSVR_ORD_NO, EXCHGSVR_ORD_NO, SELL_BUY_RECOG_CD, ORD_PRICE, ORD_QTY
+		  FROM TB_NON_CONTRACT_ORDER
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND MKT_GRP_ID = #{mktGrpId}
+		   AND MKT_ID = #{mktId}
+		   AND USER_ID = #{userId}
+		   AND ITEM_CODE = #{itemCode}
+		   AND SELL_BUY_RECOG_CD = #{sellBuyCd}
+	</select>
+	
+</mapper>

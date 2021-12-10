@@ -1,0 +1,236 @@
+{
+    "list": {
+        "exchange": {
+            "title.en": "Exchange",
+            "title.ko": "거래소",
+            "title.ja": "取引",
+            "title.id": "Bursa",
+            "title.zh": "交换",
+            "name": "exchange",
+            "path": "/exchange",
+            "exact": false
+        },
+        "wallet": {
+            "title.en": "Wallet",
+            "title.ko": "지갑 관리",
+            "title.ja": "ウォレット",
+            "title.id": "Aset",
+            "title.zh": "钱包",
+            "name": "wallet",
+            "path": "/wallet",
+            "initPath": "/wallet/balances",
+            "exact": false,
+            "children": {
+                "balances": {
+                    "title.en": "Balances",
+                    "title.ko": "잔액 조회",
+                    "title.ja": "残高照会",
+                    "title.id": "Saldo",
+                    "title.zh": "余额",
+                    "name": "wallet.balances",
+                    "path": "/wallet/balances",
+                    "exact": false
+                },
+                "deposit": {
+                    "title.en": "Deposit",
+                    "title.ko": "입금",
+                    "title.ja": "入金",
+                    "title.id": "Setoran",
+                    "title.zh": "存款",
+                    "name": "wallet.deposit",
+                    "path": "/wallet/deposit",
+                    "exact": false
+                },
+                "withdraw": {
+                    "title.en": "Withdrawals",
+                    "title.ko": "출금",
+                    "title.ja": "出金",
+                    "title.id": "Penarikan",
+                    "title.zh": "退出",
+                    "name": "wallet.withdraw",
+                    "path": "/wallet/withdraw",
+                    "exact": false
+                },
+                "history": {
+                    "title.en": "History",
+                    "title.ko": "입출금 내역",
+                    "title.ja": "送金歴の詳細",
+                    "title.id": "Riwayat Transaksi",
+                    "title.zh": "历史",
+                    "name": "wallet.history",
+                    "path": "/wallet/history",
+                    "exact": false
+                }
+            }
+        },
+        "order": {
+            "title.en": "Order",
+            "title.ko": "주문 관리",
+            "title.ja": "注文",
+            "title.id": "Order",
+            "title.zh": "订购",
+            "name": "order",
+            "path": "/order",
+            "initPath": "/order/openorders",
+            "exact": false,
+            "children": {
+                "openorders": {
+                    "title.en": "Open Orders",
+                    "title.ko": "미체결 내역",
+                    "title.ja": "未約定内訳",
+                    "title.id": "Membuka order",
+                    "title.zh": "未结订单",
+                    "name": "order.openorders",
+                    "path": "/order/openorders",
+                    "exact": false
+                },
+                "orderhistory": {
+                    "title.en": "Order History",
+                    "title.ko": "체결 내역",
+                    "title.ja": "決済明細",
+                    "title.id": "Riwayat Order",
+                    "title.zh": "订单历史",
+                    "name": "order.orderhistory",
+                    "path": "/order/orderhistory",
+                    "exact": false
+                },
+                "tradehistory": {
+                    "title.en": "Trade History",
+                    "title.ko": "거래 내역",
+                    "title.ja": "取引内訳",
+                    "title.id": "Riwayat Perdagangan",
+                    "title.zh": "贸易史",
+                    "name": "order.tradehistory",
+                    "path": "/order/tradehistory",
+                    "exact": false
+                }
+            }
+        },
+        "account": {
+            "title.en": "My Account",
+            "title.ko": "내 계정",
+            "title.ja": "私のアカウント",
+            "title.id": "Akun Saya",
+            "title.zh": "我的帐户",
+            "name": "account",
+            "path": "/account",
+            "initPath": "/account/myassets",
+            "exact": false,
+            "children": {
+                "myassets": {
+                    "title.en": "My Assets",
+                    "title.ko": "자산 현황",
+                    "title.ja": "私の資産の現状",
+                    "title.id": "My Assets",
+                    "title.zh": "我的资产",
+                    "name": "account.myassets",
+                    "path": "/account/myassets",
+                    "exact": false
+                },
+                "information": {
+                    "title.en": "Change Information",
+                    "title.ko": "정보 변경",
+                    "title.ja": "情報変更",
+                    "title.id": "Ubah Informasi",
+                    "title.zh": "变更信息",
+                    "name": "account.information",
+                    "path": "/account/information",
+                    "exact": false
+                },
+                "levelset": {
+                    "title.en": "Account Level Setting",
+                    "title.ko": "인증 센터",
+                    "title.ja": "レベル認証",
+                    "title.id": "Pusat Sertifikasi",
+                    "title.zh": "认证中心",
+                    "name": "account.levelset",
+                    "path": "/account/levelset",
+                    "exact": false
+                },
+                "loginhistory": {
+                    "title.en": "Login History",
+                    "title.ko": "로그인 내역",
+                    "title.ja": "ログイン履歴",
+                    "title.id": "Riwayat masuk",
+                    "title.zh": "登录历史",
+                    "name": "account.loginhistory",
+                    "path": "/account/loginhistory",
+                    "exact": false
+                }
+            }
+        },
+        "event":{
+            "title.en": "Event",
+            "title.ko": "이벤트",
+            "title.ja": "イベント",
+            "title.id": "Peristiwa",
+            "title.zh": "事件",
+            "name": "event",
+            "path": "/event",
+            "exact": false
+        },
+        "support": {
+            "title.en": "Support",
+            "title.ko": "고객 센터",
+            "title.ja": "顧客センター",
+            "title.id": "Dukungan",
+            "title.zh": "支持",
+            "name": "support",
+            "path": "/support",
+            "initPath": "/support/notice",
+            "exact": false,
+            "children": {
+                "notice": {
+                    "title.en": "Notice",
+                    "title.ko": "공지 사항",
+                    "title.ja": "お知らせ",
+                    "title.id": "Melihat",
+                    "title.zh": "通知",
+                    "name": "support.notice",
+                    "path": "/support/notice",
+                    "exact": false
+                },
+                "inquiry": {
+                    "title.en": "Inquiry",
+                    "title.ko": "1:1 질문",
+                    "title.ja": "1:1質問",
+                    "title.id": "Penyelidikan",
+                    "title.zh": "查询",
+                    "name": "support.inquiry",
+                    "path": "/support/inquiry",
+                    "exact": false
+                },
+                "faq": {
+                    "title.en": "FAQ",
+                    "title.ko": "자주 묻는 질문",
+                    "title.ja": "よくある質問",
+                    "title.id": "FAQ",
+                    "title.zh": "常问问题",
+                    "name": "support.faq",
+                    "path": "/support/faq",
+                    "exact": false
+                },
+                "news": {
+                    "title.en": "News",
+                    "title.ko": "보도 자료",
+                    "title.ja": "ニュース",
+                    "title.id": "Berita",
+                    "title.zh": "新闻",
+                    "name": "support.news",
+                    "path": "/support/news",
+                    "exact": false
+                },
+                "feeinfo": {
+                    "title.en": "User Guide",
+                    "title.ko": "이용 안내",
+                    "title.ja": "利用案内",
+                    "title.id": "Panduan Pengguna",
+                    "title.zh": "使用指南",
+                    "name": "support.feeinfo",
+                    "path": "/support/feeinfo",
+                    "exact": false
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+					        http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- 메세지 Property를 정의 -->
+	<!-- - Property 사용 정책: 기본적으로 내부용 설정 context-*.xml에서만 사용 - 만약 외부 클래스 사용시에는 
+		@Value("${server}") 형식으로 Property에 적용된 Key=Value를 사용할 것! -> 참고 예제: SampleController -->
+		
+	<!-- <context:component-scan base-package="kr.co.coinis.webserver" /> -->
+	<!-- <context:property-placeholder location="classpath:/conf/property/config.properties"/> -->
+	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:conf/property/config-#{systemProperties['spring.profiles.active']}.properties</value>
+				<!-- tomcat JAVA_OPTS -Dspring.profiles.active=run 이 설정되어있으면 config-run.properties 파일을 불러옴. defaut는 dev 임 -->
+			</list>
+		</property>
+	</bean>
+	<!-- config.properties 암호화  -->
+
+</beans>

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.coinis.webserver.coinis.support.spt003.dao.InquiryDAO">
+
+	<resultMap type="kr.co.coinis.webserver.coinis.support.spt003.vo.InquiryVO" id="InquiryVO">
+		<result property="inquiry_no"			column="INQUIRY_NO"			jdbcType="INTEGER"/>
+		<result property="inquiry_title"		column="INQUIRY_TITLE"		jdbcType="VARCHAR"/>
+		<result property="reg_dt"				column="REG_DT"				jdbcType="CHAR"/>
+		<result property="rep_reg_dt"			column="REP_REG_DT"			jdbcType="CHAR"/>
+		<result property="usertype"				column="USER_TYPE"			jdbcType="INTEGER"/>
+	</resultMap>
+				
+	<resultMap type="kr.co.coinis.webserver.coinis.support.spt003.vo.InquiryCodeVO" id="InquiryCodeVO">
+		<result property="code_val_nm"			column="CODE_VAL_NM"		jdbcType="VARCHAR"/>
+		<result property="code_num_val"			column="CODE_NUM_VAL"		jdbcType="INTEGER"/>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.coinis.support.spt003.vo.OneInquiryVO" id="OneInquiryVO">
+		<result property="inquiry_type"			column="INQUIRY_TYPE"		jdbcType="VARCHAR"/>
+		<result property="inquiry_title"		column="INQUIRY_TITLE"		jdbcType="VARCHAR"/>
+		<result property="inquiry_contents"		column="INQUIRY_CONTENTS"	jdbcType="VARCHAR"/>
+		<result property="reg_dt"				column="REG_DT"				jdbcType="CHAR"/>
+		<collection 
+			property="filename"
+			column="{inquiry_no=INQUIRY_NO}"
+			javaType="java.util.ArrayList"
+			ofType="kr.co.coinis.webserver.coinis.support.spt003.vo.CertifyNameVO"
+			select="selectFileName"
+			>
+		</collection>
+		
+		<collection 
+			property="answer"
+			column="{inquiry_no=INQUIRY_NO, userid=USER_ID, exchangeid=EXCHANGE_ID}"
+			javaType="java.util.ArrayList"
+			ofType="kr.co.coinis.webserver.coinis.support.spt003.vo.RepInquiryVO"
+			select="selectAnswer"
+			>
+		</collection>
+	</resultMap> 
+	
+	<resultMap type="kr.co.coinis.webserver.coinis.support.spt003.vo.RepInquiryVO" id="RepInquiryVO">
+		<result property="replycontents"		column="REPLY_CONTENTS"		jdbcType="VARCHAR"/>
+		<result property="usertype"				column="USER_TYPE"			jdbcType="INTEGER"/>
+ 		<collection 
+			property="filename"
+			column="{reply_no=REPLY_NO}"
+			javaType="java.util.ArrayList"
+			ofType="kr.co.coinis.webserver.coinis.support.spt003.vo.CertifyNameVO"
+			select="selectAnswerFileName"
+			>
+		</collection>
+	</resultMap>
+	
+	<resultMap type="kr.co.coinis.webserver.coinis.support.spt003.vo.CertifyNameVO" id="CertifyNameVO">
+		<result property="fileName"				column="ATTACH_FILE_NM"		jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	
+	
+	
+	
+	
+	
+	<!-- select TB_INQUIRY -->
+	<!-- 1:1 상세내역 조회  -->
+	<select id="getoneinquiry" resultMap="OneInquiryVO">
+		SELECT
+			A.INQUIRY_NO, A.EXCHANGE_ID, A.USER_ID, A.INQUIRY_TITLE, A.INQUIRY_CONTENTS, A.REG_DT,
+			(SELECT
+				CODE_VAL_NM
+			FROM
+				TB_CODE_INFO
+			WHERE
+				CODE_ID = #{code_id}
+			AND
+				LANG_CD = #{lang_cd}
+			AND
+				CODE_NUM_VAL = A.INQUIRY_TYPE_CD) AS INQUIRY_TYPE
+		FROM
+			TB_INQUIRY A
+		WHERE
+			INQUIRY_NO = #{inquiry_no}
+		AND
+			USER_ID = #{userid}
+		AND 
+			EXCHANGE_ID = #{exchange_id}
+	</select>
+	
+	<!-- select TB_INQUIRY_ATTACH_FILE -->
+	<!-- 1:1 문의 인증자료 원본이름 조회  -->
+	<select id="selectFileName" resultMap="CertifyNameVO">
+		SELECT
+			ATTACH_FILE_NM
+		FROM
+			TB_INQUIRY_ATTACH_FILE
+		WHERE
+			INQUIRY_NO = #{inquiry_no}
+	</select>
+	
+	<!-- select TB_INQUIRY_REPLY -->
+	<!-- 1:1 문의 답변 조화  -->
+	<select id="selectAnswer" resultMap="RepInquiryVO">
+		SELECT 
+			REPLY_NO, REPLY_CONTENTS, REG_DT,
+		CASE
+        	WHEN USER_ID = #{userid}
+        	THEN 1
+      	ELSE
+         	2
+      	END 
+      		AS USER_TYPE
+		FROM
+			TB_INQUIRY_REPLY
+		WHERE
+			INQUIRY_NO = #{inquiry_no}
+		AND 
+			EXCHANGE_ID = #{exchangeid}
+		ORDER BY REPLY_NO ASC
+	</select>
+	
+	<!-- select TB_INQUIRY_REPLY_ATTACH_FILE -->
+	<!-- 1:1 재문의(답변) 인증자료 원본이름 조회  -->
+	<select id="selectAnswerFileName" resultMap="CertifyNameVO">
+		SELECT
+			ATTACH_FILE_NM
+		FROM
+			TB_INQUIRY_REPLY_ATTACH_FILE
+		WHERE
+			REPLY_NO = #{reply_no}
+	</select>
+		
+	<!-- select TB_INQUIRY, TB_INQUIRY_REPLY -->
+	<!-- 1:1 문의 리스트 조회  -->
+	<select id="getInquiryList" resultMap="InquiryVO">
+		SELECT 
+			A.INQUIRY_NO, A.INQUIRY_TITLE, A.REG_DT,
+			(
+	    		SELECT 
+	      			REG_DT
+	    		FROM 
+	      			TB_INQUIRY_REPLY 
+	    		WHERE 
+	    			INQUIRY_NO = A.INQUIRY_NO
+				ORDER BY REG_DT DESC LIMIT 1
+			) AS REP_REG_DT,
+			(
+				SELECT 
+					CASE
+						WHEN USER_ID = #{userid}
+							THEN 1
+						ELSE
+							2
+						END
+	    		FROM 
+	      			TB_INQUIRY_REPLY 
+	    		WHERE 
+	    			INQUIRY_NO = A.INQUIRY_NO
+				ORDER BY REPLY_NO DESC LIMIT 1
+			) AS USER_TYPE
+		FROM
+	  		TB_INQUIRY A
+		WHERE
+			A.USER_ID = #{userid}
+		AND 
+			A.EXCHANGE_ID = #{exchange_id}
+		ORDER BY REG_DT DESC
+		LIMIT #{startIndex}, #{queryDataNum}
+	</select>
+	
+	<!-- select TB_INQUIRY -->
+	<!-- 1:1 문의 갯수 조회  -->
+	<select id="getInquiryListCount" resultType="integer">
+		SELECT COUNT(*)
+		FROM
+		(
+			SELECT INQUIRY_NO
+			FROM 
+				TB_INQUIRY
+			WHERE
+				USER_ID = #{userid}
+		) A
+	</select>
+	
+	
+	
+	<!-- select TB_CODE_INFO -->
+	<!-- 문의 팝업 내 문의구분 조회  -->
+	<select id="getInquiryCode" resultMap="InquiryCodeVO">
+		SELECT
+			CODE_VAL_NM, CODE_NUM_VAL
+		FROM 
+			TB_CODE_INFO
+		WHERE
+			CODE_ID = #{code_id}
+		AND
+			LANG_CD = #{lang_cd}
+		ORDER BY CODE_NUM_VAL ASC
+	</select>
+	
+	<!-- insert TB_INQUIRY -->
+	<!-- 1:1 문의 추가  -->
+	<update id="addInquiry" statementType="CALLABLE" parameterType="kr.co.coinis.webserver.coinis.support.spt003.vo.ReqAddInquiryVO">
+		{ 
+			CALL PR_WAS_INSERT_INQUIRY(
+				#{exchange_id, mode=IN, jdbcType=VARCHAR},
+				#{userid, mode=IN, jdbcType=VARCHAR},
+				#{inquiry_type_cd, mode=IN, jdbcType=INTEGER},
+				#{inquiry_title, mode=IN, jdbcType=VARCHAR},
+				#{inquiry_contents, mode=IN, jdbcType=VARCHAR},
+				#{inquiry_no, mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnCd, mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, mode=OUT, jdbcType=VARCHAR, javaType=string}
+			)
+		}
+	</update>
+	
+	<!-- insert TB_INQUIRY_ATTACH_FILE -->
+	<!-- 1:1 문의 인증자료 추가  -->
+	<update id="addInquiryCertify" statementType="CALLABLE" parameterType="kr.co.coinis.webserver.coinis.support.spt003.vo.ReqAddCertifyVO">
+		{ 
+			CALL PR_WAS_INSERT_INQUIRY_ATTACH_FILE(
+				#{exchange_id, mode=IN, jdbcType=VARCHAR},
+				#{userid, mode=IN, jdbcType=VARCHAR},
+				#{inquiry_no, mode=IN, jdbcType=INTEGER},
+				#{attach_file_nm, mode=IN, jdbcType=VARCHAR},
+				#{saved_file_nm, mode=IN, jdbcType=VARCHAR},
+				#{rtnCd, mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, mode=OUT, jdbcType=VARCHAR, javaType=string}
+			)
+		}
+	</update>
+	
+	<!-- insert TB_INQUIRY_REPLY -->
+	<!-- 1:1 문의 재문의 추가  -->
+	<update id="addReAsk" statementType="CALLABLE" parameterType="kr.co.coinis.webserver.coinis.support.spt003.vo.ReqAddReAskVO">
+		{ 
+			CALL PR_WAS_INSERT_INQUIRY_REPLY(
+				#{exchange_id, mode=IN, jdbcType=VARCHAR},
+				#{userid, mode=IN, jdbcType=VARCHAR},
+				#{inquiry_no, mode=IN, jdbcType=INTEGER},
+				#{reply_contents, mode=IN, jdbcType=VARCHAR},
+				#{inquiry_rep_stat_cd, mode=IN, jdbcType=INTEGER},
+				#{reply_no, mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnCd, mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, mode=OUT, jdbcType=VARCHAR, javaType=string}
+			)
+		}
+	</update>
+	
+	<!-- insert TB_INQUIRY_REPLY_ATTACH_FILE -->
+	<!-- 1:1 문의 재문의 인증자료 추가  -->
+	<update id="addReAskCertify" statementType="CALLABLE" parameterType="kr.co.coinis.webserver.coinis.support.spt003.vo.ReqAddCertifyVO">
+		{ 
+			CALL PR_WAS_INSERT_INQUIRY_REPLY_ATTACH_FILE(
+				#{exchange_id, mode=IN, jdbcType=VARCHAR},
+				#{userid, mode=IN, jdbcType=VARCHAR},
+				#{reply_no, mode=IN, jdbcType=INTEGER},
+				#{attach_file_nm, mode=IN, jdbcType=VARCHAR},
+				#{saved_file_nm, mode=IN, jdbcType=VARCHAR},
+				#{rtnCd, mode=OUT, jdbcType=NUMERIC, javaType=integer},
+				#{rtnMsg, mode=OUT, jdbcType=VARCHAR, javaType=string}
+			)
+		}
+	</update>
+	
+</mapper>
+

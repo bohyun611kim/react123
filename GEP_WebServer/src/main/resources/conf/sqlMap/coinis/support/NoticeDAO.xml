@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.coinis.webserver.coinis.support.spt001.dao.NoticeDAO">
+	
+	<resultMap type="kr.co.coinis.webserver.coinis.support.spt001.vo.NoticeVO" id="NoticeVO">
+		<result property="no" 		column="REC_SEQ_NO" 	jdbcType="NUMERIC"/>
+		<result property="topYn" 	column="TOP_DISP_YN" 	jdbcType="NUMERIC"/>
+		<result property="title" 	column="TITLE" 			jdbcType="VARCHAR"/>
+		<result property="contents" column="CONTENTS" 		jdbcType="VARCHAR"/>
+		<result property="regDt" 	column="REG_DT" 		jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<select id="selectNoticeList" resultMap="NoticeVO">
+		SELECT REC_SEQ_NO
+			   , TOP_DISP_YN
+			   , TITLE
+			   , CONTENTS
+			   , REG_DT
+		  FROM (
+				SELECT REC_SEQ_NO
+					   , TITLE
+					   , TOP_DISP_YN
+					   , CONTENTS
+					   , REG_DT
+				  FROM TB_NOTICE
+				 WHERE EXCHANGE_ID = #{exchangeId}
+				   AND DISP_START_DT <![CDATA[ < ]]> NOW()
+				   AND TOP_DISP_YN = 1
+				 UNION ALL     
+				SELECT REC_SEQ_NO
+					   , TITLE
+					   , TOP_DISP_YN
+					   , CONTENTS
+					   , REG_DT
+				  FROM TB_NOTICE
+				 WHERE EXCHANGE_ID = #{exchangeId}
+				   AND DISP_START_DT <![CDATA[ < ]]> NOW()
+				   AND TOP_DISP_YN = 0
+			  ORDER BY TOP_DISP_YN DESC, REC_SEQ_NO DESC) A
+		 LIMIT #{pageNum}, 10
+	</select>
+	
+	<select id="selectNoticeSize" resultType="integer">
+		SELECT COUNT(*)
+		  FROM (
+				SELECT REC_SEQ_NO
+					   , TITLE
+					   , TOP_DISP_YN
+					   , CONTENTS
+					   , REG_DT
+				  FROM TB_NOTICE
+				 WHERE EXCHANGE_ID = #{exchangeId}
+				   AND DISP_START_DT <![CDATA[ < ]]> NOW()
+				   AND TOP_DISP_YN = 1
+				 UNION ALL     
+				SELECT REC_SEQ_NO
+					   , TITLE
+					   , TOP_DISP_YN
+					   , CONTENTS
+					   , REG_DT
+				  FROM TB_NOTICE
+				 WHERE EXCHANGE_ID = #{exchangeId}
+				   AND DISP_START_DT <![CDATA[ < ]]> NOW()
+				   AND TOP_DISP_YN = 0
+			  ORDER BY TOP_DISP_YN DESC, REC_SEQ_NO DESC) A
+	</select>
+	
+	<select id="selectNoticeOne" resultMap="NoticeVO">
+		SELECT REC_SEQ_NO
+			   , TITLE
+			   , TOP_DISP_YN
+			   , CONTENTS
+			   , REG_DT
+		  FROM TB_NOTICE
+		 WHERE EXCHANGE_ID = #{exchangeId}
+		   AND DISP_START_DT <![CDATA[ < ]]> NOW()
+		   AND REC_SEQ_NO = #{pageNum}
+	</select>
+	
+</mapper>
+

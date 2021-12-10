@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>제휴문의</title>
+
+    <link rel="icon" href="../path/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="../css/uiStyle.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+
+
+    <script src="../js/jquery/jquery-3.3.1.js"></script>
+    <script src="../js/jquery/jquery-ui.js"></script>
+    <script src="../js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="../js/jquery/slick.js"></script>
+
+    <script type="text/javascript">
+        //label을 사용한 셀렉트
+        $(document).ready(function() {
+            var selectTarget = $('.select-box select');
+            selectTarget.change(function() {
+                var select_name = $(this).children('option:selected').text();
+                $(this).siblings('label').text(select_name);
+                $(this).parent('.select-box').css('background-image', 'none');
+            });
+        });
+        //달력
+        $(function() {
+            $("#Date").datepicker();
+        });
+    </script>
+</head>
+
+<body>
+    <!-- HEADER : Start -->
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>
+                    <a href="home.html"><img src="../img/yaho/logo.png" alt="logo"></a>
+                </h1>
+            </div>
+            <div class="gnb-menu">
+                <ul>
+                    <li><a href="YAHOBIT-WEB--MKT-M001.html">거래소</a></li>
+                    <li><a href="YAHOBIT-WEB--WLT-M001.html">입출금</a></li>
+                    <li><a href="YAHOBIT-WEB--INV-M001.html">투자내역</a></li>
+                    <li><a href="YAHOBIT-WEB--YEP-M001.html">YEP RP</a></li>
+                    <li><a href="YAHOBIT-WEB--CRS-M001.html">Crowd Sale</a></li>
+                    <li><a href="YAHOBIT-WEB--ANAL-M001.html">시장동향</a></li>
+                    <li><a href="YAHOBIT-WEB--CST-M001.html">고객지원</a></li>
+                </ul>
+            </div>
+
+            <div class="gnb-link">
+                <ul>
+                    <li onclick="window.open('YAHOBIT-WEB--MBR-M002.html','_parent')">로그인</li>
+                    <li onclick="window.open('YAHOBIT-WEB--MYP-M001.html','_parent')">마이페이지</li>
+                    <li class="on" onclick="window.open('YAHOBIT-WEB--MBR-M001.html','_parent')">회원가입</li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- //HEADER : End -->
+
+
+    <!--컨텐츠 내용 영역 시작-->
+    <section class="main">
+
+        <article>
+            <div class="content">
+                <h1 class="subtitle">제휴문의</h1>
+                
+                <p>여러분의 소중한 제안에 감사 드리며, 문의해 주신 내용을 검토하여 연락 드리겠습니다</p>
+                <p>( <span class="icon-essential">필수입력표시</span>는 필수 입력 사항입니다)</p>
+                
+
+                <div>
+                    <table class="allia">
+                        <colgroup>
+                            <col style="width:130px;">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th class="icon-essential">분류</th>
+                                <td>
+                                    <select>
+                                        <option selected>마케팅 제휴</option>
+                                        <option>서비스 제후</option>
+                                        <option>해외 사업 제안</option>
+                                        <option>국내 사업 제안</option>
+                                        <option>기타 사업 제안</option>
+                                        <option>투자 제안</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="icon-essential">이메일</th>
+                                <td>
+                                    <input type="text" id="" name="" value="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>회사명</th>
+                                <td>
+                                    <input type="text" id="" name="" value="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>직급</th>
+                                <td>
+                                    <input type="text" id="" name="" value="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="icon-essential">성함</th>
+                                <td>
+                                    <input type="text" id="" name="" value="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="icon-essential">연락처</th>
+                                <td>
+                                    <input type="text" id="" name="" value="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="icon-essential">제목</th>
+                                <td>
+                                    <input type="text" id="" name="" value="" class="wdt-full">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="icon-essential">내용</th>
+                                <td>
+                                    <textarea></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>첨부파일1</th>
+                                <td>
+                                    <div class="filebox">
+                                        <input value="파일경로/파일경로/1253.jpg" readonly="readonly">
+                                        <label for="ex_filename" class="btn-file">파일첨부</label>
+                                        <input type="file" id="ex_filename">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>첨부파일2</th>
+                                <td>
+                                    <div class="filebox">
+                                        <input value="파일경로/파일경로/1253.jpg" readonly="readonly">
+                                        <label for="ex_filename" class="btn-file">파일첨부</label>
+                                        <input type="file" id="ex_filename">
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- 신청 버튼 : Start -->
+                    <div class="btn-group mgt20">
+                        <button class="big blue">신청하기</button>
+                    </div>
+                    <!-- //신청 버튼 : End -->
+                </div>
+
+            </div>
+        </article>
+
+    </section>
+    <!--컨텐츠 내용 영역 끝-->
+
+
+
+    <!-- FOOTER : Start -->
+    <footer>
+        <div class="footer-menu-wrap">
+            <div class="footer-menu">
+                <a href="YAHOBIT-WEB--ABOUT-M001.html">회사소개</a>
+                <a href="YAHOBIT-WEB--ABOUT-M002.html">이용약관</a>
+                <a href="YAHOBIT-WEB--ABOUT-M003.html">개인정보처리방침</a>
+                <a href="YAHOBIT-WEB--ABOUT-M004.html">자주하는질문</a>
+                <a href="YAHOBIT-WEB--ABOUT-M005.html">제휴문의</a>
+                <a href="YAHOBIT-WEB--ABOUT-M006.html">상장안내</a>
+            </div>
+        </div>
+
+        <div class="footer-wrap">
+
+            <div class="footer-group">
+                <span class="footer-logo">
+                    <a href="#">yahobit</a>
+                    <a href="#">yahobit</a>
+                </span>
+                <ul>
+                    <li>㈜프로슈머랩 ㅣ 대표 박남현 ㅣ 사업자등록번호 652-86-00391</li>
+                    <li>서울특별시 구로구 디지털로 000 빌딩 3층</li>
+                    <li>고객지원 : 1661-7573 | 운영시간 : 09:00~18:00(토,일, 공휴일 제외)</li>
+                    <li>Copyright&copy; 2019 ProsumerLab All rights Reserved</li>
+                </ul>
+            </div>
+
+
+            <div class="footer-snb">
+                <ul>
+                    <li>
+                        <a href="">
+                            <p><img src="../img/yaho/kakao.png"></p>
+                            카카오톡 <br>상담(24시간)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <p><img src="../img/yaho/kakao.png"></p>
+                            카카오톡 <br>공식 채팅방
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </footer>
+    <!-- FOOTER : End -->
+
+
+    <script>
+        /*북마크*/
+        $('.bookmark').click(function() {
+            $(this).toggleClass('mark-on');
+        });
+
+        //팝업 열고 닫기   
+        function openForm1() {
+            document.getElementById("myForm1").style.display = "block";
+        }
+
+        function closeForm1() {
+            document.getElementById("myForm1").style.display = "none";
+        }
+
+        function openForm2() {
+            document.getElementById("myForm2").style.display = "block";
+        }
+
+        function closeForm2() {
+            document.getElementById("myForm2").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

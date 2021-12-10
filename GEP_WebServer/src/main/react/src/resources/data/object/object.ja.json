@@ -1,0 +1,135 @@
+{
+    "shared.markets": ["KRW", "BTC", "TRX", "USDT"],
+    "coin.names": { 
+        "BTC": "Bitcoin", "ETH": "Ethereum", "AMC": "Aircraft Mileage Coin", "LTC": "Litecoin", "EOS": "EOS", 
+        "MC" : "Mostcash", "AMB" : "AMC Blue", "BCS" : "Bitcoinstar", "BCH" : "Bitcoincash", "BTG" : "Bitcoingold", 
+        "DASH" : "DASH", "ABAG" : "ABAG", "HDN" : "Hidden", "BTH" : "Bithidden", "AIDAO" : "AIDAO", 
+        "YOC" : "YOCoin", "CWC" : "CWCoin", "EBH" : "EBlackHole", "MXR" : "MaxVRcoin", "APL" : "Aplcash", 
+        "ICZ" : "Increz", "GBC" : "Goldenbay", "COS" : "Coinstar", "SCOR" : "Scorcoin", "CIM" : "COINMAN", 
+        "RIZ" : "RIZ Token", "TAMSG" : "TAMSGOLD", "OSN" : "Official Signature", "DWC" : "DOWON COIN", "XRP" : "Ripple", 
+        "RVN" : "Ravencoin", "BIZT" : "BIZ Token", "STRO" : "Super Tron", "ETG" : "ETG TOKEN", "XET" : "ETERNAL TOKEN", 
+        "TORUS": "Torus", "MAVL": "Marvel Token", "TCG": "TCG coin", "GIGC": "GIGCoin", "DCMC": "DCMC", 
+        "RET": "Raise Entertainment Token", "LANX": "LANX Coin", "TRX": "TRON", "ABZC": "asiabizcion", "WCC": "World Check Coin", 
+        "DIOT": "DREAMIOTCOIN", "STC": "STC Coin", "UMX": "UMX Coin", "LCGC": "Life Care Global COIN", "GTT": "GOLDENTIME",
+        "AMBX" : "AMC Blue","WRD":"WRD", "SMILE":"SMILE", "HGN":"HGN"
+    },
+    "intro.visuals": [
+        { "title": "高速で安全な取引所HOLDPORT", 
+            "explain": "Fast and Safe Cryptocurrency" }
+    ],
+    "intro.newcoins": [
+        { "image": "event_banner1_ja.png", "path": "/support/feeinfo", "alt": "#" },
+        { "image": "event_banner3_ja.png", "path": "/support/notice?post=1849", "alt": "#" },
+        { "image": "event_banner4_ja.png", "path": "/support/faq?post=1516", "alt": "#" },
+        { "image": "event_banner3_ja.png", "path": "/support/notice?post=1849", "alt": "#" },
+        { "image": "event_banner4_ja.png", "path": "/support/faq?post=1516", "alt": "#" }
+    ],
+    "events.new": [
+        { "image": "event_banner6_ko.png", "path": "https://holdport.com/frontend/build/index.html#/support/notice?post=5803", "alt": "#" }
+    ],
+    "intro.asideBanners": [
+        { "path": "https://krwcworld.com", "image": "aside_krwc.en.png", "alt": "krwc world" },
+        { "path": "https://www.blockchain.com/ja/explorer", "image": "aside_banner1.png", "alt": "blockchain" },
+        { "path": "https://etherscan.io", "image": "aside_banner2.png", "alt": "etherscan" },
+        { "path": "https://xrpscan.com", "image": "aside_banner4.png", "alt": "xrpcharts" },
+        { "path": "https://tronscan.io/#/", "image": "aside_banner8.png", "alt": "tronscan" },
+        { "path": "http://smilescan.co.kr/", "image": "aside_banner9.png", "alt": "smilescan" },
+        { "path": "http://gdcscan.com/", "image": "aside_banner10.png", "alt": "gdcscan" }
+    ],
+    "intro.features": [
+        { "image": "#", "title": "最高のセキュリティソリューション", 
+          "desc": "私たちは、最高のセキュリティ会社と開発者の間での継続的な議論やデザインを介して外部のハッキング攻撃を検知し防御することができる最適なソリューションとセキュリティシステムを構築して、資産をより安全に保護します" },
+        { "image": "#", "title": "信頼できる技術力", 
+          "desc": "当取引所の開発チームは、プログラムの開発と運用の分野で20年以上の経験を有しており安定したサーバー運用と最高の能力と経験を備えた最高のセキュリティシステムをサポートします" },
+        { "image": "#", "title": "安全な資産管理", 
+          "desc": "私たち所では、緊急事態に備えて、コールドウェルレットとホットウェルレトを分離して使用します。会員たちの資産の90％以上をコールドウェルレット財布に別々に保存して会員たちの資産を最大限に安全に保管します" }
+    ],
+    "intro.partners": [
+        { "path": "#", "image": "main_partner_amazon.png", "alt": "amazon" },
+        { "path": "#", "image": "main_partner_fntoday.png", "alt": "fntoday" },
+        { "path": "#", "image": "main_partner_qubit.png", "alt": "qubit security" },
+        { "path": "#", "image": "main_partner_daily.png", "alt": "daily coin news" },
+        { "path": "#", "image": "main_partner_camon.png", "alt": "comonpay" }
+    ],
+    "intro.shortcuts": [
+        { "title": "取引", "to": "/exchange", "className": "exchange" },
+        { "title": "取引内訳", "to": "/order/tradehistory", "className": "trade_h" },
+        { "title": "私の資産の現状", "to": "/account/assets", "className": "asset" },
+        { "title": "入金内訳", "to": "/wallet/history?type=deposit", "className": "deposit_h" },
+        { "title": "出金内駅", "to": "/wallet/history?type=withdraw", "className": "withdrawal_h" },
+        { "title": "認証センター", "to": "/account/levelset", "className": "certificate" },
+        { "title": "手数料情報", "to": "/support/feeinfo", "className": "fee" },
+        { "title": "ログイン履歴", "to": "/account/loginhistory", "className": "login_h" }
+    ],
+    "wallet.notices": {  
+        "deposit":{  
+           "address":[
+               "もし誤った入金アドレスを入力、送金してしまった場合には、私たちの取引所では探すことが出来ません",
+                "Minimum deposit: deposit_minimum_limit symbol"
+            ],
+           "banking":[
+                "symbol The payment time may take 5 ~ 30 minutes after applying for the deposit request.",
+                "When you make a deposit request, the administrator will make a payment by hand. (No real-time deposits)",
+                "If you make a deposit, you may be delayed.",
+                "After a certain time, the data will be deleted, so please deposit as soon as possible after request."
+           ],  
+           "tag":[
+               "もし誤った入金アドレスを入力、送金してしまった場合には、私たちの取引所では探すことが出来ません",
+                "Minimum deposit: deposit_minimum_limit symbol",
+                "Tag番号を入力しないと入金処理がつきません。"
+            ]
+        },
+        "withdraw":{
+           "address":[
+               "Minimum withdrawal: withdrawal_minimum_limit symbol", "Maximum withdrawal: withdrawal_maximum_limit symbol",
+               "もし誤った出金アドレスを入力、送金してしまった場合には、私たちの取引所では探すことが出来ません"
+            ],
+           "banking":[
+                "Minimum withdrawal: withdrawal_minimum_limit symbol", "Maximum withdrawal: withdrawal_maximum_limit symbol",
+                "symbol withdrawals are only possible with bank accounts authorized for this exchange.",
+                "symbol withdrawal limits vary by authentication phase."
+           ],
+           "tag":[
+               "Minimum withdrawal: withdrawal_minimum_limit symbol", "Maximum withdrawal: withdrawal_maximum_limit symbol",
+               "もし誤った出金アドレスを入力、送金してしまった場合には、私たちの取引所では探すことが出来ません",
+               "システム上の symbolの内部移動が困難である。（holdport-> holdport）"
+
+            ]
+        }
+    },
+    "wallet.servicenote": [
+        "Coins will be deposited immediately after 15 network confirmations.", 
+        "After making a deposit, you can track its progress on the history page."
+    ],
+    "account.levelset.list": [
+        [
+            { "title": "会員登録", "explain": "必須: 電子メール認証" }
+        ],
+        [
+            { "title": "OTP 認証", "explain": "必須: 仮想通貨の入金と取引が可能です" }
+        ],
+        [
+            { "title": "身分証明書", "explain": "必須: 名前と写真を含む政府によって発行された有効な証明書.(IDカードまたはパスポート)\n入出金限度: 日限200万 円" }
+        ],
+        [
+            { "title": "本人名の税金領収書提出者", "explain": "必須: 電気税領収書、水道税領収書、自動車税、保険料領収書\n入出金限度: 日限500万 円\n住所が見える3ヵ月以内の税金、領収証を提出してください" }
+        ],
+        [
+            { "title": "VIP をかけよう", "explain": "必須: 1ヶ月以上の取引をして取引金額5万円以上者\n入出金限度: 日限1000万 円" }
+        ]
+    ],
+    "account.levelset.modal": [
+        {
+            "explain": "身分証明書またはパスポート名前と写真を含む政府によって発行された有効な証明書 (Image size is less than 1M)",
+            "body": [{"title": "IDイメージアップロード", "type": "file"}]
+        },
+        {
+            "explain": "電気税領収書、水道税領収書、自動車税、保険料領収書 (Image size is less than 1M)",
+            "body": [{"title": "Address", "type": "text", "placeholder": "address line" }, {"title": "Tax receipt image upload", "type": "file"}]
+        },
+        {
+            "explain": "",
+            "body": [{"title": "image upload", "type": "file"}]
+        }
+    ]
+}
